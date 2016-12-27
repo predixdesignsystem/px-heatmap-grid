@@ -63,9 +63,19 @@
               <div class="properties u-ph+ u-pb+ u-mt+">
                 <p class="epsilon">Properties</p>
                 <div class="flex u-mb-">
-                  <input id="showScale{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.showScale::change}}">
-                  <label for$="showScale{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                  <div class="u-ml-">Show Color Scale</div>
+                  <input id="hideScale{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideScale::change}}">
+                  <label for$="hideScale{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                  <div class="u-ml-">Hide Color Scale</div>
+                </div>
+                <div class="flex u-mb-">
+                  <input id="hideColHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideColHeader::change}}">
+                  <label for$="hideColHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                  <div class="u-ml-">Hide Column Header</div>
+                </div>
+                <div class="flex u-mb-">
+                  <input id="hideRowHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideRowHeader::change}}">
+                  <label for$="hideRowHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                  <div class="u-ml-">Hide Row Header</div>
                 </div>
                 <div class="u-mb-">Scale Min: <input class="text-input" type="text" placeholder="{{item.scaleMin}}" value="{{item.scaleMin::input}}" /></div>
                 <div class="u-mb-">Scale Max: <input class="text-input" type="text" placeholder="{{item.scaleMax}}" value="{{item.scaleMax::input}}" /></div>
@@ -127,10 +137,32 @@
       var template = document.querySelector('template[is=dom-bind]'),
           optionsArray = [
             {
-              "showScale": true,
-              "heatmapData": [[{"key": "line-1", "value": 1.35}]],
+              "hideScale": false,
+              "heatmapData": [
+                {
+                  "row": "Application 1",
+                  "col": "Operator 1",
+                  "value": 16.639
+                },
+                {
+                  "row": "Application 1",
+                  "col": "Operator 2",
+                  "value": 55.464
+                },
+                {
+                  "row": "Application 2",
+                  "col": "Operator 1",
+                  "value": 91.049
+                },
+                {
+                  "row": "Application 2",
+                  "col": "Operator 2",
+                  "value": 21.692
+                }],
               "scaleMin": "0",
-              "scaleMax": "100"
+              "scaleMax": "100",
+              "hideColHeader": false,
+              "hideRowHeader": false
             }
           ],
           indexPlusOne = function(num) {
@@ -140,7 +172,7 @@
           nodes;
 
       ironAjaxEl.handleAs = "json";
-      ironAjaxEl.url = "data/sampleData.json";
+      ironAjaxEl.url = "data/sample-data.json";
       ironAjaxEl.addEventListener('response', function(evt) {
         nodes = evt.detail.response;
         template.data = nodes;

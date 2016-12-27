@@ -1,0 +1,75 @@
+Polymer({
+
+  is: 'ev-heatmap',
+
+  properties: {
+    /**
+     * This is the property that holds the heatmap data.
+     *
+     * @property heatmapData
+     */
+    heatmapData: {
+      type: Object,
+      notify: true,
+      value: []
+    },
+
+    /**
+     * Use this properties to set the scale lower limit
+     *
+     * @property scaleMin
+     */
+    scaleMin: {
+      type: Number,
+      value: 0,
+      observer: '_scaleChanged'
+    },
+
+    /**
+     * Use this properties to set the scale high limit
+     *
+     * @property scaleMax
+     */
+    scaleMax: {
+      type: Number,
+      value: 100,
+      observer: '_scaleChanged'
+    },
+
+    /**
+     * Use this property to show/hide the scale
+     *
+     * @property hideScale
+     */
+    hideScale: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * Use this property to show/hide the Column Header
+     *
+     * @property hideColHeader
+     */
+    hideColHeader: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * Use this property to show/hide the Row Header
+     *
+     * @property hideRowHeader
+     */
+    hideRowHeader: {
+      type: Boolean,
+      value: false
+    }
+  },
+
+  _scaleChanged: function(newScale, oldScale) {
+    if(newScale !== oldScale && newScale) {
+      this.set("scale", [this.scaleMin, this.scaleMax]);
+    }
+  }
+});

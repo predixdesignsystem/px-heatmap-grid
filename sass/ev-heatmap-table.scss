@@ -3,11 +3,13 @@
 
 $ev-heatmap-start-color : var(--ev-heatmap-start-color, $gray1);
 $ev-heatmap-end-color : var(--ev-heatmap-end-color, $alert-red);
+$ev-heatmap-cell-min-width : var(--ev-heatmap-cell-min-width, 50px);
+$table-header-height: 22px;
 
 .table-cell {
   border-top: 1px solid $gray6;
   border-left: 1px solid $gray6;
-  min-width: calculateRem(50px);
+  min-width: $ev-heatmap-cell-min-width;
   font-size: 14px;
   color: $dv-dark-gray;
   padding: calculateRem(3px);
@@ -25,4 +27,26 @@ $ev-heatmap-end-color : var(--ev-heatmap-end-color, $alert-red);
   width: 0px;
   color: $ev-heatmap-end-color;
   background-color: $ev-heatmap-start-color;
+}
+
+.table-row-header {
+  padding-right: calculateRem(20px);
+  margin-top: $table-header-height;
+}
+
+.disable-col-header {
+  margin-top: 0 !important;
+}
+
+.row-header {
+  font-weight: bold;
+}
+
+.col-header {
+  font-weight: bold;
+  padding-right: calculateRem(13px);
+  padding-left: calculateRem(3px);
+  padding-bottom: calculateRem(3px);
+  max-height: $table-header-height;
+  min-height: $table-header-height;
 }

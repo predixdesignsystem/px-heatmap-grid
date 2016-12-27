@@ -12,14 +12,26 @@
   <template>
     <style include="ev-heatmap-table-styles"></style>
     <div class="color-helper"></div>
-    <div class="table-container flex flex--row flex--left flex--top">
-      <template is="dom-repeat" items="{{heatmapData}}" as="items">
-        <div class="table-column">
-          <template is="dom-repeat" items="{{items}}" as="item">
-            <div class="table-cell" id="{{item.key}}" style="background-color: rgb({{item.color}});">{{item.value}}</div>
+    <div class="table-container flex flex--row">
+      <template is="dom-if" if="{{!hideRowHeader}}">
+        <div class="table-row-header flex flex--col flex--justify">
+          <template is="dom-repeat" items="{{rows}}" as="row">
+            <div class="row-header">{{row}}</div>
           </template>
         </div>
       </template>
+      <div class="table-container flex flex--row flex--left flex--top">
+        <template is="dom-repeat" items="{{heatmapData}}" as="items">
+          <div class="table-column">
+            <template is="dom-if" if="{{!hideColHeader}}">
+              <div class="col-header">{{_getColHeader(index)}}</div>
+            </template>
+            <template is="dom-repeat" items="{{items}}" as="item">
+              <div class="table-cell" style="background-color: rgb({{item.color}});">{{item.value}}</div>
+            </template>
+          </div>
+        </template>
+      </div>
     </div>
   </template>
 </dom-module>

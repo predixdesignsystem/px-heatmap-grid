@@ -51,6 +51,23 @@ Polymer({
       type: Array,
       value: [0, 100],
       observer: '_scaleChanged'
+    },
+
+    /**
+     * This property controls when to show/hide the Column Headers
+     */
+    hideColHeader: {
+      type: Boolean,
+      value: false,
+      observer: '_hideColHeaderChanged'
+    },
+
+    /**
+     * This property controls when to show/hide the Row Headers
+     */
+    hideRowHeader: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -62,18 +79,37 @@ Polymer({
   _dataChanged: function(newData, oldData) {
     var self = this;
     if(newData != oldData && newData && newData.length) {
-      newData.forEach(function(line) {
-        line.forEach(function(cell) {
-          var nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
-          cell["color"] = "" + nColor[0] + "," + nColor[1] + "," + nColor[2];
-        });
+      var rows = [];
+      var cols = [];
+      var tableData = [];
+      var nColor = [];
+      var iRow = -1;
+      var iCol = -1;
+
+      newData.forEach(function(cell) {
+        iRow = Object.values(rows).indexOf(cell.row);
+        iCol = Object.values(cols).indexOf(cell.col);
+        if (iCol === -1) {
+          cols.push(cell.col);
+          tableData.push([]);
+          iCol = cols.length - 1;
+        };
+        if (iRow === -1) {
+          rows.push(cell.row);
+          tableData[iCol].push([]);
+          iRow = rows.length - 1;
+        };
+        nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
+        tableData[iCol][iRow] = {
+          "value": cell.value,
+          "color": "" + nColor[0] + "," + nColor[1] + "," + nColor[2]
+        };
       });
-      
-      // Force dom-repeat to re-render
+
       this.set("heatmapData", []);
-      setTimeout(function() {
-        self.set("heatmapData", newData);
-      },100);
+      this.set("rows", rows);
+      this.set("cols", cols);
+      this.set("heatmapData", tableData);
     }
   },
 
@@ -106,6 +142,23 @@ Polymer({
       config.maxValue = newScale[1];
       this.set("config", config);
       this._configChanged(config, {});
+    }
+  },
+
+  _getColHeader: function(iCol) {
+    return this.cols[iCol];
+  },
+
+  _hideColHeaderChanged: function(newValue, oldValue) {
+    var rowHeader = document.querySelector(".table-row-header");
+    var scale = document.querySelector(".scale-container");
+    if (newValue !== undefined && newValue !== oldValue) {
+      if (rowHeader) {
+        newValue === false ? rowHeader.classList.remove("disable-col-header") : rowHeader.classList.add("disable-col-header");
+      }
+      if (scale) {
+        newValue === false ? scale.classList.remove("disable-col-header") : scale.classList.add("disable-col-header");
+      }
     }
   }
 });
