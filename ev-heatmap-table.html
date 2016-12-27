@@ -1,0 +1,27 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. tests, examples), we assume the server is started with
+    'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<link rel="import" href="css/ev-heatmap-table-styles.html">
+
+
+<dom-module id="ev-heatmap-table">
+  <template>
+    <style include="ev-heatmap-table-styles"></style>
+    <div class="color-helper"></div>
+    <div class="table-container flex flex--row flex--left flex--top">
+      <template is="dom-repeat" items="{{data}}" as="items">
+        <div class="table-column">
+          <template is="dom-repeat" items="{{items}}" as="item">
+            <div class="table-cell" id="{{item.key}}" style="background-color: rgb({{item.color}});">{{item.value}}</div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </template>
+</dom-module>
+
+<script type="text/javascript" src="js/ev-heatmap-table.js"></script>

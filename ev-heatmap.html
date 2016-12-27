@@ -1,0 +1,98 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. tests, examples), we assume the server is started with
+    'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<link rel="import" href="css/ev-heatmap-styles.html">
+<link rel="import" href="ev-heatmap-table.html">
+<link rel="import" href="ev-heatmap-scale.html">
+
+<!--
+The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors. The options to customize the component are detailed in the API reference below.
+### Usage
+
+    <ev-heatmap heatmap-data={{data}} show-scale="true" scale-min="0" scale-max="100"></ev-heatmap>
+
+### Styling
+The following variables are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--ev-heatmap-start-color` | The color mapped to the scale min | `$gray1`
+`--ev-heatmap-end-color` | The color mapped to the scale max | `$alert-red`
+
+@element ev-heatmap
+@blurb A highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors
+@homepage index.html
+@demo index.html
+-->
+
+<dom-module id="ev-heatmap">
+  <template>
+    <style include="ev-heatmap-styles"></style>
+    <div class="flex flex--row flex--left flex--top flex--stretch">
+      <ev-heatmap-table data="{{heatmapData}}" scale="{{scale}}"></ev-heatmap-table>
+      <ev-heatmap-scale scale="{{scale}}" hidden$="{{!showScale}}"></ev-heatmap-scale>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+
+    is: 'ev-heatmap',
+
+    properties: {
+      /**
+      * This is the property that holds the heatmap data.
+      *
+      * @property heatmapData
+      */
+      heatmapData: {
+        type: Object,
+        notify: true,
+        value: []
+      },
+
+      /**
+       * Use this properties to set the scale lower limit
+       *
+       * @property scaleMin
+       */
+      scaleMin: {
+        type: Number,
+        value: 0,
+        observer: '_scaleChanged'
+      },
+
+      /**
+       * Use this properties to set the scale high limit
+       *
+       * @property scaleMax
+       */
+      scaleMax: {
+        type: Number,
+        value: 100,
+        observer: '_scaleChanged'
+      },
+
+      /**
+       * Use this properties to show/hide the scale
+       *
+       * @property showScale
+       */
+      showScale: {
+        type: Boolean,
+        value: true
+      }
+    },
+
+    _scaleChanged: function(newScale, oldScale) {
+      if(newScale !== oldScale && newScale) {
+        this.set("scale", [this.scaleMin, this.scaleMax]);
+      }
+    }
+  });
+</script>

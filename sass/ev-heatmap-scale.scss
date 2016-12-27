@@ -1,0 +1,20 @@
+@import 'px-flexbox-design/_base.flexbox.scss';
+@import "px-colors-design/_settings.colors.scss";
+@import "ev-heatmap-table";
+
+.scale-gradient {
+  background: linear-gradient(to top, $ev-heatmap-start-color, $ev-heatmap-end-color);
+  align-self: stretch;
+  width: calculateRem(20px);
+}
+
+.scale-values {
+  align-self: stretch;
+  margin-left: calculateRem(3px);
+}
+
+.scale-container {
+  margin-left: calculateRem(20px);
+  font-size: 12px;
+  color: $gray8;
+}

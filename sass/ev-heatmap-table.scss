@@ -1,0 +1,28 @@
+@import 'px-flexbox-design/_base.flexbox.scss';
+@import "px-colors-design/_settings.colors.scss";
+
+$ev-heatmap-start-color : var(--ev-heatmap-start-color, $gray1);
+$ev-heatmap-end-color : var(--ev-heatmap-end-color, $alert-red);
+
+.table-cell {
+  border-top: 1px solid $gray6;
+  border-left: 1px solid $gray6;
+  min-width: calculateRem(50px);
+  font-size: 14px;
+  color: $dv-dark-gray;
+  padding: calculateRem(3px);
+}
+
+.table-cell:last-child {
+  border-right: 1px solid $gray6;
+  border-bottom: 1px solid $gray6;
+}
+
+.color-helper {
+  visibility: hidden;
+  display: none;
+  height: 0px;
+  width: 0px;
+  color: $ev-heatmap-end-color;
+  background-color: $ev-heatmap-start-color;
+}
