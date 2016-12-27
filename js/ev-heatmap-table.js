@@ -17,6 +17,15 @@ Polymer({
       notify: true,
       observer: '_dataChanged'
     },
+
+    /**
+     * This property holds the rendered data
+     */
+    heatmapData: {
+      type: Object,
+      value: []
+    },
+
     /**
      * This property holds the config info
      *
@@ -59,6 +68,12 @@ Polymer({
           cell["color"] = "" + nColor[0] + "," + nColor[1] + "," + nColor[2];
         });
       });
+      
+      // Force dom-repeat to re-render
+      this.set("heatmapData", []);
+      setTimeout(function() {
+        self.set("heatmapData", newData);
+      },100);
     }
   },
 
@@ -79,13 +94,18 @@ Polymer({
       }
       nValues = config.maxValue - config.minValue;
       config.factors = config.endColor.map((c,i) => (c - config.startColor[i]) / nValues);
+      var data = [].concat(this.data);
+      this.set("data", data);
     }
   },
 
   _scaleChanged: function(newScale, oldScale) {
     if(newScale !== oldScale && newScale && newScale.length === 2) {
-      this.config.minValue = newScale[0];
-      this.config.maxValue = newScale[1];
+      var config = this.config;
+      config.minValue = newScale[0];
+      config.maxValue = newScale[1];
+      this.set("config", config);
+      this._configChanged(config, {});
     }
   }
 });

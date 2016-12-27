@@ -13,7 +13,7 @@
     <style include="ev-heatmap-table-styles"></style>
     <div class="color-helper"></div>
     <div class="table-container flex flex--row flex--left flex--top">
-      <template is="dom-repeat" items="{{data}}" as="items">
+      <template is="dom-repeat" items="{{heatmapData}}" as="items">
         <div class="table-column">
           <template is="dom-repeat" items="{{items}}" as="item">
             <div class="table-cell" id="{{item.key}}" style="background-color: rgb({{item.color}});">{{item.value}}</div>

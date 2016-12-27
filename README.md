@@ -2,7 +2,7 @@
 
 ## Overview
 
-ev-heatmap is a Predix UI component
+A highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors
 
 ## Usage
 
