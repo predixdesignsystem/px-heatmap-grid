@@ -10,9 +10,75 @@
 
 <!--
 The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors. The options to customize the component are detailed in the API reference below.
+
+
+The heat map Data is an array of cell objects.
+
+Sample schema for a simple cell object is detailed below.
+
+<pre>
+{
+  "row": "Application 1",
+  "col": "Operator 1",
+  "value": 16.639
+}
+</pre>
+
+Where:
+- row is the title to display for that row;
+- col is the title to display for that column;
+- value is the value displayed in the cell and used to calculate the cell color.
+
+Cells are grouped by rows and columns with same titles, see the examples below.
+
+<pre>
+[
+  {
+    "row": "Application 1",
+    "col": "Operator 1",
+    "value": 16.639
+  },
+  {
+    "row": "Application 1",
+    "col": "Operator 2",
+    "value": 55.464
+  }
+]
+</pre>
+
+On this example, both cells are going to be displayed on the 'Application 1' row but at two different columns, 'Operator 1' and 'Operator 2'.
+
+<pre>
+[
+  {
+    "row": "Application 1",
+    "col": "Operator 1",
+    "value": 16.639
+  },
+  {
+    "row": "Application 1",
+    "col": "Operator 2",
+    "value": 55.464
+  }
+  {
+    "row": "Application 2",
+    "col": "Operator 1",
+    "value": 61.897
+  },
+  {
+    "row": "Application 2",
+    "col": "Operator 2",
+    "value": 47.479
+  }
+]
+</pre>
+
+On this example, two cells are going to be displayed on each row and column.
+
+
 ### Usage
 
-    <ev-heatmap heatmap-data={{data}} scale-min="0" scale-max="100"></ev-heatmap>
+    <ev-heatmap heatmap-data={{data}}></ev-heatmap>
 
 ### Styling
 The following variables are available for styling:

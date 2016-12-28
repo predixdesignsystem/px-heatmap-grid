@@ -1,4 +1,5 @@
 #ev-heatmap
+[![ev-heatmap demo](ev-heatmap.png?raw=true)](https://github.build.ge.com/emerging-verticals/ev-heatmap)
 
 ## Overview
 

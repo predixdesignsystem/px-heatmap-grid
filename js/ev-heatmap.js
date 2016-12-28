@@ -26,7 +26,7 @@ Polymer({
     },
 
     /**
-     * Use this properties to set the scale high limit
+     * Use this properties to set the scale upper limit
      *
      * @property scaleMax
      */
