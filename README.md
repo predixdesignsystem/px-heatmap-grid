@@ -42,7 +42,7 @@ Finally, use the component in your application:
 
 ## Documentation
 
-Read the full API and view the demo [here](https://predixdev.github.io/ev-heatmap).
+Read the full API and view the demo [here](https://github.build.ge.com/pages/emerging-verticals/ev-heatmap/ev-heatmap/).
 
 The documentation in this repository is supplemental to the official Predix documentation, which is continuously updated and maintained by the Predix documentation team. Go to [http://predix.io](http://predix.io)  to see the official Predix documentation.
 
