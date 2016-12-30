@@ -1,5 +1,6 @@
 @import 'px-flexbox-design/_base.flexbox.scss';
 @import "px-colors-design/_settings.colors.scss";
+@import "px-iconography-design/_base.iconography.scss";
 
 $ev-heatmap-start-color : var(--ev-heatmap-start-color, $gray1);
 $ev-heatmap-end-color : var(--ev-heatmap-end-color, $alert-red);
@@ -40,6 +41,7 @@ $table-header-height: 22px;
 
 .row-header {
   font-weight: bold;
+  cursor: pointer;
 }
 
 .col-header {
@@ -49,4 +51,9 @@ $table-header-height: 22px;
   padding-bottom: calculateRem(3px);
   max-height: $table-header-height;
   min-height: $table-header-height;
+  cursor: pointer;
+}
+
+.fa-caret-up, .fa-caret-down {
+  color: $blue-light;
 }

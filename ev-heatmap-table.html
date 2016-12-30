@@ -16,7 +16,11 @@
       <template is="dom-if" if="{{!hideRowHeader}}">
         <div class="table-row-header flex flex--col flex--justify">
           <template is="dom-repeat" items="{{rows}}" as="row">
-            <div class="row-header">{{row}}</div>
+            <div class="row-header" on-click="_sortRow">
+              <span>{{row}}</span>
+              <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'row','up',heatmapData)}}"></i>
+              <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'row','down',heatmapData)}}"></i>
+            </div>
           </template>
         </div>
       </template>
@@ -24,7 +28,11 @@
         <template is="dom-repeat" items="{{heatmapData}}" as="items">
           <div class="table-column">
             <template is="dom-if" if="{{!hideColHeader}}">
-              <div class="col-header">{{_getColHeader(index)}}</div>
+              <div class="col-header" on-click="_sortCol">
+                <span>{{_getColHeader(index, cols)}}</span>
+                <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></i>
+                <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>
+              </div>
             </template>
             <template is="dom-repeat" items="{{items}}" as="item">
               <div class="table-cell" style="background-color: rgb({{item.color}});">{{item.value}}</div>

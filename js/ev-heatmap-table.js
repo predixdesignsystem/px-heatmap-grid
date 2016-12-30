@@ -160,5 +160,52 @@ Polymer({
         newValue === false ? scale.classList.remove("disable-col-header") : scale.classList.add("disable-col-header");
       }
     }
+  },
+
+  _sortCol: function(e) {
+    var col = e.model.index;
+    var order = this.sortColOrder ? this.sortColOrder.index === col ? !this.sortColOrder.order : true : true;
+    this.sortColOrder = {
+      "index": col,
+      "order": order
+    };
+    var temp = this.heatmapData[col].map(function(el, i) { return {"index": i, "value": el.value}});
+    temp.sort((a, b) => order ? a.value - b.value : b.value - a.value);
+    var newData = this.heatmapData.map(hd => temp.map(t => hd[t.index]));
+    var rows = this.rows;
+    var newRows = temp.map(t => rows[t.index]);
+    this.set("heatmapData", []);
+    this.set("rows", []);
+    this.set("heatmapData", newData);
+    this.set("rows", newRows);
+  },
+
+  _sortRow: function(e) {
+    var row = e.model.index;
+    var order = this.sortRowOrder ? this.sortRowOrder.index === row ? !this.sortRowOrder.order : true : true;
+    this.sortRowOrder = {
+      "index": row,
+      "order": order
+    };
+    var temp = this.heatmapData.map(function(el, i) { return {"index": i, "value": el[row].value}});
+    var hd = this.heatmapData;
+    temp.sort((a,b) => order ? a.value - b.value : b.value - a.value);
+    var newData = temp.map(t => hd[t.index]);
+    var cols = this.cols;
+    var newCols = temp.map(t => cols[t.index]);
+    this.set("cols", []);
+    this.set("heatmapData", []);
+    this.set("cols", newCols);
+    this.set("heatmapData", newData);
+  },
+
+  _sortingIcon: function(i,h,d) {
+    if (this.sortColOrder && h.toLowerCase() === 'col') {
+      return this.sortColOrder.index === i ? d.toLowerCase() === 'up' ? !this.sortColOrder.order : this.sortColOrder.order : true;
+    }
+    else if (this.sortRowOrder && h.toLowerCase() === 'row') {
+      return this.sortRowOrder.index === i ? d.toLowerCase() === 'up' ? !this.sortRowOrder.order : this.sortRowOrder.order : true;
+    }
+    return true;
   }
 });
