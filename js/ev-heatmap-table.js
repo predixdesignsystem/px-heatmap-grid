@@ -83,7 +83,7 @@ Polymer({
      */
     aggregationType: {
       type: String,
-      value: "Max",
+      value: "",
       observer: '_calculateAggregation'
     },
 
@@ -256,6 +256,7 @@ Polymer({
 
   _calculateAggregation: function(n, o) {
     if(this.aggregationType && this.aggregationType != null && n && n !== o && this.availableAggregations && this.availableAggregations.indexOf(n.toUpperCase()) !== -1 && this.heatmapData.length > 0) {
+      this.set("showAggregation", true);
       var rowAggregation = [],
         colAggregation = [],
         data = this.heatmapData.map(hd => hd.map(v => v.value)),
@@ -298,6 +299,7 @@ Polymer({
     }
     else if(this.aggregationType && o && n && o !== n && this.availableAggregations.indexOf(n.toUpperCase()) === -1) {
       this.set("aggregationType", o);
+      this.set("showAggregation", false);
     }
   },
 

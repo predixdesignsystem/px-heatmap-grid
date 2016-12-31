@@ -99,7 +99,7 @@ Custom property | Description | Default
   <template>
     <style include="ev-heatmap-styles"></style>
     <div class="flex flex--row flex--left flex--top flex--stretch">
-      <ev-heatmap-table data="{{heatmapData}}" scale="{{scale}}" hide-row-header="{{hideRowHeader}}" hide-col-header="{{hideColHeader}}"></ev-heatmap-table>
+      <ev-heatmap-table data="{{heatmapData}}" scale="{{scale}}" hide-row-header="{{hideRowHeader}}" hide-col-header="{{hideColHeader}}" aggregation-type="{{aggregationType}}"></ev-heatmap-table>
       <ev-heatmap-scale scale="{{scale}}" hidden$="{{hideScale}}"></ev-heatmap-scale>
     </div>
   </template>

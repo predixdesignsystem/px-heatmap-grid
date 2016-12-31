@@ -64,6 +64,16 @@ Polymer({
     hideRowHeader: {
       type: Boolean,
       value: false
+    },
+
+    /**
+     * Use this property to set the aggregation type
+     *
+     * @property aggregationType
+     */
+    aggregationType: {
+      type: String,
+      value: ""
     }
   },
 

@@ -79,6 +79,18 @@
                 </div>
                 <div class="u-mb-">Scale Min: <input class="text-input" type="text" placeholder="{{item.scaleMin}}" value="{{item.scaleMin::input}}" /></div>
                 <div class="u-mb-">Scale Max: <input class="text-input" type="text" placeholder="{{item.scaleMax}}" value="{{item.scaleMax::input}}" /></div>
+                <div class="u-mb-">
+                  <div class="u-mb-">Aggregation:</div>
+                  <select class="input--regular" value="{{item.aggregationType::input}}">
+                    <option value="disabled">Disabled</option>
+                    <option value="Average">Average</option>
+                    <option value="Std">Standard Deviation</option>
+                    <option value="Sum">Sum</option>
+                    <option value="Max">Max</option>
+                    <option value="Min">Min</option>
+                    <option value="Count">Count</option>
+                  </select>
+                </div>
               </div>
 
               <div class="demoContainer u-mt+">
@@ -162,7 +174,8 @@
               "scaleMin": "0",
               "scaleMax": "100",
               "hideColHeader": false,
-              "hideRowHeader": false
+              "hideRowHeader": false,
+              "aggregationType": "disabled"
             }
           ],
           indexPlusOne = function(num) {
