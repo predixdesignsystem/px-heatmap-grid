@@ -20,6 +20,8 @@ Polymer({
 
     /**
      * This property holds the rendered data
+     *
+     * @property heatmapData
      */
     heatmapData: {
       type: Object,
@@ -55,6 +57,8 @@ Polymer({
 
     /**
      * This property controls when to show/hide the Column Headers
+     *
+     * @property hideColHeader
      */
     hideColHeader: {
       type: Boolean,
@@ -64,10 +68,50 @@ Polymer({
 
     /**
      * This property controls when to show/hide the Row Headers
+     *
+     * @property hideRowHeader
      */
     hideRowHeader: {
       type: Boolean,
       value: false
+    },
+
+    /**
+     * This property sets the aggregation method
+     *
+     * @property aggregationType
+     */
+    aggregationType: {
+      type: String,
+      value: "Max",
+      observer: '_calculateAggregation'
+    },
+
+    /**
+     * This property controls when to show/hide the Aggregations
+     *
+     * @property showAggregation
+     */
+    showAggregation: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * This property contains all the available aggregation types
+     *
+     * @property availableAggregations
+     */
+    availableAggregations: {
+      type: Array,
+      value: [
+        "AVERAGE",
+        "MAX",
+        "MIN",
+        "SUM",
+        "COUNT",
+        "STD"
+      ]
     }
   },
 
@@ -110,6 +154,7 @@ Polymer({
       this.set("rows", rows);
       this.set("cols", cols);
       this.set("heatmapData", tableData);
+      this._calculateAggregation(this.aggregationType, "");
     }
   },
 
@@ -207,5 +252,56 @@ Polymer({
       return this.sortRowOrder.index === i ? d.toLowerCase() === 'up' ? !this.sortRowOrder.order : this.sortRowOrder.order : true;
     }
     return true;
+  },
+
+  _calculateAggregation: function(n, o) {
+    if(this.aggregationType && this.aggregationType != null && n && n !== o && this.availableAggregations && this.availableAggregations.indexOf(n.toUpperCase()) !== -1 && this.heatmapData.length > 0) {
+      var rowAggregation = [],
+        colAggregation = [],
+        data = this.heatmapData.map(hd => hd.map(v => v.value)),
+        colDigits = data.map(hd => hd.map(a => (a + "").split(".")[1].length).reduce((a,b,i) => i === 0 ? b : a > b ? b : a)),
+        rowDigits = data[0].map((hd,i) => data.map(a => (a[i] + "").split(".")[1].length).reduce((a,b,i) => i === 0 ? b : a > b ? b : a));
+      this.set("rowAggregatedData", []);
+      this.set("colAggregatedData", []);
+      switch (n.toUpperCase()) {
+        case "SUM":
+          rowAggregation = data[0].map((c,i) => data.reduce((a,b) => a + b[i],0));
+          colAggregation = data.map(c => c.reduce((a,b) => a + b, 0));
+          break;
+        case "AVERAGE":
+          rowAggregation = data[0].map((c,i) => (data.reduce((a,b) => a + b[i],0))/data.length);
+          colAggregation = data.map(c => (c.reduce((a,b) => a + b, 0))/c.length);
+          break;
+        case "STD":
+          rowAggregation = data[0].map((c,i) => (data.reduce((a,b) => a + b[i],0))/data.length);
+          rowAggregation = data[0].map((c,i) => Math.sqrt((data.reduce((a,b) => a + Math.pow((b[i] - rowAggregation[i]),2), 0))/data.length));
+          colAggregation = data.map(c => (c.reduce((a,b) => a + b, 0))/c.length);
+          colAggregation = data.map((c,i) => Math.sqrt((c.reduce((a,b) => a + Math.pow((b - colAggregation[i]),2), 0))/c.length));
+          break;
+        case "MAX":
+          rowAggregation = data[0].map((c,i) => data.reduce((a,b,j) => j === 0 ? b[i] : a > b[i] ? a : b[i],0));
+          colAggregation = data.map(c => c.reduce((a,b,i) => i === 0 ? b : a > b ? a : b, 0));
+          break;
+        case "MIN":
+          rowAggregation = data[0].map((c,i) => data.reduce((a,b,j) => j === 0 ? b[i] : a > b[i] ? b[i] : a,0));
+          colAggregation = data.map(c => c.reduce((a,b,i) => i === 0 ? b : a > b ? b : a, 0));
+          break;
+        default: //COUNT
+          rowAggregation = data[0].map(c => data.length);
+          colAggregation = data.map(c => c.length);
+      }
+
+      colAggregation = colAggregation.map((v,i) => (v + "").substr(0,(v + "").split(".")[0].length + 2 + colDigits[i]));
+      rowAggregation = rowAggregation.map((v,i) => (v + "").substr(0,(v + "").split(".")[0].length + 2 + rowDigits[i]));
+      this.set("rowAggregatedData", rowAggregation);
+      this.set("colAggregatedData", colAggregation);
+    }
+    else if(this.aggregationType && o && n && o !== n && this.availableAggregations.indexOf(n.toUpperCase()) === -1) {
+      this.set("aggregationType", o);
+    }
+  },
+
+  _getColAggregation: function(i) {
+    return this.colAggregatedData ? this.colAggregatedData[i] : '';
   }
 });

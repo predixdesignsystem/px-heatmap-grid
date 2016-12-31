@@ -16,6 +16,14 @@ $table-header-height: 22px;
   padding: calculateRem(3px);
 }
 
+.table-empty-cell {
+  border: 0;
+  min-width: $ev-heatmap-cell-min-width;
+  font-size: 15px;
+  color: $dv-dark-gray;
+  padding: calculateRem(3px);
+}
+
 .table-cell:last-child {
   border-right: 1px solid $gray6;
   border-bottom: 1px solid $gray6;
