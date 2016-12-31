@@ -1,6 +1,6 @@
 {
   "name": "ev-heatmap",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": [
     "ev-heatmap.html"
   ],
@@ -44,7 +44,8 @@
     "px-meta-lists-design": "^0.3.4",
     "px-dropdown": "^0.12.1",
     "px-layout-design": "^0.3.13",
-    "px-starter-kit-design": "~0.6.0"
+    "px-starter-kit-design": "~0.6.0",
+    "web-component-tester": "~5.0.0"
   },
   "resolutions": {
     "px-polymer-font-awesome": "^1.1.0",

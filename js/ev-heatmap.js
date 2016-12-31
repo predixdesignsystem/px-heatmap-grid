@@ -67,13 +67,15 @@ Polymer({
     },
 
     /**
-     * Use this property to set the aggregation type
+     * Use this property to set the aggregation type.
+     * The aggregation result is truncated at the number of
+     * significant digits + 1.
      *
      * @property aggregationType
      */
     aggregationType: {
       type: String,
-      value: ""
+      value: "disabled"
     }
   },
 
