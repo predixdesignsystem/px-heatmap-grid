@@ -204,7 +204,7 @@ Polymer({
 
   _hideColHeaderChanged: function(newValue, oldValue) {
     var rowHeader = Polymer.dom(this.root).querySelector(".table-row-header");
-    var scale = Polymer.dom(this.root).querySelector(".scale-container");
+    var scale = Polymer.dom(this.nextElementSibling.root).querySelector(".scale-container");
     if (newValue !== undefined && newValue !== oldValue) {
       if (rowHeader) {
         newValue === false ? rowHeader.classList.remove("disable-col-header") : rowHeader.classList.add("disable-col-header");
