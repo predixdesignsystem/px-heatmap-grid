@@ -11,6 +11,7 @@ $table-header-height: 22px;
   border-top: 1px solid $gray6;
   border-left: 1px solid $gray6;
   min-width: $ev-heatmap-cell-min-width;
+  min-height: 17px;
   font-size: 14px;
   color: $dv-dark-gray;
   padding: calculateRem(3px);

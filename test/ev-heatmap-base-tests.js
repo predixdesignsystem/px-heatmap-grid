@@ -6,7 +6,9 @@ var ev_heatmap_1;
 // upon the completion of web components construction by Polymer
 document.addEventListener("WebComponentsReady", function() {
   runBaseTests();
-  runCustomTests();
+  runCustomTests(1);
+  runCustomTests(2);
+  runCustomTests(3);
 });
 
 // This is a utility/wrapper function for the test() function of
