@@ -8,16 +8,27 @@ $ev-heatmap-cell-min-width: var(--ev-heatmap-cell-min-width, 50px);
 $ev-heatmap-cell-max-width: var(--ev-heatmap-cell-max-width, none);
 $ev-heatmap-cell-min-height: var(--ev-heatmap-cell-min-height, 25px);
 $ev-heatmap-cell-max-height: var(--ev-heatmap-cell-max-height, none);
+$ev-heatmap-table-border-width: var(--ev-heatmap-table-border-width, 1px);
+$ev-heatmap-table-border-color: var(--ev-heatmap-table-border-color, $gray6);
+$ev-heatmap-table-border-style: var(--ev-heatmap-table-border-style, solid);
+$ev-heatmap-values-font-size: var(--ev-heatmap-values-font-size, 14px);
+$ev-heatmap-values-font-color: var(--ev-heatmap-values-font-color, $dv-dark-gray);
+$ev-heatmap-values-font-weight: var(--ev-heatmap-values-font-weight, normal);
+$ev-heatmap-header-font-size: var(--ev-heatmap-header-font-size, 15px);
+$ev-heatmap-header-font-color: var(--ev-heatmap-header-font-color, $black);
+$ev-heatmap-header-font-weight: var(--ev-heatmap-header-font-weight, bold);
+$ev-heatmap-sorting-icon-color: var(--ev-heatmap-sorting-icon-color, $blue-light);
 $table-header-height: 22px;
 
 .table-cell {
-  border-top: 1px solid $gray6;
-  border-left: 1px solid $gray6;
+  border-top: $ev-heatmap-table-border-width $ev-heatmap-table-border-style $ev-heatmap-table-border-color;
+  border-left: $ev-heatmap-table-border-width $ev-heatmap-table-border-style $ev-heatmap-table-border-color;
   min-width: $ev-heatmap-cell-min-width;
   max-width: $ev-heatmap-cell-max-width;
   min-height: $ev-heatmap-cell-min-height;
   max-height: $ev-heatmap-cell-max-height;
-  font-size: 14px;
+  font-size: $ev-heatmap-values-font-size;
+  font-weight: $ev-heatmap-values-font-weight;
   color: $dv-dark-gray;
   padding: calculateRem(3px);
 }
@@ -26,14 +37,16 @@ $table-header-height: 22px;
   border: 0;
   min-width: $ev-heatmap-cell-min-width;
   max-width: $ev-heatmap-cell-max-width;
-  font-size: 15px;
-  color: $dv-dark-gray;
+  color: $ev-heatmap-values-font-color;
   padding: calculateRem(3px);
 }
 
-.table-cell:last-child {
-  border-right: 1px solid $gray6;
-  border-bottom: 1px solid $gray6;
+.table-cell:nth-last-child(2) {
+  border-bottom: $ev-heatmap-table-border-width $ev-heatmap-table-border-style $ev-heatmap-table-border-color;
+}
+
+.table-column:nth-last-child(2) > .table-cell {
+  border-right: $ev-heatmap-table-border-width $ev-heatmap-table-border-style $ev-heatmap-table-border-color;
 }
 
 .color-helper {
@@ -57,12 +70,16 @@ $table-header-height: 22px;
 }
 
 .row-header {
-  font-weight: bold;
+  font-size: $ev-heatmap-header-font-size;
+  font-weight: $ev-heatmap-header-font-weight;
+  color: $ev-heatmap-header-font-color;
   cursor: pointer;
 }
 
 .col-header {
-  font-weight: bold;
+  font-size: $ev-heatmap-header-font-size;
+  font-weight: $ev-heatmap-header-font-weight;
+  color: $ev-heatmap-header-font-color;
   padding-right: calculateRem(13px);
   padding-left: calculateRem(3px);
   padding-bottom: calculateRem(3px);
@@ -75,5 +92,5 @@ $table-header-height: 22px;
 }
 
 .fa-caret-up, .fa-caret-down {
-  color: $blue-light;
+  color: $ev-heatmap-sorting-icon-color;
 }
