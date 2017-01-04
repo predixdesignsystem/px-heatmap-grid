@@ -77,6 +77,11 @@
                   <label for$="hideRowHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Row Header</div>
                 </div>
+                <div class="flex u-mb-">
+                  <input id="hideValues{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideValues::change}}">
+                  <label for$="hideValues{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                  <div class="u-ml-">Hide Values</div>
+                </div>
                 <div class="u-mb-">Scale Min: <input class="text-input" type="text" placeholder="{{item.scaleMin}}" value="{{item.scaleMin::input}}" /></div>
                 <div class="u-mb-">Scale Max: <input class="text-input" type="text" placeholder="{{item.scaleMax}}" value="{{item.scaleMax::input}}" /></div>
                 <div class="u-mb-">
@@ -98,7 +103,7 @@
                 <div class="flex flex--col">
                   <div class="flex__item demo u-ph+ u-pb+">
                     <div class="u-mt+">
-                      <ev-heatmap heatmap-data="{{data}}" scale="[0,100]">
+                      <ev-heatmap heatmap-data="{{data}}">
                       </ev-heatmap>
                     </div>
                   </div>
@@ -175,6 +180,7 @@
               "scaleMax": "100",
               "hideColHeader": false,
               "hideRowHeader": false,
+              "hideValues": false,
               "aggregationType": "disabled"
             }
           ],

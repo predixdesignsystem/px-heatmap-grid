@@ -58,7 +58,7 @@
               </div>
             </template>
             <template is="dom-repeat" items="{{items}}" as="item">
-              <div class="table-cell" style="background-color: rgb({{item.color}});">{{item.value}}</div>
+              <div class="table-cell" style="background-color: rgb({{item.color}});"><span hidden$="{{hideValues}}">{{item.value}}</span></div>
             </template>
           </div>
         </template>

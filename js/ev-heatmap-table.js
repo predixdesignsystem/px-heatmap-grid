@@ -77,6 +77,14 @@ Polymer({
     },
 
     /**
+     * This property controls when to show/hide the Values in the cells
+     */
+    hideValues: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
      * This property sets the aggregation method
      *
      * @property aggregationType
