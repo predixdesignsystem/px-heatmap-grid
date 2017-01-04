@@ -126,6 +126,14 @@ Polymer({
   attached: function() {
     this._dataChanged(this.data, []);
     this._configChanged(this.config, {});
+
+    // Hack to get cell max width set with sass
+    var tempEl = document.createElement('div');
+    tempEl.style.display = 'none';
+    tempEl.classList.add('table-cell');
+    Polymer.dom(this.root).appendChild(tempEl);
+    this.set('cellMaxWidth', window.getComputedStyle(tempEl).maxWidth);
+    Polymer.dom(this.root).removeChild(tempEl);
   },
 
   _dataChanged: function(newData, oldData) {
@@ -199,7 +207,7 @@ Polymer({
   },
 
   _getColHeader: function(iCol) {
-    return this.cols[iCol];
+    return this._resizeHeader(this.cols[iCol]);
   },
 
   _hideColHeaderChanged: function(newValue, oldValue) {
@@ -313,5 +321,14 @@ Polymer({
 
   _getColAggregation: function(i) {
     return this.colAggregatedData ? this.colAggregatedData[i] : '';
+  },
+
+  _resizeHeader: function(text) {
+    var cellMaxWidth = this.cellMaxWidth;
+    if(cellMaxWidth !== "none") {
+      cellMaxWidth = Number(cellMaxWidth.split('px')[0]);
+      return cellMaxWidth < 60 || !text ? "-" : text.substr(0, (cellMaxWidth / 10) - 6 | 1) + '...';
+    }
+    return text;
   }
 });

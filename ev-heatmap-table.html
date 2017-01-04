@@ -32,7 +32,7 @@
       <div class="table-container flex flex--row flex--left flex--top">
         <template is="dom-if" if="{{showAggregation}}">
           <div class="table-column">
-            <div class="col-header" hidden$="{{hideColHeader}}"><span>{{aggregationType}}</span></div>
+            <div class="col-header" hidden$="{{hideColHeader}}"><span>{{_resizeHeader(aggregationType)}}</span></div>
             <div class="table-empty-cell">
               <span>&nbsp;</span>
             </div>
@@ -43,7 +43,7 @@
             </template>
           </div>
         </template>
-        <template is="dom-repeat" items="{{heatmapData}}" as="items">
+        <template is="dom-repeat" items="{{heatmapData}}" as="items" id="heatmapDataRepeat">
           <div class="table-column">
             <template is="dom-if" if="{{!hideColHeader}}">
               <div class="col-header" on-click="_sortCol">

@@ -71,6 +71,7 @@ $table-header-height: 22px;
   min-width: $ev-heatmap-cell-min-width;
   max-width: $ev-heatmap-cell-max-width;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .fa-caret-up, .fa-caret-down {
