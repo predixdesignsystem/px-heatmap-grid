@@ -32,7 +32,7 @@
       <div class="table-container flex flex--row flex--left flex--top">
         <template is="dom-if" if="{{showAggregation}}">
           <div class="table-column">
-            <div class="col-header"><span>{{aggregationType}}</span></div>
+            <div class="col-header" hidden$="{{hideColHeader}}"><span>{{aggregationType}}</span></div>
             <div class="table-empty-cell">
               <span>&nbsp;</span>
             </div>
