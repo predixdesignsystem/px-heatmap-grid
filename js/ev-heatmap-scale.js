@@ -29,11 +29,38 @@ Polymer({
         "mid": 50,
         "max": 100
       }
+    },
+
+    /**
+     * This property contains the Scale From color.
+     *
+     * @property scaleColorFrom
+     */
+    scaleColorFrom: {
+      type: String,
+      observer: '_scaleColorFromChanged'
+    },
+
+    /**
+     * This property contains the Scale To color.
+     *
+     * @property scaleColorTo
+     */
+    scaleColorTo: {
+      type: String,
+      observer: '_scaleColorToChanged'
     }
   },
 
   attached: function() {
     this._scaleChanged(this.scale, []);
+
+    var cHelper = Polymer.dom(this.previousElementSibling.root).querySelector(".color-helper");
+    if (cHelper) {
+      cHelper = window.getComputedStyle(cHelper);
+      this.scaleColorFrom = cHelper.backgroundColor;
+      this.scaleColorTo = cHelper.color;
+    }
   },
 
   _scaleChanged: function(newScale, oldScale) {
@@ -44,6 +71,20 @@ Polymer({
         "max": newScale[1]
       }
       this.set("computedScale", computedScale);
+    }
+  },
+
+  _scaleColorFromChanged: function(newColor, oldColor) {
+    if (newColor && newColor !== oldColor) {
+      var scale = Polymer.dom(this.root).querySelector(".scale-gradient");
+      scale.style.background = "linear-gradient(to top, " + newColor + ", " + this.scaleColorTo + ")";
+    }
+  },
+
+  _scaleColorToChanged: function(newColor, oldColor) {
+    if (newColor && newColor !== oldColor) {
+      var scale = Polymer.dom(this.root).querySelector(".scale-gradient");
+      scale.style.background = "linear-gradient(to top, " + this.scaleColorFrom + ", " + newColor + ")";
     }
   }
 });

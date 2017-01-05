@@ -120,6 +120,26 @@ Polymer({
         "COUNT",
         "STD"
       ]
+    },
+
+    /**
+     * This property contains the Scale From color.
+     *
+     * @property scaleColorFrom
+     */
+    scaleColorFrom: {
+      type: String,
+      observer: '_scaleColorFromChanged'
+    },
+
+    /**
+     * This property contains the Scale To color.
+     *
+     * @property scaleColorTo
+     */
+    scaleColorTo: {
+      type: String,
+      observer: '_scaleColorToChanged'
     }
   },
 
@@ -330,5 +350,21 @@ Polymer({
       return cellMaxWidth < 60 || !text ? "-" : text.substr(0, (cellMaxWidth / 10) - 6 | 1) + '...';
     }
     return text;
+  },
+
+  _scaleColorFromChanged: function(newColor, oldColor) {
+    if (newColor && newColor !== oldColor) {
+      var cHelper = Polymer.dom(this.root).querySelector(".color-helper");
+      cHelper.style.backgroundColor = newColor;
+      this._configChanged(this.config, {});
+    }
+  },
+
+  _scaleColorToChanged: function(newColor, oldColor) {
+    if (newColor && newColor !== oldColor) {
+      var cHelper = Polymer.dom(this.root).querySelector(".color-helper");
+      cHelper.style.color = newColor;
+      this._configChanged(this.config, {});
+    }
   }
 });

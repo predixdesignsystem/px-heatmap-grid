@@ -90,6 +90,24 @@ Polymer({
     aggregationType: {
       type: String,
       value: "disabled"
+    },
+
+    /**
+     * Use this property to set the Scale From color.
+     *
+     * @property scaleColorFrom
+     */
+    scaleColorFrom: {
+      type: String
+    },
+
+    /**
+     * Use this property to set the Scale To color.
+     *
+     * @property scaleColorTo
+     */
+    scaleColorTo: {
+      type: String
     }
 
     /**
@@ -108,7 +126,6 @@ Polymer({
      * @param {heatmapData} data The Heatmap Data
      */
     this.addEventListener('set-heatmap-data', function(e) {
-      console.log(e);
       this.setData(e.detail.data);
     });
   },
@@ -180,7 +197,6 @@ Polymer({
    * Set the range for the Heatmap Scale
    *
    * @param {number} min The scale lower limit
-   *
    * @param {number} max The scale upper limit
    *
    * @method setRange
@@ -188,5 +204,18 @@ Polymer({
   setRange: function(min, max) {
     this.set('scaleMin', min);
     this.set('scaleMax', max);
+  },
+
+  /**
+   * Set the range colors for the Heatmap
+   *
+   * @param {string} from The range lower limit color
+   * @param {string} to The range upper limit color
+   *
+   * @method setColors
+   */
+  setColors: function(from, to) {
+    this.set('scaleColorFrom', from);
+    this.set('scaleColorTo', to);
   }
 });

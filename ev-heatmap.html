@@ -118,8 +118,14 @@ Custom property | Description | Default
                         hide-col-header="{{hideColHeader}}"
                         aggregation-type="{{aggregationType}}"
                         hide-values="{{hideValues}}"
+                        scale-color-from="{{scaleColorFrom}}"
+                        scale-color-to="{{scaleColorTo}}"
       ></ev-heatmap-table>
-      <ev-heatmap-scale scale="{{scale}}" hidden$="{{hideScale}}"></ev-heatmap-scale>
+      <ev-heatmap-scale scale="{{scale}}"
+                        hidden$="{{hideScale}}"
+                        scale-color-from="{{scaleColorFrom}}"
+                        scale-color-to="{{scaleColorTo}}"
+      ></ev-heatmap-scale>
     </div>
   </template>
 </dom-module>
