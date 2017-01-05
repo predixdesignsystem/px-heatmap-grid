@@ -79,6 +79,12 @@ Polymer({
      * The aggregation result is truncated at the number of
      * significant digits + 1.
      *
+     * Available aggregation types are: Average, Sum, Max
+     * Min, Count, Std (Standard Deviation).
+     *
+     * If set to anything other than the values specified
+     * above the aggregation will be disabled.
+     *
      * @property aggregationType
      */
     aggregationType: {
@@ -91,5 +97,76 @@ Polymer({
     if(newScale !== oldScale && newScale) {
       this.set("scale", [this.scaleMin, this.scaleMax]);
     }
+  },
+
+  /**
+   * Toggle the visibility of the Color Scale
+   *
+   * @method toggleScale
+   */
+  toggleScale: function() {
+    this.set('hideScale', !this.hideScale);
+  },
+
+  /**
+   * Toggle the visibility of the Row Header
+   *
+   * @method toggleRowHeader
+   */
+  toggleRowHeader: function() {
+    this.set('hideRowHeader', !this.hideRowHeader);
+  },
+
+  /**
+   * Toggle the visibility of the Column Header
+   *
+   * @method toggleColHeader
+   */
+  toggleColHeader: function() {
+    this.set('hideColHeader', !this.hideColHeader);
+  },
+
+  /**
+   * Toggle the visibility of both Column and Row Headers
+   *
+   * @method toggleHeaders
+   */
+  toggleHeaders: function() {
+    this.toggleColHeader();
+    this.toggleRowHeader();
+  },
+
+  /**
+   * Toggle the visibility of the heatmap cell values
+   *
+   * @method toggleValues
+   */
+  toggleValues: function() {
+    this.set('hideValues', !this.hideValues);
+  },
+
+  /**
+   * Set the Heatmap Data
+   *
+   * @param {heatmapData} data The Heatmap Data.
+   *
+   * @method setData
+   */
+  setData: function(data) {
+    this.set('heatmapData', data);
+  },
+
+  /**
+   * Set the range for the Heatmap Scale
+   *
+   * @param {number} min The scale lower limit
+   *
+   * @param {number} max The scale upper limit
+   *
+   * @method setRange
+   */
+  setRange: function(min, max) {
+    this.set('scaleMin', min);
+    this.set('scaleMax', max);
   }
 });

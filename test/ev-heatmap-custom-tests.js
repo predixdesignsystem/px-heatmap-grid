@@ -30,7 +30,7 @@ function runCustomTests(testN) {
       break;
   };
 
-  heatmapEl.set("heatmapData", data);
+  heatmapEl.setData(data);
   // This is the placeholder suite to place custom tests in
   // Use testCase(options) for a more convenient setup of the test cases
   suite('Custom Automation Tests for ev-heatmap', function() {
@@ -128,7 +128,7 @@ function runCustomTests(testN) {
       var scaleEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-scale');
       assert.isFalse(heatmapEl.hideScale, "ev-heatmap hideScale property was supposed to be false");
       assert.isFalse(scaleEl.hidden, "scale element was not supposed to be hidden");
-      heatmapEl.hideScale = true;
+      heatmapEl.toggleScale();
 
       assert.isTrue(heatmapEl.hideScale, "ev-heatmap hideScale property was supposed to be true");
       assert.isTrue(scaleEl.hidden, "scale element was supposed to be hidden");
@@ -141,11 +141,10 @@ function runCustomTests(testN) {
       assert.isFalse(heatmapEl.hideRowHeader, "ev-heatmap hideRowHeader property was supposed to be false");
       assert.equal(window.getComputedStyle(rowHeader).display, "flex", "row header element was not supposed to be hidden");
 
-      heatmapEl.hideRowHeader = true;
+      heatmapEl.toggleRowHeader();
       setTimeout(function() {
         assert.isTrue(heatmapEl.hideRowHeader, "ev-heatmap hideRowHeader property was supposed to be true");
         assert.equal(window.getComputedStyle(rowHeader).display, "none", "row header element was supposed to be hidden");
-        heatmapEl.set("hideRowHeader", false);
         done();
       }, 10);
     });
@@ -158,12 +157,11 @@ function runCustomTests(testN) {
       assert.isFalse(rowHeader.classList.contains('disable-col-header'), "row header should not contain class 'disable-col-header'");
       colHeader.forEach(x => assert.equal(window.getComputedStyle(x).display, "block", "row header '" + x.innerText + "' was not supposed to be hidden"));
 
-      heatmapEl.hideColHeader = true;
+      heatmapEl.toggleColHeader();
       setTimeout(function() {
         assert.isTrue(heatmapEl.hideColHeader, "ev-heatmap hideColHeader property was supposed to be true");
         assert.isTrue(rowHeader.classList.contains('disable-col-header'), "row header should contain class 'disable-col-header'");
         colHeader.forEach(x => assert.equal(window.getComputedStyle(x).display, "none", "row header '" + x.innerText + "' was supposed to be hidden"));
-        heatmapEl.set("hideColHeader", false);
         done();
       }, 10)
     });
@@ -171,8 +169,7 @@ function runCustomTests(testN) {
     test('Check scale min/max functionality', function(done){
       assert.equal(heatmapEl.scaleMin, 0, "Scale min default was supposed to be '0'");
       assert.equal(heatmapEl.scaleMax, 100, "Scale max default was supposed to be '100'");
-      heatmapEl.set("scaleMin",20);
-      heatmapEl.set("scaleMax", 80);
+      heatmapEl.setRange(20, 80);
       setTimeout(function() {
         assert.equal(heatmapEl.scaleMin, 20, "Scale min was supposed to be '20'");
         assert.equal(heatmapEl.scaleMax, 80, "Scale max was supposed to be '80'");
@@ -231,6 +228,18 @@ function runCustomTests(testN) {
         assert.equal(tableEl.heatmapData[maxI][i].value, aggregationsResults.row[i].min, "sorting descending on row " + i + " failed");
       });
       done();
+    });
+
+    test('Check hide/show values functionality', function(done){
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+        values = Polymer.dom(tableEl.root).querySelectorAll('.cell-values span');
+      values.forEach(v => assert.isFalse(v.hidden, "cell was not supposed to be hidden"));
+
+      heatmapEl.toggleValues();
+      setTimeout(function() {
+        values.forEach(v => assert.isTrue(v.hidden, "cell " + v.innerText + " was supposed to be hidden"));
+        done();
+      }, 10)
     });
   });
 }
