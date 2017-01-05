@@ -91,6 +91,26 @@ Polymer({
       type: String,
       value: "disabled"
     }
+
+    /**
+     * Sent when the Heatmap Data is changed.
+     *
+     * @event heatmap-data-changed
+     * @param {heatmapData} value The new Heatmap Data.
+     */
+  },
+
+  attached: function() {
+    /**
+     * Listener for changing the Heatmap Data
+     *
+     * @event set-heatmap-data
+     * @param {heatmapData} data The Heatmap Data
+     */
+    this.addEventListener('set-heatmap-data', function(e) {
+      console.log(e);
+      this.setData(e.detail.data);
+    });
   },
 
   _scaleChanged: function(newScale, oldScale) {
