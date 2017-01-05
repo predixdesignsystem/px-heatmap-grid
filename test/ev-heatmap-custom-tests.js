@@ -242,5 +242,26 @@ function runCustomTests(testN) {
         done();
       }, 10)
     });
+
+    test('Check scale color changes are propagated', function(done) {
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+        scaleEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-scale'),
+        colorFrom = scaleEl.scaleColorFrom,
+        colorTo = scaleEl.scaleColorTo;
+      heatmapEl.setColors('#cccccc', '#00ff77');
+      heatmapEl.setRange(0, 100);
+      heatmapEl.toggleHeaders();
+      heatmapEl.toggleScale();
+      heatmapEl.toggleValues();
+      setTimeout(function() {
+        colorFrom = scaleEl.scaleColorFrom;
+        colorTo = scaleEl.scaleColorTo;
+        assert.equal(heatmapEl.scaleColorFrom, colorFrom, 'From colors at heatmap and scale should be the same');
+        assert.equal(heatmapEl.scaleColorTo, colorTo, 'To colors at heatmap and scale should be the same');
+        assert.equal(heatmapEl.scaleColorFrom, colorFrom, 'From colors should be the same');
+        assert.equal(heatmapEl.scaleColorTo, colorTo, 'To colors should be the same');
+        done()
+      }, 10);
+    });
   });
 }
