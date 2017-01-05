@@ -30,7 +30,8 @@ function runCustomTests(testN) {
       break;
   };
 
-  heatmapEl.setData(data);
+  var event = new CustomEvent('set-heatmap-data', {detail: {data: data}});
+  heatmapEl.dispatchEvent(event);
   // This is the placeholder suite to place custom tests in
   // Use testCase(options) for a more convenient setup of the test cases
   suite('Custom Automation Tests for ev-heatmap', function() {
