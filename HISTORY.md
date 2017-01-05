@@ -1,3 +1,15 @@
+v0.3.0
+==================
+* Added functionality to hide/show values
+* Added functionality to set cells max width, min and max height
+* Added functionality to set range colors dynamically
+* Added word-break when cell max-width is set and headers are wider than cell width
+* Added methods to set Data, Range and Colors
+* Added methods to toggle the visibility of the Scale, Headers and Values
+* Added events to set data and to notify data was changed
+* Externalized styles with SASS variables
+
+
 v0.2.0
 ==================
 * Added functionality to sort both rows and columns
