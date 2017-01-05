@@ -128,6 +128,11 @@ Polymer({
     this.addEventListener('set-heatmap-data', function(e) {
       this.setData(e.detail.data);
     });
+
+    this.addEventListener('scale-colors-changed', function(e) {
+      e.stopPropagation();
+      this.setColors(e.detail.from, e.detail.to);
+    });
   },
 
   _scaleChanged: function(newScale, oldScale) {

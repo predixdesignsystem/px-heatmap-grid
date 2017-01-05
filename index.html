@@ -84,6 +84,8 @@
                 </div>
                 <div class="u-mb-">Scale Min: <input class="text-input" type="text" placeholder="{{item.scaleMin}}" value="{{item.scaleMin::input}}" /></div>
                 <div class="u-mb-">Scale Max: <input class="text-input" type="text" placeholder="{{item.scaleMax}}" value="{{item.scaleMax::input}}" /></div>
+                <div class="u-mb-">Color From: <input class="text-input" type="text" placeholder="{{item.scaleColorFrom}}" value="{{item.scaleColorFrom::input}}" /></div>
+                <div class="u-mb-">Color To: <input class="text-input" type="text" placeholder="{{item.scaleColorTo}}" value="{{item.scaleColorTo::input}}" /></div>
                 <div class="u-mb-">
                   <div class="u-mb-">Aggregation:</div>
                   <select class="input--regular" value="{{item.aggregationType::input}}">
@@ -181,7 +183,9 @@
               "hideColHeader": false,
               "hideRowHeader": false,
               "hideValues": false,
-              "aggregationType": "disabled"
+              "aggregationType": "disabled",
+              "scaleColorFrom": "",
+              "scaleColorTo": ""
             }
           ],
           indexPlusOne = function(num) {

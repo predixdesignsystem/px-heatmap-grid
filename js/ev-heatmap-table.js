@@ -203,11 +203,11 @@ Polymer({
   _configChanged: function(newConfig, oldConfig) {
     if(newConfig !== oldConfig && newConfig) {
       var config = this.config;
-      var cHelper = Polymer.dom(this.root).querySelector(".color-helper");
-      if (cHelper) {
-        cHelper = window.getComputedStyle(cHelper);
-        config.startColor = cHelper.backgroundColor.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
-        config.endColor = cHelper.color.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
+      if(this.scaleColorFrom) {
+        config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
+      }
+      if(this.scaleColorTo) {
+        config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
       }
       nValues = config.maxValue - config.minValue;
       config.factors = config.endColor.map((c,i) => (c - config.startColor[i]) / nValues);
@@ -354,16 +354,12 @@ Polymer({
 
   _scaleColorFromChanged: function(newColor, oldColor) {
     if (newColor && newColor !== oldColor) {
-      var cHelper = Polymer.dom(this.root).querySelector(".color-helper");
-      cHelper.style.backgroundColor = newColor;
       this._configChanged(this.config, {});
     }
   },
 
   _scaleColorToChanged: function(newColor, oldColor) {
     if (newColor && newColor !== oldColor) {
-      var cHelper = Polymer.dom(this.root).querySelector(".color-helper");
-      cHelper.style.color = newColor;
       this._configChanged(this.config, {});
     }
   }

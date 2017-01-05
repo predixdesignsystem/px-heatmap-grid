@@ -54,13 +54,7 @@ Polymer({
 
   attached: function() {
     this._scaleChanged(this.scale, []);
-
-    var cHelper = Polymer.dom(this.previousElementSibling.root).querySelector(".color-helper");
-    if (cHelper) {
-      cHelper = window.getComputedStyle(cHelper);
-      this.scaleColorFrom = cHelper.backgroundColor;
-      this.scaleColorTo = cHelper.color;
-    }
+    this._lookupColors();
   },
 
   _scaleChanged: function(newScale, oldScale) {
@@ -78,6 +72,7 @@ Polymer({
     if (newColor && newColor !== oldColor) {
       var scale = Polymer.dom(this.root).querySelector(".scale-gradient");
       scale.style.background = "linear-gradient(to top, " + newColor + ", " + this.scaleColorTo + ")";
+      this._lookupColors();
     }
   },
 
@@ -85,6 +80,23 @@ Polymer({
     if (newColor && newColor !== oldColor) {
       var scale = Polymer.dom(this.root).querySelector(".scale-gradient");
       scale.style.background = "linear-gradient(to top, " + this.scaleColorFrom + ", " + newColor + ")";
+      this._lookupColors();
     }
+  },
+
+  _lookupColors: function() {
+    var iColor, sColor, eColor, event;
+
+    iColor = window.getComputedStyle(Polymer.dom(this.root).querySelector('.scale-gradient')).background;
+    sColor = iColor.indexOf('linear-gradient');
+    eColor = iColor.indexOf(')', sColor) + 1;
+    sColor = iColor.indexOf('rgb', sColor);
+    this.scaleColorFrom = iColor.substr(sColor, eColor - sColor);
+    sColor = iColor.indexOf('rgb', sColor + 3);
+    eColor = iColor.indexOf(')', sColor) + 1;
+    this.scaleColorTo = iColor.substr(sColor, eColor - sColor);
+
+    event = new CustomEvent('scale-colors-changed', {bubbles: true, detail: {from: this.scaleColorFrom, to: this.scaleColorTo}});
+    this.dispatchEvent(event);
   }
 });
