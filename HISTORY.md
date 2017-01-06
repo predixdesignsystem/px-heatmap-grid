@@ -1,3 +1,7 @@
+v0.3.1
+==================
+* Removed ES6 functionality to support IE 10 and 11
+
 v0.3.0
 ==================
 * Added functionality to hide/show values
