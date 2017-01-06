@@ -197,17 +197,29 @@ Polymer({
   _calculateColor: function(value) {
     var config = this.config;
     var color = [];
-    return value < config.minValue ? config.minValue : value > config.maxValue ? config.maxValue : config.factors.map((x,i) => Math.round(x * value) + config.startColor[i]);
+    // Arrow function only on ES6 - not in IE 10 - 11
+    // return value < config.minValue ? config.minValue : value > config.maxValue ? config.maxValue : config.factors.map((x,i) => Math.round(x * value) + config.startColor[i]);
+    return value < config.minValue ? config.minValue : value > config.maxValue ? config.maxValue : config.factors.map(function (x, i) {
+      return Math.round(x * value) + config.startColor[i];
+    })
   },
 
   _configChanged: function(newConfig, oldConfig) {
     if(newConfig !== oldConfig && newConfig) {
       var config = this.config;
       if(this.scaleColorFrom) {
-        config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
+        // Arrow function only on ES6 - not in IE 10 - 11
+        // config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
+        config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(function (x) {
+          return x / 1;
+        });
       }
       if(this.scaleColorTo) {
-        config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
+        // Arrow function only on ES6 - not in IE 10 - 11
+        // config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
+        config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(function (x) {
+          return x / 1;
+        });
       }
       nValues = config.maxValue - config.minValue;
       // Arrow function only on ES6 - not in IE 10 - 11
