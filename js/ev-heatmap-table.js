@@ -182,7 +182,7 @@ Polymer({
         nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
         tableData[iCol][iRow] = {
           "value": cell.value,
-          "color": "" + nColor[0] + "," + nColor[1] + "," + nColor[2]
+          "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
         };
       });
 

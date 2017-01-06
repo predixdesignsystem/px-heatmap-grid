@@ -87,7 +87,7 @@ Polymer({
   _lookupColors: function() {
     var iColor, sColor, eColor, event;
 
-    iColor = window.getComputedStyle(Polymer.dom(this.root).querySelector('.scale-gradient')).background;
+    iColor = window.getComputedStyle(Polymer.dom(this.root).querySelector('.scale-gradient')).backgroundImage;
     sColor = iColor.indexOf('linear-gradient');
     eColor = iColor.indexOf(')', sColor) + 1;
     sColor = iColor.indexOf('rgb', sColor);
