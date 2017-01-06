@@ -167,8 +167,8 @@ Polymer({
       var iCol = -1;
 
       newData.forEach(function(cell) {
-        iRow = Object.values(rows).indexOf(cell.row);
-        iCol = Object.values(cols).indexOf(cell.col);
+        iRow = rows.indexOf(cell.row);
+        iCol = cols.indexOf(cell.col);
         if (iCol === -1) {
           cols.push(cell.col);
           tableData.push([]);
