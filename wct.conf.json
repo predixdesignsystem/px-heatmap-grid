@@ -16,18 +16,23 @@
         },
         {
           "browserName": "internet explorer",
-          "platform": "Windows 8.1",
+          "platform": "Windows 7",
           "version": "11"
+        },
+        {
+          "browserName": "internet explorer",
+          "platform": "Windows 7",
+          "version": "10"
         },
         {
           "browserName": "safari",
           "platform": "OS X 10.11",
-          "version": "9"
+          "version": "10"
         },
         {
           "browserName": "safari",
           "platform": "OS X 10.10",
-          "version": "8"
+          "version": "9"
         },
         {
           "browserName": "firefox",

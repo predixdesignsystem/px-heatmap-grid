@@ -140,11 +140,11 @@ function runCustomTests(testN) {
     test('Check hide/show color scale functionality', function(done){
       var scaleEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-scale');
       assert.isFalse(heatmapEl.hideScale, "ev-heatmap hideScale property was supposed to be false");
-      assert.isFalse(scaleEl.hidden, "scale element was not supposed to be hidden");
+      assert.notEqual(window.getComputedStyle(scaleEl).display, 'none', "scale element was not supposed to be hidden");
       heatmapEl.toggleScale();
 
       assert.isTrue(heatmapEl.hideScale, "ev-heatmap hideScale property was supposed to be true");
-      assert.isTrue(scaleEl.hidden, "scale element was supposed to be hidden");
+      assert.equal(window.getComputedStyle(scaleEl).display, 'none', "scale element was supposed to be hidden");
       done();
     });
 
@@ -307,8 +307,10 @@ function runCustomTests(testN) {
         values = Polymer.dom(tableEl.root).querySelectorAll('.cell-values span');
       // Arrow function only on ES6 - not in IE 10 - 11
       // values.forEach(v => assert.isFalse(v.hidden, "cell was not supposed to be hidden"));
+      heatmapEl.hideValues = false;
       values.forEach(function (v) {
-        assert.isFalse(v.hidden, "cell was not supposed to be hidden");
+        // Hidden is not supported in IE 10, so using display property instead
+        assert.notEqual(window.getComputedStyle(v).display, 'none', "cell was not supposed to be hidden");
       });
 
       heatmapEl.toggleValues();
@@ -316,7 +318,8 @@ function runCustomTests(testN) {
         // Arrow function only on ES6 - not in IE 10 - 11
         // values.forEach(v => assert.isTrue(v.hidden, "cell " + v.innerText + " was supposed to be hidden"));
         values.forEach(function (v) {
-          assert.isTrue(v.hidden, "cell " + v.innerText + " was supposed to be hidden");
+          // Hidden is not supported in IE 10, so using display property instead
+          assert.equal(window.getComputedStyle(v).display, 'none', "cell " + v.innerText + " was supposed to be hidden");
         });
         done();
       }, 10)
