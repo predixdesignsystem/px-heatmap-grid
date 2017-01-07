@@ -6,9 +6,10 @@ var ev_heatmap_1;
 // upon the completion of web components construction by Polymer
 document.addEventListener("WebComponentsReady", function() {
   runBaseTests();
-  runCustomTests(1);
-  runCustomTests(2);
-  runCustomTests(3);
+  runCustomTests("full dataset");
+  runCustomTests("dataset with empty cells");
+  runCustomTests("dataset with invalid values");
+  runCustomTests("dataset without headers");
 });
 
 // This is a utility/wrapper function for the test() function of
