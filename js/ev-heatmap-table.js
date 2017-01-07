@@ -73,7 +73,8 @@ Polymer({
      */
     hideRowHeader: {
       type: Boolean,
-      value: false
+      value: false,
+      observer: '_hideRowHeaderChanged',
     },
 
     /**
@@ -166,31 +167,46 @@ Polymer({
       var iRow = -1;
       var iCol = -1;
 
-      newData.forEach(function(cell) {
-        iRow = rows.indexOf(cell.row);
-        iCol = cols.indexOf(cell.col);
-        if (iCol === -1) {
-          cols.push(cell.col);
-          tableData.push([]);
-          iCol = cols.length - 1;
-        };
-        if (iRow === -1) {
-          rows.push(cell.row);
-          // tableData[iCol].push(undefined);
-          iRow = rows.length - 1;
-        };
-        nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
-        tableData[iCol][iRow] = {
-          "value": cell.value,
-          "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
-        };
-      });
+      if (Array.isArray(newData[0])) {
+        newData.forEach(function (colArr, i) {
+          colArr.forEach(function (value, j) {
+            if(!tableData[j]) tableData.push([]);
+            nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
+            tableData[j][i] = {
+              "value": value,
+              "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+            };
+          });
+        });
+      }
+      else {
+        newData.forEach(function (cell) {
+          iRow = rows.indexOf(cell.row);
+          iCol = cols.indexOf(cell.col);
+          if (iCol === -1) {
+            cols.push(cell.col);
+            tableData.push([]);
+            iCol = cols.length - 1;
+          };
+          if (iRow === -1) {
+            rows.push(cell.row);
+            iRow = rows.length - 1;
+          };
+          nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
+          tableData[iCol][iRow] = {
+            "value": cell.value,
+            "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+          };
+        });
+      };
 
       this.set("heatmapData", []);
       this.set("rows", rows);
       this.set("cols", cols);
       this.set("heatmapData", tableData);
       this._calculateAggregation(this.aggregationType, "");
+      this._hideColHeaderChanged(false, true);
+      this._hideRowHeaderChanged(false, true);
     }
   },
 
@@ -256,7 +272,8 @@ Polymer({
       if (scale) {
         newValue === false ? scale.classList.remove("disable-col-header") : scale.classList.add("disable-col-header");
       }
-    }
+    };
+    if (newValue !== undefined && newValue === false && newValue !== oldValue && this.cols && (!this.cols.length || !this.cols[0])) this.hideColHeader = true;
   },
 
   _sortCol: function(e) {
@@ -348,14 +365,24 @@ Polymer({
         }),
         colDigits = data.map(function(hd) {
           return hd.map(function(a) {
-            return a && typeof a === "number" ? (a + "").split(".")[1].length : 0
+            if (a && typeof a === "number") {
+              var temp = (a + "").split(".");
+              temp = temp[1] ? temp[1].length : 0;
+              return temp;
+            }
+            return 0;
           }).reduce(function(a, b, i) {
             return i === 0 ? b : a > b ? b : a;
           });
         }),
         rowDigits = data[0].map(function(hd, i) {
           return data.map(function(a) {
-            return a[i] && typeof a[i] === "number" ? (a[i] + "").split(".")[1].length : 0;
+            if (a[i] && typeof a[i] === "number") {
+              var temp = (a[i] + "").split(".");
+              temp = temp[1] ? temp[1].length : 0;
+              return temp;
+            }
+            return 0;
           }).reduce(function(a, b, i) {
             return i === 0 ? b : a > b ? b : a;
           });
@@ -519,5 +546,9 @@ Polymer({
     if (newColor && newColor !== oldColor) {
       this._configChanged(this.config, {});
     }
+  },
+
+  _hideRowHeaderChanged: function(nHide, oHide) {
+    if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !this.rows[0])) this.hideRowHeader = true;
   }
 });
