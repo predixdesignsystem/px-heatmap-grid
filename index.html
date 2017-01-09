@@ -67,12 +67,12 @@
                   <label for$="hideScale{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Color Scale</div>
                 </div>
-                <div class="flex u-mb-" hidden$="{{isTab(index, 1)}}">
+                <div class="flex u-mb-" hidden$="{{!isTab(index, 0)}}">
                   <input id="hideColHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideColHeader::change}}">
                   <label for$="hideColHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Column Header</div>
                 </div>
-                <div class="flex u-mb-" hidden$="{{isTab(index, 1)}}">
+                <div class="flex u-mb-" hidden$="{{!isTab(index, 0)}}">
                   <input id="hideRowHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideRowHeader::change}}">
                   <label for$="hideRowHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Row Header</div>
@@ -121,6 +121,19 @@
                       <!-- No headers example -->
                       <template is="dom-if" if="{{isTab(index, 1)}}">
                         <ev-heatmap heatmap-data="{{data2}}"
+                                    hide-values="[[item.hideValues]]"
+                                    hide-scale="[[item.hideScale]]"
+                                    scale-min="{{item.scaleMin}}"
+                                    scale-max="{{item.scaleMax}}"
+                                    scale-color-from="{{item.scaleColorFrom}}"
+                                    scale-color-to="{{item.scaleColorTo}}"
+                                    aggregation-type="[[item.aggregationType]]">
+                        </ev-heatmap>
+                      </template>
+
+                      <!-- No headers example -->
+                      <template is="dom-if" if="{{isTab(index, 2)}}">
+                        <ev-heatmap heatmap-data="{{data3}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
                                     scale-min="{{item.scaleMin}}"
@@ -180,27 +193,6 @@
           optionsArray = [
             {
               "hideScale": false,
-              "heatmapData": [
-                {
-                  "row": "Application 1",
-                  "col": "Operator 1",
-                  "value": 16.639
-                },
-                {
-                  "row": "Application 1",
-                  "col": "Operator 2",
-                  "value": 55.464
-                },
-                {
-                  "row": "Application 2",
-                  "col": "Operator 1",
-                  "value": 91.049
-                },
-                {
-                  "row": "Application 2",
-                  "col": "Operator 2",
-                  "value": 21.692
-                }],
               "scaleMin": "0",
               "scaleMax": "100",
               "hideColHeader": false,
@@ -212,31 +204,17 @@
             },
             {
               "hideScale": false,
-              "heatmapData": [
-                {
-                  "row": "Application 1",
-                  "col": "Operator 1",
-                  "value": 16.639
-                },
-                {
-                  "row": "Application 1",
-                  "col": "Operator 2",
-                  "value": 55.464
-                },
-                {
-                  "row": "Application 2",
-                  "col": "Operator 1",
-                  "value": 91.049
-                },
-                {
-                  "row": "Application 2",
-                  "col": "Operator 2",
-                  "value": 21.692
-                }],
               "scaleMin": "0",
               "scaleMax": "100",
-              "hideColHeader": true,
-              "hideRowHeader": true,
+              "hideValues": false,
+              "aggregationType": "disabled",
+              "scaleColorFrom": "",
+              "scaleColorTo": ""
+            },
+            {
+              "hideScale": true,
+              "scaleMin": "0",
+              "scaleMax": "100",
               "hideValues": false,
               "aggregationType": "disabled",
               "scaleColorFrom": "",
@@ -258,6 +236,7 @@
         nodes = evt.detail.response;
         template.data1 = nodes.fullData;
         template.data2 = nodes.arraysData;
+        template.data3 = nodes.singleArray;
       });
       ironAjaxEl.generateRequest();
 

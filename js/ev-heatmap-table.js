@@ -103,7 +103,8 @@ Polymer({
      */
     showAggregation: {
       type: Boolean,
-      value: false
+      value: false,
+      observer: '_showAggregationChanged'
     },
 
     /**
@@ -177,6 +178,15 @@ Polymer({
               "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
             };
           });
+        });
+      }
+      else if (typeof newData[0] !== "object") {
+        newData.forEach(function (value, i) {
+          nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
+          tableData.push( [{
+            "value": value,
+            "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+          }]);
         });
       }
       else {
@@ -518,7 +528,7 @@ Polymer({
       this.set("colAggregatedData", colAggregation);
     }
     else if(this.aggregationType && o && n && o !== n && this.availableAggregations.indexOf(n.toUpperCase()) === -1) {
-      this.set("aggregationType", o);
+      this.set("aggregationType", "");
       this.set("showAggregation", false);
     }
   },
@@ -550,5 +560,14 @@ Polymer({
 
   _hideRowHeaderChanged: function(nHide, oHide) {
     if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !this.rows[0])) this.hideRowHeader = true;
+  },
+  _showAggregationChanged: function(nShow, oShow) {
+    if (nShow !== undefined && nShow != oShow) {
+      this.set('showRowAggregation', nShow);
+      this.set('showColAggregation', false);
+      if (this.heatmapData[0] && this.heatmapData[0].length > 1) {
+        this.set('showColAggregation', nShow);
+      }
+    }
   }
 });

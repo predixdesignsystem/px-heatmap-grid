@@ -29,10 +29,10 @@
         </div>
       </template>
       <div class="table-container flex flex--row flex--left flex--top">
-        <template is="dom-if" if="{{showAggregation}}">
+        <template is="dom-if" if="{{showRowAggregation}}">
           <div class="table-column">
             <div class="col-header" hidden$="{{hideColHeader}}"><span>{{_resizeHeader(aggregationType)}}</span></div>
-            <div class="table-empty-cell">
+            <div class="table-empty-cell" hidden$="{{!showColAggregation}}">
               <span>&nbsp;</span>
             </div>
             <template is="dom-repeat" items="{{rowAggregatedData}}">
@@ -51,7 +51,7 @@
                 <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>
               </div>
             </template>
-            <template is="dom-if" if="{{showAggregation}}">
+            <template is="dom-if" if="{{showColAggregation}}">
               <div class="table-cell">
                 <span>{{_getColAggregation(index, colAggregatedData)}}</span>
               </div>
