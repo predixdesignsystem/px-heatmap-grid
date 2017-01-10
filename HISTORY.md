@@ -1,3 +1,9 @@
+v0.4.0
+==================
+* Added support for dataset without rows and columns headers
+* Added support for dataset with a single array of data
+* Added support for dataset with only columns or only rows
+
 v0.3.1
 ==================
 * Removed ES6 functionality to support IE 10 and 11
