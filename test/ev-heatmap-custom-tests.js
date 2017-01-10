@@ -10,6 +10,8 @@ function runCustomTests(testN) {
   var aggregationsResults3 = {"row":[{"average":60.858,"sum":365.152,"max":85.651,"min":22.564,"count":6,"std":20.622},{"average":72.052,"sum":432.314,"max":94.763,"min":48.937,"count":6,"std":19.566},{"average":32.617,"sum":163.085,"max":63.715,"min":14.319,"count":5,"std":17.198},{"average":51.304,"sum":307.827,"max":87.24,"min":27.19,"count":6,"std":19.348},{"average":62.802,"sum":251.208,"max":93.829,"min":11.272,"count":4,"std":31.117},{"average":43.408,"sum":260.45,"max":78.051,"min":6.237,"count":6,"std":26.039},{"average":53.956,"sum":269.78,"max":85.671,"min":2.815,"count":5,"std":28.479},{"average":60.182,"sum":361.095,"max":93.17,"min":28.235,"count":6,"std":22.855},{"average":70.39,"sum":422.342,"max":96.762,"min":30.355,"count":6,"std":24.354},{"average":45.445,"sum":272.671,"max":82.436,"min":21.279,"count":6,"std":22.953}],"col":[{"average":51.688,"sum":465.193,"max":85.651,"min":14.319,"count":9,"std":23.367},{"average":54.544,"sum":545.446,"max":89.564,"min":2.815,"count":10,"std":22.105},{"average":67.617,"sum":608.561,"max":93.829,"min":30.282,"count":9,"std":22.999},{"average":56.652,"sum":509.873,"max":94.763,"min":20.284,"count":9,"std":24.282},{"average":52.315,"sum":523.155,"max":96.762,"min":11.272,"count":10,"std":29.957},{"average":50.41,"sum":453.696,"max":85.941,"min":6.237,"count":9,"std":28.839}]};
   var data4 = [["",50.122,0.842,60.073,85.093,""],[19.304,97.435,8.625,59.224,73.484,67.464],[7.213,53.338,"test",95.467,48.129,85.09],[26.784,10.642,5.1,28.582,5.385,72.147],["---",47.306,7.215,73.494,88.1,"invalid"],[39.416,58.45,83.115,63.859,13.903,51.432],[48.324,"",56.584,"error",65.847,96.1],[34.64,6.023,75.429,58.49,47.203,11.122],[60.067,4.552,40.957,25.02,87.715,35.073],["",47.024,92.69,23.478,66.112,""]];
   var aggregationsResults4 = {"row":[{"average":49.032,"sum":196.13,"max":85.093,"min":0.842,"count":4,"std":30.601},{"average":54.256,"sum":325.536,"max":97.435,"min":8.625,"count":6,"std":30.922},{"average":57.847,"sum":289.237,"max":95.467,"min":7.213,"count":5,"std":31.099},{"average":24.773,"sum":148.64,"max":72.147,"min":5.1,"count":6,"std":23.185},{"average":54.028,"sum":216.115,"max":88.1,"min":7.215,"count":4,"std":30.726},{"average":51.695,"sum":310.175,"max":83.115,"min":13.903,"count":6,"std":21.447},{"average":66.713,"sum":266.855,"max":96.1,"min":48.324,"count":4,"std":18.063},{"average":38.817,"sum":232.907,"max":75.429,"min":6.023,"count":6,"std":24.69},{"average":42.23,"sum":253.384,"max":87.715,"min":4.552,"count":6,"std":26.317},{"average":57.326,"sum":229.304,"max":92.69,"min":23.478,"count":4,"std":25.395}],"col":[{"average":33.678,"sum":235.748,"max":60.067,"min":7.213,"count":7,"std":16.471},{"average":41.654,"sum":374.892,"max":97.435,"min":4.552,"count":9,"std":28.422},{"average":41.173,"sum":370.557,"max":92.69,"min":0.842,"count":9,"std":34.903},{"average":54.187,"sum":487.687,"max":95.467,"min":23.478,"count":9,"std":22.847},{"average":58.097,"sum":580.971,"max":88.1,"min":5.385,"count":10,"std":27.958},{"average":59.775,"sum":418.428,"max":96.1,"min":11.122,"count":7,"std":27.306}]};
+  var data5 = [27.927,96.706,72.122,95.842,69.363,81.98,35.381,53.73,60.676,16.866,78.003];
+  var aggregationsResults5 = {"row":[{"average":62.599,"sum":688.596,"max":96.706,"min":16.866,"count":11,"std":25.467}]};
   var aggregationsTypes = ["average","sum","max","min","count","std"];
   var heatmapEl, data, aggregationsResults;
   switch (testN) {
@@ -32,6 +34,11 @@ function runCustomTests(testN) {
       heatmapEl = Polymer.dom(document).querySelector('#ev_heatmap_4');
       data = data4;
       aggregationsResults = aggregationsResults4;
+      break;
+    case "single array dataset":
+      heatmapEl = Polymer.dom(document).querySelector('#ev_heatmap_5');
+      data = data5;
+      aggregationsResults = aggregationsResults5;
       break;
     default:
       break;
@@ -73,7 +80,7 @@ function runCustomTests(testN) {
     test('Check column header element exists', function(done){
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         colHeader = Polymer.dom(tableEl.root).querySelector('.col-header');
-      if (testN !== "dataset without headers") {
+      if (testN !== "dataset without headers" && testN !== "single array dataset") {
         assert.isTrue(colHeader !== undefined, "column header element doesn't exist");
         assert.isTrue(colHeader !== null, "column header element is empty");
       }
@@ -83,10 +90,8 @@ function runCustomTests(testN) {
     test('Check table column element exists', function(done){
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         tableCol = Polymer.dom(tableEl.root).querySelector('.table-column');
-      if (testN !== "dataset without headers") {
-        assert.isTrue(tableCol !== undefined, "table column element doesn't exist");
-        assert.isTrue(tableCol !== null, "table column element is empty");
-      }
+      assert.isTrue(tableCol !== undefined, "table column element doesn't exist");
+      assert.isTrue(tableCol !== null, "table column element is empty");
       done();
     });
 
@@ -102,7 +107,7 @@ function runCustomTests(testN) {
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         rowHeader = Polymer.dom(tableEl.root).querySelectorAll('.row-header'),
         headers = [];
-      if (testN !== "dataset without headers") {
+      if (testN !== "dataset without headers" && testN !== "single array dataset") {
         heatmapEl.hideRowHeader = false;
         // Arrow function only on ES6 - not in IE 10 - 11
         // rowHeader.forEach(x => headers.push(x.querySelector("span").innerText));
@@ -121,7 +126,7 @@ function runCustomTests(testN) {
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         colHeader = Polymer.dom(tableEl.root).querySelectorAll('.col-header'),
         headers = [];
-      if (testN !== "dataset without headers") {
+      if (testN !== "dataset without headers" && testN !== "single array dataset") {
         heatmapEl.hideColHeader = false;
         // Arrow function only on ES6 - not in IE 10 - 11
         // colHeader.forEach(x => headers.push(x.querySelector("span").innerText));
@@ -153,6 +158,11 @@ function runCustomTests(testN) {
           });
         });
       }
+      else if (testN === "single array dataset") {
+        data.forEach(function (value) {
+          assert.notEqual(cells.indexOf("" + value), -1, "'" + value + "' not found in cells");
+        });
+      }
       else {
         data.forEach(function (item) {
           assert.notEqual(cells.indexOf("" + item.value), -1, "'" + item.value + "' not found in cells");
@@ -175,7 +185,7 @@ function runCustomTests(testN) {
     test('Check hide/show row headers functionality', function(done){
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
-      if (testN !== "dataset without headers") {
+      if (testN !== "dataset without headers" &&  testN !== "single array dataset") {
         assert.isFalse(heatmapEl.hideRowHeader, "ev-heatmap hideRowHeader property was supposed to be false");
         assert.equal(window.getComputedStyle(rowHeader).display, "flex", "row header element was not supposed to be hidden");
 
@@ -195,7 +205,7 @@ function runCustomTests(testN) {
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         colHeader = Polymer.dom(tableEl.root).querySelectorAll('.col-header'),
         rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
-      if (testN !== "dataset without headers") {
+      if (testN !== "dataset without headers" &&  testN !== "single array dataset") {
         assert.isFalse(heatmapEl.hideColHeader, "ev-heatmap hideColHeader property was supposed to be false");
         assert.isFalse(rowHeader.classList.contains('disable-col-header'), "row header should not contain class 'disable-col-header'");
         // Arrow function only on ES6 - not in IE 10 - 11
@@ -242,9 +252,12 @@ function runCustomTests(testN) {
         tableEl.rowAggregatedData.map(function (d, i) {
           assert.equal(Math.round(d), Math.round(aggregationsResults.row[i][at]), at + " aggregation for row " + i + " failed");
         });
-        tableEl.colAggregatedData.map(function (d, i) {
-          assert.equal(Math.round(d), Math.round(aggregationsResults.col[i][at]), at + " aggregation for column " + i + " failed");
-        });
+
+        if (testN !== "single array dataset") {
+          tableEl.colAggregatedData.map(function (d, i) {
+            assert.equal(Math.round(d), Math.round(aggregationsResults.col[i][at]), at + " aggregation for column " + i + " failed");
+          });
+        }
       });
       done();
     });
@@ -258,43 +271,45 @@ function runCustomTests(testN) {
       };
       var minI, maxI;
 
-      tableEl.heatmapData.forEach(function(a,i) {
-        heatmapEl.set("heatmapData", []);
-        heatmapEl.set("heatmapData", data);
-        e.model.index = i;
-        tableEl._sortCol(e);
-        // Arrow function only on ES6 - not in IE 10 - 11
-        // minI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a < b ? a : b : a);
-        // maxI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a > b ? a : b : a);
-        minI = tableEl.heatmapData[i].map(function (x, j) {
-          return typeof x.value === "number" ? j : undefined;
-        }).reduce(function (a, b) {
-          return b ? a < b ? a : b : a;
+      if (testN !== "single array dataset") {
+        tableEl.heatmapData.forEach(function (a, i) {
+          heatmapEl.set("heatmapData", []);
+          heatmapEl.set("heatmapData", data);
+          e.model.index = i;
+          tableEl._sortCol(e);
+          // Arrow function only on ES6 - not in IE 10 - 11
+          // minI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a < b ? a : b : a);
+          // maxI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a > b ? a : b : a);
+          minI = tableEl.heatmapData[i].map(function (x, j) {
+            return typeof x.value === "number" ? j : undefined;
+          }).reduce(function (a, b) {
+            return b ? a < b ? a : b : a;
+          });
+          maxI = tableEl.heatmapData[i].map(function (x, j) {
+            return typeof x.value === "number" ? j : undefined;
+          }).reduce(function (a, b) {
+            return b ? a > b ? a : b : a;
+          });
+          assert.equal(tableEl.heatmapData[i][minI].value, aggregationsResults.col[i].min, "sorting ascending on column " + i + " failed");
+          assert.equal(tableEl.heatmapData[i][maxI].value, aggregationsResults.col[i].max, "sorting ascending on column " + i + " failed");
+          tableEl._sortCol(e);
+          // Arrow function only on ES6 - not in IE 10 - 11
+          // minI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a < b ? a : b : a);
+          // maxI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a > b ? a : b : a);
+          minI = tableEl.heatmapData[i].map(function (x, j) {
+            return typeof x.value === "number" ? j : undefined;
+          }).reduce(function (a, b) {
+            return b ? a < b ? a : b : a;
+          });
+          maxI = tableEl.heatmapData[i].map(function (x, j) {
+            return typeof x.value === "number" ? j : undefined;
+          }).reduce(function (a, b) {
+            return b ? a > b ? a : b : a;
+          });
+          assert.equal(tableEl.heatmapData[i][minI].value, aggregationsResults.col[i].max, "sorting descending on column " + i + " failed");
+          assert.equal(tableEl.heatmapData[i][maxI].value, aggregationsResults.col[i].min, "sorting descending on column " + i + " failed");
         });
-        maxI = tableEl.heatmapData[i].map(function (x, j) {
-          return typeof x.value === "number" ? j : undefined;
-        }).reduce(function (a, b) {
-          return b ? a > b ? a : b : a;
-        });
-        assert.equal(tableEl.heatmapData[i][minI].value, aggregationsResults.col[i].min, "sorting ascending on column " + i + " failed");
-        assert.equal(tableEl.heatmapData[i][maxI].value, aggregationsResults.col[i].max, "sorting ascending on column " + i + " failed");
-        tableEl._sortCol(e);
-        // Arrow function only on ES6 - not in IE 10 - 11
-        // minI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a < b ? a : b : a);
-        // maxI = tableEl.heatmapData[i].map((x,j) => typeof x.value === "number" ? j : undefined).reduce((a,b) => b ? a > b ? a : b : a);
-        minI = tableEl.heatmapData[i].map(function (x, j) {
-          return typeof x.value === "number" ? j : undefined;
-        }).reduce(function (a, b) {
-          return b ? a < b ? a : b : a;
-        });
-        maxI = tableEl.heatmapData[i].map(function (x, j) {
-          return typeof x.value === "number" ? j : undefined;
-        }).reduce(function (a, b) {
-          return b ? a > b ? a : b : a;
-        });
-        assert.equal(tableEl.heatmapData[i][minI].value, aggregationsResults.col[i].max, "sorting descending on column " + i + " failed");
-        assert.equal(tableEl.heatmapData[i][maxI].value, aggregationsResults.col[i].min, "sorting descending on column " + i + " failed");
-      });
+      }
 
       tableEl.heatmapData[0].map(function(a,i) {
         heatmapEl.set("heatmapData", []);

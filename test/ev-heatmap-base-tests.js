@@ -10,6 +10,7 @@ document.addEventListener("WebComponentsReady", function() {
   runCustomTests("dataset with empty cells");
   runCustomTests("dataset with invalid values");
   runCustomTests("dataset without headers");
+  runCustomTests("single array dataset");
 });
 
 // This is a utility/wrapper function for the test() function of
