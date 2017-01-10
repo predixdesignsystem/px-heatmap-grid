@@ -189,6 +189,36 @@ Polymer({
           }]);
         });
       }
+      else if (typeof newData[0] === "object" && newData[0].values) {
+        newData.forEach(function (cell, i) {
+          iRow = cell.row ? rows.indexOf(cell.row) : -2;
+          iCol = cell.col ? cols.indexOf(cell.col) : -2;
+          console.log(cell.row + " " + iRow + " | " + cell.col + " " + iCol);
+          if (iCol === -2) {
+            rows.push(cell.row);
+          };
+          if (iRow === -2) {
+            cols.push(cell.col);
+          };
+          cell.values.forEach(function (value, j) {
+            nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
+            if (iCol === -2) {
+              if (i === 0 ) tableData.push([]);
+              tableData[j].push({
+                "value": value,
+                "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+              });
+            }
+            else {
+              if (j === 0 ) tableData.push([]);
+              tableData[i].push({
+                "value": value,
+                "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+              });
+            }
+          });
+        });
+      }
       else {
         newData.forEach(function (cell) {
           iRow = rows.indexOf(cell.row);
