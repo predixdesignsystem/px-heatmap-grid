@@ -180,7 +180,7 @@ Polymer({
           });
         });
       }
-      else if (typeof newData[0] !== "object") {
+      else if (typeof newData[0] !== "object" && typeof newData[0] !== "string") {
         newData.forEach(function (value, i) {
           nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
           tableData.push( [{
@@ -193,7 +193,6 @@ Polymer({
         newData.forEach(function (cell, i) {
           iRow = cell.row ? rows.indexOf(cell.row) : -2;
           iCol = cell.col ? cols.indexOf(cell.col) : -2;
-          console.log(cell.row + " " + iRow + " | " + cell.col + " " + iCol);
           if (iCol === -2) {
             rows.push(cell.row);
           };
@@ -219,7 +218,7 @@ Polymer({
           });
         });
       }
-      else {
+      else if (typeof newData[0] !== "string") {
         newData.forEach(function (cell) {
           iRow = rows.indexOf(cell.row);
           iCol = cols.indexOf(cell.col);
@@ -313,7 +312,11 @@ Polymer({
         newValue === false ? scale.classList.remove("disable-col-header") : scale.classList.add("disable-col-header");
       }
     };
-    if (newValue !== undefined && newValue === false && newValue !== oldValue && this.cols && (!this.cols.length || !this.cols[0])) this.hideColHeader = true;
+    if (newValue !== undefined && newValue === false && newValue !== oldValue && this.cols && (!this.cols.length || !this.cols[0])) {
+      this.hideColHeader = true;
+      if (rowHeader) rowHeader.classList.add("disable-col-header");
+      if (scale) scale.classList.add("disable-col-header");
+    }
   },
 
   _sortCol: function(e) {

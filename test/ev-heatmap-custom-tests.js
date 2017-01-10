@@ -12,6 +12,10 @@ function runCustomTests(testN) {
   var aggregationsResults4 = {"row":[{"average":49.032,"sum":196.13,"max":85.093,"min":0.842,"count":4,"std":30.601},{"average":54.256,"sum":325.536,"max":97.435,"min":8.625,"count":6,"std":30.922},{"average":57.847,"sum":289.237,"max":95.467,"min":7.213,"count":5,"std":31.099},{"average":24.773,"sum":148.64,"max":72.147,"min":5.1,"count":6,"std":23.185},{"average":54.028,"sum":216.115,"max":88.1,"min":7.215,"count":4,"std":30.726},{"average":51.695,"sum":310.175,"max":83.115,"min":13.903,"count":6,"std":21.447},{"average":66.713,"sum":266.855,"max":96.1,"min":48.324,"count":4,"std":18.063},{"average":38.817,"sum":232.907,"max":75.429,"min":6.023,"count":6,"std":24.69},{"average":42.23,"sum":253.384,"max":87.715,"min":4.552,"count":6,"std":26.317},{"average":57.326,"sum":229.304,"max":92.69,"min":23.478,"count":4,"std":25.395}],"col":[{"average":33.678,"sum":235.748,"max":60.067,"min":7.213,"count":7,"std":16.471},{"average":41.654,"sum":374.892,"max":97.435,"min":4.552,"count":9,"std":28.422},{"average":41.173,"sum":370.557,"max":92.69,"min":0.842,"count":9,"std":34.903},{"average":54.187,"sum":487.687,"max":95.467,"min":23.478,"count":9,"std":22.847},{"average":58.097,"sum":580.971,"max":88.1,"min":5.385,"count":10,"std":27.958},{"average":59.775,"sum":418.428,"max":96.1,"min":11.122,"count":7,"std":27.306}]};
   var data5 = [27.927,96.706,72.122,95.842,69.363,81.98,35.381,53.73,60.676,16.866,78.003];
   var aggregationsResults5 = {"row":[{"average":62.599,"sum":688.596,"max":96.706,"min":16.866,"count":11,"std":25.467}]};
+  var data6 = [{ "col":"Operator 1", "values": [33.917,51.144,59.91,69.481,50.738,95.843,81.323,87.37,72.748,50.629]},{ "col":"Operator 2", "values": [99.099,40.916,9.29,73.8,45.477,73.791,19.264,88.945,55.847,54.627]},{ "col":"Operator 3", "values": [90.542,1.382,73.407,89.504,30.439,62.797,51.97,5.628,79.652,55.344]},{ "col":"Operator 4", "values": [80.818,71.966,12.019,27.253,61.023,16.341,11.839,79.729,80.608,88.231]},{ "col":"Operator 5", "values": [82.61,59.023,97.576,96.683,20.349,81.904,32.099,90.961,31.754,98.887]},{ "col":"Operator 6", "values": [17.255,2.964,15.644,36.417,97.883,53.041,61.478,24.681,32.845,5.488]}];
+  var aggregationsResults6 = {"row":[{"average":67.373,"sum":404.241,"max":99.099,"min":17.255,"count":6,"std":30.516},{"average":37.899,"sum":227.395,"max":71.966,"min":1.382,"count":6,"std":26.911},{"average":44.641,"sum":267.846,"max":97.576,"min":9.29,"count":6,"std":34.199},{"average":65.523,"sum":393.138,"max":96.683,"min":27.253,"count":6,"std":25.631},{"average":50.984,"sum":305.909,"max":97.883,"min":20.349,"count":6,"std":24.803},{"average":63.952,"sum":383.717,"max":95.843,"min":16.341,"count":6,"std":25.243},{"average":42.995,"sum":257.973,"max":81.323,"min":11.839,"count":6,"std":24.302},{"average":62.885,"sum":377.314,"max":90.961,"min":5.628,"count":6,"std":34.371},{"average":58.909,"sum":353.454,"max":80.608,"min":31.754,"count":6,"std":20.488},{"average":58.867,"sum":353.206,"max":98.887,"min":5.488,"count":6,"std":30.031}],"col":[{"average":65.31,"sum":653.103,"max":95.843,"min":33.917,"count":10,"std":18.415},{"average":56.105,"sum":561.056,"max":99.099,"min":9.29,"count":10,"std":27.29},{"average":54.066,"sum":540.665,"max":90.542,"min":1.382,"count":10,"std":30.622},{"average":52.982,"sum":529.827,"max":88.231,"min":11.839,"count":10,"std":30.489},{"average":69.184,"sum":691.846,"max":98.887,"min":20.349,"count":10,"std":29.198},{"average":34.769,"sum":347.696,"max":97.883,"min":2.964,"count":10,"std":27.713}]};
+  var data7 = [{ "row":"Application 1", "values": [42.27,56.33,61.766,37.095,13.403,63.378]},{ "row":"Application 2", "values": [69.04,60.093,55.894,5.104,24.562,35.816]},{ "row":"Application 3", "values": [25.558,47.288,47.282,30.134,90.535,86.107]},{ "row":"Application 4", "values": [75.97,98.994,55.965,64.349,52.851,55.576]},{ "row":"Application 5", "values": [55.66,43.552,35.643,91.663,11.339,11.435]},{ "row":"Application 6", "values": [50.814,79.112,17.333,37.953,23.23,87.134]},{ "row":"Application 7", "values": [81.881,24.794,72.906,77.667,3.945,31.83]},{ "row":"Application 8", "values": [26.353,49.151,2.575,0.034,55.255,77.813]},{ "row":"Application 9", "values": [93.709,8.372,42.865,54.183,59.237,25.553]},{ "row":"Application 10", "values": [13.085,92.618,83.185,58.496,98.688,71.385]}];
+  var aggregationsResults7 = {"row":[{"average":45.707,"sum":274.242,"max":63.378,"min":13.403,"count":6,"std":17.38},{"average":41.751,"sum":250.509,"max":69.04,"min":5.104,"count":6,"std":22.191},{"average":54.484,"sum":326.904,"max":90.535,"min":25.558,"count":6,"std":25.275},{"average":67.284,"sum":403.705,"max":98.994,"min":52.851,"count":6,"std":16.14},{"average":41.548,"sum":249.292,"max":91.663,"min":11.339,"count":6,"std":27.595},{"average":49.262,"sum":295.576,"max":87.134,"min":17.333,"count":6,"std":26.308},{"average":48.837,"sum":293.023,"max":81.881,"min":3.945,"count":6,"std":29.958},{"average":35.196,"sum":211.181,"max":77.813,"min":0.034,"count":6,"std":28.26},{"average":47.319,"sum":283.919,"max":93.709,"min":8.372,"count":6,"std":26.93},{"average":69.576,"sum":417.457,"max":98.688,"min":13.085,"count":6,"std":28.521}],"col":[{"average":53.434,"sum":534.34,"max":93.709,"min":13.085,"count":10,"std":25.411},{"average":56.03,"sum":560.304,"max":98.994,"min":8.372,"count":10,"std":26.945},{"average":47.541,"sum":475.414,"max":83.185,"min":2.575,"count":10,"std":23.14},{"average":45.667,"sum":456.678,"max":91.663,"min":0.034,"count":10,"std":27.978},{"average":43.304,"sum":433.045,"max":98.688,"min":3.945,"count":10,"std":31.63},{"average":54.602,"sum":546.027,"max":87.134,"min":11.435,"count":10,"std":25.549}]};
   var aggregationsTypes = ["average","sum","max","min","count","std"];
   var heatmapEl, data, aggregationsResults;
   switch (testN) {
@@ -39,6 +43,16 @@ function runCustomTests(testN) {
       heatmapEl = Polymer.dom(document).querySelector('#ev_heatmap_5');
       data = data5;
       aggregationsResults = aggregationsResults5;
+      break;
+    case "columns only":
+      heatmapEl = Polymer.dom(document).querySelector('#ev_heatmap_6');
+      data = data6;
+      aggregationsResults = aggregationsResults6;
+      break;
+    case "rows only":
+      heatmapEl = Polymer.dom(document).querySelector('#ev_heatmap_7');
+      data = data7;
+      aggregationsResults = aggregationsResults7;
       break;
     default:
       break;
@@ -80,7 +94,7 @@ function runCustomTests(testN) {
     test('Check column header element exists', function(done){
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         colHeader = Polymer.dom(tableEl.root).querySelector('.col-header');
-      if (testN !== "dataset without headers" && testN !== "single array dataset") {
+      if (testN !== "dataset without headers" && testN !== "single array dataset" && testN !== "rows only") {
         assert.isTrue(colHeader !== undefined, "column header element doesn't exist");
         assert.isTrue(colHeader !== null, "column header element is empty");
       }
@@ -107,7 +121,7 @@ function runCustomTests(testN) {
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         rowHeader = Polymer.dom(tableEl.root).querySelectorAll('.row-header'),
         headers = [];
-      if (testN !== "dataset without headers" && testN !== "single array dataset") {
+      if (testN !== "dataset without headers" && testN !== "single array dataset" && testN !== "columns only") {
         heatmapEl.hideRowHeader = false;
         // Arrow function only on ES6 - not in IE 10 - 11
         // rowHeader.forEach(x => headers.push(x.querySelector("span").innerText));
@@ -126,7 +140,7 @@ function runCustomTests(testN) {
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         colHeader = Polymer.dom(tableEl.root).querySelectorAll('.col-header'),
         headers = [];
-      if (testN !== "dataset without headers" && testN !== "single array dataset") {
+      if (testN !== "dataset without headers" && testN !== "single array dataset" && testN !== "rows only") {
         heatmapEl.hideColHeader = false;
         // Arrow function only on ES6 - not in IE 10 - 11
         // colHeader.forEach(x => headers.push(x.querySelector("span").innerText));
@@ -163,6 +177,13 @@ function runCustomTests(testN) {
           assert.notEqual(cells.indexOf("" + value), -1, "'" + value + "' not found in cells");
         });
       }
+      else if (testN === "columns only" ||  testN === "rows only") {
+        data.forEach(function (item) {
+          item.values.forEach(function (value) {
+            assert.notEqual(cells.indexOf("" + value), -1, "'" + value + "' not found in cells");
+          });
+        });
+      }
       else {
         data.forEach(function (item) {
           assert.notEqual(cells.indexOf("" + item.value), -1, "'" + item.value + "' not found in cells");
@@ -185,7 +206,7 @@ function runCustomTests(testN) {
     test('Check hide/show row headers functionality', function(done){
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
-      if (testN !== "dataset without headers" &&  testN !== "single array dataset") {
+      if (testN !== "dataset without headers" &&  testN !== "single array dataset" && testN !== "columns only") {
         assert.isFalse(heatmapEl.hideRowHeader, "ev-heatmap hideRowHeader property was supposed to be false");
         assert.equal(window.getComputedStyle(rowHeader).display, "flex", "row header element was not supposed to be hidden");
 
@@ -205,7 +226,7 @@ function runCustomTests(testN) {
       var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
         colHeader = Polymer.dom(tableEl.root).querySelectorAll('.col-header'),
         rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
-      if (testN !== "dataset without headers" &&  testN !== "single array dataset") {
+      if (testN !== "dataset without headers" &&  testN !== "single array dataset" && testN !== "rows only") {
         assert.isFalse(heatmapEl.hideColHeader, "ev-heatmap hideColHeader property was supposed to be false");
         assert.isFalse(rowHeader.classList.contains('disable-col-header'), "row header should not contain class 'disable-col-header'");
         // Arrow function only on ES6 - not in IE 10 - 11

@@ -7,7 +7,7 @@
   <title>ev-heatmap Demo</title>
   <link rel="stylesheet" type="text/css" href="css/ev-heatmap-demo.css" />
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
-  <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="../webcomponentsjs/webcomponents-lite.js"></script>
 
   <link rel="import" href="../px-theme/px-theme-styles.html">
   <style include="px-theme-styles" is="custom-style"></style>
@@ -36,7 +36,8 @@
       </a>
       <h1 class="delta">ev-heatmap</h1>
       <p class="description-text">
-        The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors. The options to customize the component are detailed in the API reference below.
+        The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
+        There are 5 different options based on the dataset used. The options to customize the component are detailed in the API reference below.
       </p>
       <div class="flex">
         <img class="u-mr-- " src="https://img.shields.io/travis/PredixDev/ev-heatmap.svg?style=flat-square" alt="Travis"  onerror="this.style.display='none'"/>
@@ -67,12 +68,12 @@
                   <label for$="hideScale{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Color Scale</div>
                 </div>
-                <div class="flex u-mb-" hidden$="{{!isTab(index, 0)}}">
+                <div class="flex u-mb-" hidden$="{{hideColHeaderToggle(index)}}">
                   <input id="hideColHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideColHeader::change}}">
                   <label for$="hideColHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Column Header</div>
                 </div>
-                <div class="flex u-mb-" hidden$="{{!isTab(index, 0)}}">
+                <div class="flex u-mb-" hidden$="{{hideRowHeaderToggle(index)}}">
                   <input id="hideRowHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideRowHeader::change}}">
                   <label for$="hideRowHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Row Header</div>
@@ -107,9 +108,12 @@
                     <div class="u-mt+">
                       <!-- Full data example -->
                       <template is="dom-if" if="{{isTab(index, 0)}}">
-                        <ev-heatmap heatmap-data="{{data1}}"
+                        <ev-heatmap id="ev_heatmap_0"
+                                    heatmap-data="{{data0}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
+                                    hide-col-header="[[item.hideColHeader]]"
+                                    hide-row-header="[[item.hideRowHeader]]"
                                     scale-min="{{item.scaleMin}}"
                                     scale-max="{{item.scaleMax}}"
                                     scale-color-from="{{item.scaleColorFrom}}"
@@ -118,9 +122,40 @@
                         </ev-heatmap>
                       </template>
 
-                      <!-- No headers example -->
+                      <!-- Columns Example -->
                       <template is="dom-if" if="{{isTab(index, 1)}}">
-                        <ev-heatmap heatmap-data="{{data2}}"
+                        <ev-heatmap id="ev_heatmap_1"
+                                    heatmap-data="{{data1}}"
+                                    hide-values="[[item.hideValues]]"
+                                    hide-scale="[[item.hideScale]]"
+                                    hide-col-header="[[item.hideColHeader]]"
+                                    scale-min="{{item.scaleMin}}"
+                                    scale-max="{{item.scaleMax}}"
+                                    scale-color-from="{{item.scaleColorFrom}}"
+                                    scale-color-to="{{item.scaleColorTo}}"
+                                    aggregation-type="[[item.aggregationType]]">
+                        </ev-heatmap>
+                      </template>
+
+                      <!-- Rows example -->
+                      <template is="dom-if" if="{{isTab(index, 2)}}">
+                        <ev-heatmap id="ev_heatmap_2"
+                                    heatmap-data="{{data2}}"
+                                    hide-values="[[item.hideValues]]"
+                                    hide-scale="[[item.hideScale]]"
+                                    hide-row-header="[[item.hideRowHeader]]"
+                                    scale-min="{{item.scaleMin}}"
+                                    scale-max="{{item.scaleMax}}"
+                                    scale-color-from="{{item.scaleColorFrom}}"
+                                    scale-color-to="{{item.scaleColorTo}}"
+                                    aggregation-type="[[item.aggregationType]]">
+                        </ev-heatmap>
+                      </template>
+
+                      <!-- No headers example -->
+                      <template is="dom-if" if="{{isTab(index, 3)}}">
+                        <ev-heatmap id="ev_heatmap_3"
+                                    heatmap-data="{{data3}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
                                     scale-min="{{item.scaleMin}}"
@@ -131,9 +166,10 @@
                         </ev-heatmap>
                       </template>
 
-                      <!-- No headers example -->
-                      <template is="dom-if" if="{{isTab(index, 2)}}">
-                        <ev-heatmap heatmap-data="{{data3}}"
+                      <!-- Single array example -->
+                      <template is="dom-if" if="{{isTab(index, 4)}}">
+                        <ev-heatmap id="ev_heatmap_4"
+                                    heatmap-data="{{data4}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
                                     scale-min="{{item.scaleMin}}"
@@ -200,7 +236,30 @@
               "hideValues": false,
               "aggregationType": "disabled",
               "scaleColorFrom": "",
-              "scaleColorTo": ""
+              "scaleColorTo": "",
+              "heatmapData": "{{data}}"
+            },
+            {
+              "hideScale": false,
+              "scaleMin": "0",
+              "scaleMax": "100",
+              "hideColHeader": false,
+              "hideValues": false,
+              "aggregationType": "disabled",
+              "scaleColorFrom": "",
+              "scaleColorTo": "",
+              "heatmapData": "{{data}}"
+            },
+            {
+              "hideScale": false,
+              "scaleMin": "0",
+              "scaleMax": "100",
+              "hideRowHeader": false,
+              "hideValues": false,
+              "aggregationType": "disabled",
+              "scaleColorFrom": "",
+              "scaleColorTo": "",
+              "heatmapData": "{{data}}"
             },
             {
               "hideScale": false,
@@ -209,7 +268,8 @@
               "hideValues": false,
               "aggregationType": "disabled",
               "scaleColorFrom": "",
-              "scaleColorTo": ""
+              "scaleColorTo": "",
+              "heatmapData": "{{data}}"
             },
             {
               "hideScale": true,
@@ -218,11 +278,18 @@
               "hideValues": false,
               "aggregationType": "disabled",
               "scaleColorFrom": "",
-              "scaleColorTo": ""
+              "scaleColorTo": "",
+              "heatmapData": "{{data}}"
             }
           ],
           indexPlusOne = function(num) {
             return num + 1;
+          },
+          hideColHeaderToggle = function(index) {
+            return index === 0 || index === 1 ? false : true;
+          },
+          hideRowHeaderToggle = function(index) {
+            return index === 0 || index === 2 ? false : true;
           },
           isTab = function(num1, num2) {
             return num1 === num2;
@@ -234,15 +301,19 @@
       ironAjaxEl.url = "data/sample-data.json";
       ironAjaxEl.addEventListener('response', function(evt) {
         nodes = evt.detail.response;
-        template.data1 = nodes.fullData;
-        template.data2 = nodes.arraysData;
-        template.data3 = nodes.singleArray;
+        template.data0 = nodes.fullData;
+        template.data1 = nodes.colsOnly;
+        template.data2 = nodes.rowsOnly;
+        template.data3 = nodes.arraysData;
+        template.data4 = nodes.singleArray;
       });
       ironAjaxEl.generateRequest();
 
       template.selected = "0";
       template.optionsArray = optionsArray;
       template.indexPlusOne = indexPlusOne;
+      template.hideColHeaderToggle = hideColHeaderToggle;
+      template.hideRowHeaderToggle = hideRowHeaderToggle;
       template.isTab = isTab;
     });
   </script>

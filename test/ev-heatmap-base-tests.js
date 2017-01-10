@@ -11,6 +11,8 @@ document.addEventListener("WebComponentsReady", function() {
   runCustomTests("dataset with invalid values");
   runCustomTests("dataset without headers");
   runCustomTests("single array dataset");
+  runCustomTests("columns only");
+  runCustomTests("rows only");
 });
 
 // This is a utility/wrapper function for the test() function of
