@@ -4,9 +4,8 @@
     'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
 -->
 <link rel="import" href="../polymer/polymer.html"/>
-
 <link rel="import" href="css/ev-heatmap-table-styles.html">
-
+<link rel="import" href="../px-tooltip/px-tooltip.html">
 
 <dom-module id="ev-heatmap-table">
   <template>
@@ -22,8 +21,8 @@
           <template is="dom-repeat" items="{{rows}}" as="row">
             <div class="row-header" on-click="_sortRow">
               <span>{{row}}</span>
-              <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'row','up',heatmapData)}}"></i>
-              <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'row','down',heatmapData)}}"></i>
+              <i class="fa fa-caret-left" hidden$="{{_sortingIcon(index,'row','up',heatmapData)}}"></i>
+              <i class="fa fa-caret-right" hidden$="{{_sortingIcon(index,'row','down',heatmapData)}}"></i>
             </div>
           </template>
         </div>
@@ -57,7 +56,12 @@
               </div>
             </template>
             <template is="dom-repeat" items="{{items}}" as="item">
-              <div class="table-cell cell-values" style$="[[item.color]]"><span hidden$="{{hideValues}}">{{item.value}}</span></div>
+              <div class="table-cell cell-values" style$="[[item.color]]">
+                <span hidden$="{{hideValues}}">{{item.value}}</span>
+                <template is="dom-if" if="{{hideValues}}">
+                  <px-tooltip smart-orientation="true" delay="100" tooltip-message="{{item.value}}"></px-tooltip>
+                </template>
+              </div>
             </template>
           </div>
         </template>

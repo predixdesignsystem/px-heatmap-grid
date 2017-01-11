@@ -246,14 +246,30 @@ Polymer({
       this._calculateAggregation(this.aggregationType, "");
       this._hideColHeaderChanged(false, true);
       this._hideRowHeaderChanged(false, true);
+
+      if (this.rows && this.rows.length) {
+        this.initialRowsOrder = this.rows.map(function (el, i) {
+          return {
+            "index": i,
+            "value": el
+          }
+        });
+      }
+
+      if (this.cols && this.cols.length) {
+        this.initialColsOrder = this.cols.map(function (el, i) {
+          return {
+            "index": i,
+            "value": el
+          }
+        });
+      }
     }
   },
 
   _calculateColor: function(value) {
     var config = this.config;
     var color = [];
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // return value < config.minValue ? config.minValue : value > config.maxValue ? config.maxValue : config.factors.map((x,i) => Math.round(x * value) + config.startColor[i]);
     return value < config.minValue ? config.minValue : value > config.maxValue ? config.maxValue : config.factors.map(function (x, i) {
       return Math.round(x * value) + config.startColor[i];
     })
@@ -263,22 +279,16 @@ Polymer({
     if(newConfig !== oldConfig && newConfig) {
       var config = this.config;
       if(this.scaleColorFrom) {
-        // Arrow function only on ES6 - not in IE 10 - 11
-        // config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
         config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(function (x) {
           return x / 1;
         });
       }
       if(this.scaleColorTo) {
-        // Arrow function only on ES6 - not in IE 10 - 11
-        // config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(x => x / 1);
         config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(function (x) {
           return x / 1;
         });
       }
       nValues = config.maxValue - config.minValue;
-      // Arrow function only on ES6 - not in IE 10 - 11
-      // config.factors = config.endColor.map((c,i) => (c - config.startColor[i]) / nValues);
       config.factors = config.endColor.map(function(c,i) {
         return (c - config.startColor[i]) / nValues;
       });
@@ -320,29 +330,42 @@ Polymer({
   },
 
   _sortCol: function(e) {
-    var col = e.model.index;
-    var order = this.sortColOrder ? this.sortColOrder.index === col ? !this.sortColOrder.order : true : true;
+    var col = e.model.index,
+      order = this.sortColOrder ? this.sortColOrder.index === col ? this.sortColOrder.order === 2 ? 0 : ++this.sortColOrder.order : 0 : 0,
+      _this = this,
+      temp, newData, rows, newRows;
+
     this.sortColOrder = {
       "index": col,
       "order": order
     };
-    var temp = this.heatmapData[col].map(function(el, i) { return {"index": i, "value": el ? typeof el.value === "number" ? el.value : -Infinity : -Infinity}});
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // temp.sort((a, b) => order ? a.value - b.value : b.value - a.value);
-    temp.sort(function(a, b) {
-      return order ? a.value - b.value : b.value - a.value;
-    });
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // var newData = this.heatmapData.map(hd => temp.map(t => hd[t.index]));
-    var newData = this.heatmapData.map(function(hd) {
+
+    if (order < 2) {
+      temp = this.heatmapData[col].map(function (el, i) {
+        return {
+          "index": i,
+          "value": el ? typeof el.value === "number" ? el.value : -Infinity : -Infinity
+        }
+      });
+      temp.sort(function (a, b) {
+        return order ? b.value - a.value : a.value - b.value;
+      });
+    }
+    else {
+      temp = [];
+      this.initialRowsOrder.forEach(function (r) {
+        temp.push({
+          "index": _this.rows.indexOf(r.value)
+        });
+      });
+    }
+    newData = this.heatmapData.map(function(hd) {
       return temp.map(function(t) {
         return hd[t.index];
       });
     });
-    var rows = this.rows;
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // var newRows = temp.map(t => rows[t.index]);
-    var newRows = temp.map(function(t) {
+    rows = this.rows;
+    newRows = temp.map(function(t) {
       return rows[t.index];
     });
     this.set("heatmapData", []);
@@ -352,28 +375,40 @@ Polymer({
   },
 
   _sortRow: function(e) {
-    var row = e.model.index;
-    var order = this.sortRowOrder ? this.sortRowOrder.index === row ? !this.sortRowOrder.order : true : true;
+    var row = e.model.index,
+      order = this.sortRowOrder ? this.sortRowOrder.index === row ? this.sortRowOrder.order === 2 ? 0 : ++this.sortRowOrder.order : 0 : 0,
+      _this = this,
+      temp, hd, newData, cols, newCols;
+
     this.sortRowOrder = {
       "index": row,
       "order": order
     };
-    var temp = this.heatmapData.map(function(el, i) { return {"index": i, "value": el[row] ? typeof el[row].value === "number" ? el[row].value : -Infinity : -Infinity}});
-    var hd = this.heatmapData;
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // temp.sort((a,b) => order ? a.value - b.value : b.value - a.value);
-    temp.sort(function(a,b) {
-      return order ? a.value - b.value : b.value - a.value;
-    });
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // var newData = temp.map(t => hd[t.index]);
-    var newData = temp.map(function(t) {
+    if (order < 2) {
+      temp = this.heatmapData.map(function (el, i) {
+        return {
+          "index": i,
+          "value": el[row] ? typeof el[row].value === "number" ? el[row].value : -Infinity : -Infinity
+        }
+      });
+      temp.sort(function (a, b) {
+        return order ? b.value - a.value : a.value - b.value;
+      });
+    }
+    else {
+      temp = [];
+      this.initialColsOrder.forEach(function (r) {
+        temp.push({
+          "index": _this.cols.indexOf(r.value)
+        });
+      });
+    }
+    hd = this.heatmapData;
+    newData = temp.map(function(t) {
       return hd[t.index];
     });
-    var cols = this.cols;
-    // Arrow function only on ES6 - not in IE 10 - 11
-    // var newCols = temp.map(t => cols[t.index]);
-    var newCols = temp.map(function(t) {
+    cols = this.cols;
+    newCols = temp.map(function(t) {
       return cols[t.index];
     });
     this.set("cols", []);
@@ -384,10 +419,10 @@ Polymer({
 
   _sortingIcon: function(i,h,d) {
     if (this.sortColOrder && h.toLowerCase() === 'col') {
-      return this.sortColOrder.index === i ? d.toLowerCase() === 'up' ? !this.sortColOrder.order : this.sortColOrder.order : true;
+      return this.sortColOrder.index === i ? d.toLowerCase() === 'up' ? this.sortColOrder.order === 0 ? false : true : this.sortColOrder.order === 1 ? false : true : true;
     }
     else if (this.sortRowOrder && h.toLowerCase() === 'row') {
-      return this.sortRowOrder.index === i ? d.toLowerCase() === 'up' ? !this.sortRowOrder.order : this.sortRowOrder.order : true;
+      return this.sortRowOrder.index === i ? d.toLowerCase() === 'up' ? this.sortRowOrder.order === 0 ? false : true : this.sortRowOrder.order === 1 ? false : true : true;
     }
     return true;
   },
@@ -397,10 +432,6 @@ Polymer({
       this.set("showAggregation", true);
       var rowAggregation = [],
         colAggregation = [],
-        // Arrow function only on ES6 - not in IE 10 - 11
-        // data = this.heatmapData.map(hd => hd.map(v => v.value)),
-        // colDigits = data.map(hd => hd.map(a => a && typeof a === "number" ? (a + "").split(".")[1].length : 0).reduce((a,b,i) => i === 0 ? b : a > b ? b : a)),
-        // rowDigits = data[0].map((hd,i) => data.map(a => a[i] && typeof a[i] === "number" ? (a[i] + "").split(".")[1].length : 0).reduce((a,b,i) => i === 0 ? b : a > b ? b : a));
         data = this.heatmapData.map(function(hd) {
           return hd.map(function(v) {
             return v.value;
@@ -434,9 +465,6 @@ Polymer({
       this.set("colAggregatedData", []);
       switch (n.toUpperCase()) {
         case "SUM":
-          // Arrow function only on ES6 - not in IE 10 - 11
-          // rowAggregation = data[0].map((c,i) => data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? b[i] : 0),0));
-          // colAggregation = data.map(c => c.reduce((a,b) => a + (b && typeof b === "number" ? b : 0), 0));
           rowAggregation = data[0].map(function(c, i) {
             return data.reduce(function(a, b) {
               return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
@@ -449,9 +477,6 @@ Polymer({
           });
           break;
         case "AVERAGE":
-          // Arrow function only on ES6 - not in IE 10 - 11
-          // rowAggregation = data[0].map((c,i) => (data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? b[i] : 0),0))/data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? 1 : 0),0));
-          // colAggregation = data.map((c,i) => (c.reduce((a,b) => a + (b && typeof b === "number" ? b : 0), 0))/data[i].reduce((a,b) => a + (b && typeof b === "number" ? 1 : 0),0));
           rowAggregation = data[0].map(function(c,i) {
             return (data.reduce(function(a, b) {
               return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
@@ -468,11 +493,6 @@ Polymer({
           });
           break;
         case "STD":
-          // Arrow function only on ES6 - not in IE 10 - 11
-          // rowAggregation = data[0].map((c,i) => (data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? b[i] : 0),0))/data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? 1 : 0),0));
-          // rowAggregation = data[0].map((c,i) => Math.sqrt((data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? Math.pow((b[i] - rowAggregation[i]),2) : 0), 0)) /data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? 1 : 0),0)));
-          // colAggregation = data.map((c,i) => (c.reduce((a,b) => a + (b && typeof b === "number" ? b : 0), 0))/data[i].reduce((a,b) => a + (b && typeof b === "number" ? 1 : 0),0));
-          // colAggregation = data.map((c,i) => Math.sqrt((c.reduce((a,b) => a + (b && typeof b === "number" ? Math.pow((b - colAggregation[i]),2): 0), 0)) /data[i].reduce((a,b) => a + (b && typeof b === "number" ? 1 : 0),0)));
           rowAggregation = data[0].map(function(c,i) {
             return (data.reduce(function(a, b) {
                 return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
@@ -503,9 +523,6 @@ Polymer({
           });
           break;
         case "MAX":
-          // Arrow function only on ES6 - not in IE 10 - 11
-          // rowAggregation = data[0].map((c,i) => data.reduce((a,b,j) => typeof b[i] === "number" ? a > b[i] ? a : b[i] : a,-Infinity));
-          // colAggregation = data.map(c => c.reduce((a,b,i) => typeof b === "number" ? a > b ? a : b : a, -Infinity));
           rowAggregation = data[0].map(function(c, i) {
             return data.reduce(function(a, b) {
               return typeof b[i] === "number" ? a > b[i] ? a : b[i] : a;
@@ -518,9 +535,6 @@ Polymer({
           });
           break;
         case "MIN":
-          // Arrow function only on ES6 - not in IE 10 - 11
-          // rowAggregation = data[0].map((c,i) => data.reduce((a,b,j) => typeof b[i] === "number" ? a < b[i] ? a : b[i] : a,Infinity));
-          // colAggregation = data.map(c => c.reduce((a,b,i) => typeof b === "number" ? a < b ? a : b : a, Infinity));
           rowAggregation = data[0].map(function(c, i) {
             return data.reduce(function(a, b) {
               return typeof b[i] === "number" ? a < b[i] ? a : b[i] : a;
@@ -533,9 +547,6 @@ Polymer({
           });
           break;
         default: //COUNT
-          // Arrow function only on ES6 - not in IE 10 - 11
-          // rowAggregation = data[0].map((c,i) => data.reduce((a,b) => a + (b[i] && typeof b[i] === "number" ? 1 : 0),0));
-          // colAggregation = data.map((c,i) => data[i].reduce((a,b) => a + (b && typeof b === "number" ? 1 : 0),0));
           rowAggregation = data[0].map(function (c, i) {
             return data.reduce(function (a, b) {
               return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
@@ -548,9 +559,6 @@ Polymer({
           });
       }
 
-      // Arrow function only on ES6 - not in IE 10 - 11
-      // colAggregation = colAggregation.map((v,i) => (v + "").substr(0,(v + "").split(".")[0].length + 2 + colDigits[i]));
-      // rowAggregation = rowAggregation.map((v,i) => (v + "").substr(0,(v + "").split(".")[0].length + 2 + rowDigits[i]));
       colAggregation = colAggregation.map(function (v, i) {
         return (v + "").substr(0, (v + "").split(".")[0].length + 2 + colDigits[i]);
       });
