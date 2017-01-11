@@ -1,3 +1,8 @@
+v0.4.1
+==================
+* Added sort resetting with a 3rd click
+* Added tooltips for values when they're hidden
+
 v0.4.0
 ==================
 * Added support for dataset without rows and columns headers
