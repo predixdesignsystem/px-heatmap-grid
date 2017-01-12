@@ -209,7 +209,7 @@ Polymer({
             nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
             tableData[j][i] = {
               "value": value,
-              "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+              "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
             };
           });
         });
@@ -225,7 +225,7 @@ Polymer({
           nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
           tableData.push( [{
             "value": value,
-            "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+            "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
           }]);
         });
       }
@@ -266,14 +266,14 @@ Polymer({
               if (i === 0 ) tableData.push([]);
               tableData[j].push({
                 "value": value,
-                "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+                "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
               });
             }
             else {
               if (j === 0 ) tableData.push([]);
               tableData[i].push({
                 "value": value,
-                "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+                "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
               });
             }
           });
@@ -308,7 +308,7 @@ Polymer({
           nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
           tableData[iCol][iRow] = {
             "value": cell.value,
-            "color": "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");"
+            "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
           };
         });
       };
@@ -357,7 +357,7 @@ Polymer({
   _calculateColor: function(value) {
     var config = this.config;
     var color = [];
-    return value < config.minValue ? config.minValue : value > config.maxValue ? config.maxValue : config.factors.map(function (x, i) {
+    return value < config.minValue ? null : value > config.maxValue ? null : config.factors.map(function (x, i) {
       return Math.round(x * value) + config.startColor[i];
     })
   },
