@@ -4,7 +4,7 @@ Polymer({
 
   properties: {
     /**
-     * This is the property that holds the heatmap data.
+     * Holds the heatmap data.
      *
      * @property heatmapData
      */
@@ -15,7 +15,7 @@ Polymer({
     },
 
     /**
-     * Use this properties to set the scale lower limit
+     * Sets the scale lower limit
      *
      * @property scaleMin
      */
@@ -26,7 +26,7 @@ Polymer({
     },
 
     /**
-     * Use this properties to set the scale upper limit
+     * Sets the scale upper limit
      *
      * @property scaleMax
      */
@@ -37,7 +37,7 @@ Polymer({
     },
 
     /**
-     * Use this property to show/hide the scale
+     * Show/hide the scale
      *
      * @property hideScale
      */
@@ -47,7 +47,7 @@ Polymer({
     },
 
     /**
-     * Use this property to show/hide the Column Header
+     * Show/hide the Column Header
      *
      * @property hideColHeader
      */
@@ -57,7 +57,7 @@ Polymer({
     },
 
     /**
-     * Use this property to show/hide the Row Header
+     * Show/hide the Row Header
      *
      * @property hideRowHeader
      */
@@ -67,7 +67,7 @@ Polymer({
     },
 
     /**
-     * This property controls when to show/hide the Values in the cells
+     * Controls when to show/hide the Values in the cells
      */
     hideValues: {
       type: Boolean,
@@ -75,7 +75,7 @@ Polymer({
     },
 
     /**
-     * Use this property to set the aggregation type.
+     * Sets the aggregation type.
      * The aggregation result is truncated at the number of
      * significant digits + 1.
      *
@@ -93,7 +93,7 @@ Polymer({
     },
 
     /**
-     * Use this property to set the Scale From color.
+     * Sets the Scale From color.
      *
      * @property scaleColorFrom
      */
@@ -102,7 +102,7 @@ Polymer({
     },
 
     /**
-     * Use this property to set the Scale To color.
+     * Sets the Scale To color.
      *
      * @property scaleColorTo
      */
@@ -142,7 +142,7 @@ Polymer({
   },
 
   /**
-   * Toggle the visibility of the Color Scale
+   * Toggles the visibility of the Color Scale
    *
    * @method toggleScale
    */
@@ -151,7 +151,7 @@ Polymer({
   },
 
   /**
-   * Toggle the visibility of the Row Header
+   * Toggles the visibility of the Row Header
    *
    * @method toggleRowHeader
    */
@@ -160,7 +160,7 @@ Polymer({
   },
 
   /**
-   * Toggle the visibility of the Column Header
+   * Toggles the visibility of the Column Header
    *
    * @method toggleColHeader
    */
@@ -169,7 +169,7 @@ Polymer({
   },
 
   /**
-   * Toggle the visibility of both Column and Row Headers
+   * Toggles the visibility of both Column and Row Headers
    *
    * @method toggleHeaders
    */
@@ -179,7 +179,7 @@ Polymer({
   },
 
   /**
-   * Toggle the visibility of the heatmap cell values
+   * Toggles the visibility of the heatmap cell values
    *
    * @method toggleValues
    */
@@ -188,7 +188,7 @@ Polymer({
   },
 
   /**
-   * Set the Heatmap Data
+   * Sets the Heatmap Data
    *
    * @param {heatmapData} data The Heatmap Data.
    *
@@ -199,7 +199,7 @@ Polymer({
   },
 
   /**
-   * Set the range for the Heatmap Scale
+   * Sets the range for the Heatmap Scale
    *
    * @param {number} min The scale lower limit
    * @param {number} max The scale upper limit
@@ -212,7 +212,7 @@ Polymer({
   },
 
   /**
-   * Set the range colors for the Heatmap
+   * Sets the range colors for the Heatmap
    *
    * @param {string} from The range lower limit color
    * @param {string} to The range upper limit color
