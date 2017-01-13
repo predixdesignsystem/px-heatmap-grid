@@ -358,7 +358,7 @@ Polymer({
     var config = this.config;
     var color = [];
     return value < config.minValue ? null : value > config.maxValue ? null : config.factors.map(function (x, i) {
-      return Math.round(x * value) + config.startColor[i];
+      return Math.round(x * (value - config.minValue)) + config.startColor[i];
     })
   },
 
