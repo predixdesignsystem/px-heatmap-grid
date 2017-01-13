@@ -75,6 +75,7 @@ $table-header-height: 22px;
   font-weight: $ev-heatmap-header-font-weight;
   color: $ev-heatmap-header-font-color;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .col-header {
@@ -90,6 +91,7 @@ $table-header-height: 22px;
   max-width: $ev-heatmap-cell-max-width;
   cursor: pointer;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .fa-caret-up, .fa-caret-down, .fa-caret-left, .fa-caret-right {
