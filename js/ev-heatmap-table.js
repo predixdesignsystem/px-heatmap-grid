@@ -330,6 +330,15 @@ Polymer({
           }
         });
       }
+      // If there's no row header titles uses the first column of data
+      else if (this.heatmapData && this.heatmapData.length) {
+        this.initialRowsOrder = this.heatmapData[0].map(function (value, i) {
+          return {
+            "index": i,
+            "value": value.value
+          }
+        });
+      }
 
       // Saves the initial Columns ordering in initialColsOrder
       if (this.cols && this.cols.length) {
@@ -339,6 +348,15 @@ Polymer({
             "value": el
           }
         });
+      }
+      // If there's no column header titles uses the first row of data
+      else if (this.heatmapData && this.heatmapData.length) {
+        this.initialColsOrder = this.heatmapData.map(function (col, i) {
+          return {
+            "index": i,
+            "value": col[0].value
+          }
+        })
       }
     }
   },
@@ -356,7 +374,6 @@ Polymer({
    */
   _calculateColor: function(value) {
     var config = this.config;
-    var color = [];
     return value < config.minValue ? null : value > config.maxValue ? null : config.factors.map(function (x, i) {
       return Math.round(x * (value - config.minValue)) + config.startColor[i];
     })
@@ -479,7 +496,7 @@ Polymer({
       // 0 sort ascending, 1 sort descending 2 reset sorting
       order = this.sortColOrder ? this.sortColOrder.index === col ? this.sortColOrder.order === 2 ? 0 : ++this.sortColOrder.order : 0 : 0,
       _this = this,
-      temp, newData, rows, newRows;
+      temp, newData, rows, newRows, tempRowsReduced;
 
     this.sortColOrder = {
       "index": col,
@@ -501,11 +518,24 @@ Polymer({
     // Reset sorting
     else {
       temp = [];
-      this.initialRowsOrder.forEach(function (r) {
-        temp.push({
-          "index": _this.rows.indexOf(r.value)
+      if(this.rows && this.rows.length && this.rows[0]) {
+        this.initialRowsOrder.forEach(function (r) {
+          temp.push({
+            "index": _this.rows.indexOf(r.value)
+          });
         });
-      });
+      }
+      // If there's no row header titles uses the first column of data
+      else {
+        tempRowsReduced = this.heatmapData[0].map(function (value) {
+          return value.value;
+        });
+        this.initialRowsOrder.forEach(function (r) {
+          temp.push({
+            "index": tempRowsReduced.indexOf(r.value)
+          });
+        });
+      }
     }
     newData = this.heatmapData.map(function(hd) {
       return temp.map(function(t) {
@@ -535,7 +565,7 @@ Polymer({
       // 0 sort ascending, 1 sort descending 2 reset sorting
       order = this.sortRowOrder ? this.sortRowOrder.index === row ? this.sortRowOrder.order === 2 ? 0 : ++this.sortRowOrder.order : 0 : 0,
       _this = this,
-      temp, hd, newData, cols, newCols;
+      temp, hd, newData, cols, newCols, tempColsReduced;
 
     this.sortRowOrder = {
       "index": row,
@@ -556,11 +586,24 @@ Polymer({
     // Reset sorting
     else {
       temp = [];
-      this.initialColsOrder.forEach(function (r) {
-        temp.push({
-          "index": _this.cols.indexOf(r.value)
+      if (this.cols && this.cols.length && this.cols[0]) {
+        this.initialColsOrder.forEach(function (r) {
+          temp.push({
+            "index": _this.cols.indexOf(r.value)
+          });
         });
-      });
+      }
+      // If there's no column header titles uses the first row of data
+      else {
+        tempColsReduced = this.heatmapData.map(function (col) {
+            return col[0].value;
+          });
+          this.initialColsOrder.forEach(function (r) {
+            temp.push({
+              "index": tempColsReduced.indexOf(r.value)
+            });
+          });
+        }
     }
     hd = this.heatmapData;
     newData = temp.map(function(t) {
