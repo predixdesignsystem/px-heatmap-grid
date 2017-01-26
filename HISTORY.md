@@ -1,3 +1,7 @@
+v0.4.2
+==================
+* Bug fixes
+
 v0.4.1
 ==================
 * Added sort resetting with a 3rd click
