@@ -118,7 +118,7 @@ Polymer({
      */
   },
 
-  attached: function() {
+  ready: function() {
     /**
      * Listener for changing the Heatmap Data
      *

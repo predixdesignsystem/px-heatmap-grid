@@ -1,6 +1,3 @@
-/**
- * Created by ricardobreder on 12/22/16.
- */
 Polymer({
 
   is: 'ev-heatmap-table',
@@ -888,7 +885,12 @@ Polymer({
    * @private
    */
   _hideRowHeaderChanged: function(nHide, oHide) {
-    if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !this.rows[0])) this.hideRowHeader = true;
+    if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !this.rows[0])) {
+      this.hideRowHeader = true;
+    }
+    else if(!nHide && oHide) {
+      this.hideRowHeader = false;
+    }
   },
 
   /**

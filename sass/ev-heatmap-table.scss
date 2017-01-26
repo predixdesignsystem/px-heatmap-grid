@@ -20,6 +20,10 @@ $ev-heatmap-header-font-weight: var(--ev-heatmap-header-font-weight, bold);
 $ev-heatmap-sorting-icon-color: var(--ev-heatmap-sorting-icon-color, $blue-light);
 $table-header-height: 22px;
 
+[hidden] {
+  display: none !important;
+}
+
 .table-cell {
   border-top: $ev-heatmap-table-border-width $ev-heatmap-table-border-style $ev-heatmap-table-border-color;
   border-left: $ev-heatmap-table-border-width $ev-heatmap-table-border-style $ev-heatmap-table-border-color;

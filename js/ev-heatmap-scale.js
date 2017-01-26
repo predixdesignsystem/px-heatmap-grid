@@ -1,6 +1,3 @@
-/**
- * Created by ricardobreder on 12/22/16.
- */
 Polymer({
 
   is: 'ev-heatmap-scale',
