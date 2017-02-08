@@ -271,12 +271,12 @@ function runCustomTests(testN) {
           e.model.index = i;
           tableEl._sortCol(e);
           minI = tableEl.heatmapData[i].map(function (x, j) {
-            return typeof x.value === "number" ? j : undefined;
+            return x ? typeof x.value === "number" ? j : undefined : undefined;
           }).reduce(function (a, b) {
             return b ? a < b ? a : b : a;
           });
           maxI = tableEl.heatmapData[i].map(function (x, j) {
-            return typeof x.value === "number" ? j : undefined;
+            return x ? typeof x.value === "number" ? j : undefined : undefined;
           }).reduce(function (a, b) {
             return b ? a > b ? a : b : a;
           });
@@ -284,12 +284,12 @@ function runCustomTests(testN) {
           assert.equal(tableEl.heatmapData[i][maxI].value, aggregationsResults.col[i].max, "sorting ascending on column " + i + " failed");
           tableEl._sortCol(e);
           minI = tableEl.heatmapData[i].map(function (x, j) {
-            return typeof x.value === "number" ? j : undefined;
+            return x ? typeof x.value === "number" ? j : undefined : undefined;
           }).reduce(function (a, b) {
             return b ? a < b ? a : b : a;
           });
           maxI = tableEl.heatmapData[i].map(function (x, j) {
-            return typeof x.value === "number" ? j : undefined;
+            return x ? typeof x.value === "number" ? j : undefined : undefined;
           }).reduce(function (a, b) {
             return b ? a > b ? a : b : a;
           });

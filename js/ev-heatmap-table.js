@@ -538,12 +538,15 @@ Polymer({
 
     // Sort ascending / descending
     if (order < 2) {
-      temp = this.heatmapData[col].map(function (el, i) {
-        return {
+      temp = [];
+      for (var i = 0; i < this.heatmapData[col].length; i++) {
+        var el = this.heatmapData[col][i];
+        temp.push({
           "index": i,
           "value": el ? typeof el.value === "number" ? el.value : -Infinity : -Infinity
-        }
-      });
+        });
+      }
+
       temp.sort(function (a, b) {
         return order ? b.value - a.value : a.value - b.value;
       });
