@@ -579,11 +579,14 @@ Polymer({
 
     rows = this.rows;
     newRows = [];
-    for (var i = 0; i < temp.length; i ++) {
-      newRows[Object.keys(rows)[temp[i].index]] = rows[Object.keys(rows)[temp[i].index]];
+    if (rows.length) {
+      for (var i = 0; i < temp.length; i++) {
+        newRows[Object.keys(rows)[temp[i].index]] = rows[Object.keys(rows)[temp[i].index]];
+      }
+
+      // Force set length of array
+      newRows.length = Object.keys(newRows).length;
     }
-    // Force set length of array
-    newRows.length = Object.keys(newRows).length;
 
     this.set("heatmapData", []);
     this.set("rows", []);
@@ -652,12 +655,14 @@ Polymer({
 
     cols = this.cols;
     newCols = [];
-    for (var i = 0; i < temp.length; i ++) {
-      newCols[Object.keys(cols)[temp[i].index]] = cols[Object.keys(cols)[temp[i].index]];
-    }
+    if (cols.length) {
+      for (var i = 0; i < temp.length; i++) {
+        newCols[Object.keys(cols)[temp[i].index]] = cols[Object.keys(cols)[temp[i].index]];
+      }
 
-    //Force set length of Array
-    newCols.length = Object.keys(newCols).length;
+      //Force set length of Array
+      newCols.length = Object.keys(newCols).length;
+    }
 
     this.set("cols", []);
     this.set("heatmapData", []);
