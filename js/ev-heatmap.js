@@ -108,14 +108,25 @@ Polymer({
      */
     scaleColorTo: {
       type: String
-    }
+    },
 
+    /**
+     * Enable / Disable loading animation
+     *
+     * @property loading
+     */
+    loading: {
+      type: Boolean,
+      value: false,
+      observer: '_loadingChanged'
+    },
     /**
      * Sent when the Heatmap Data is changed.
      *
      * @event heatmap-data-changed
      * @param {heatmapData} value The new Heatmap Data.
      */
+
   },
 
   ready: function() {
@@ -135,6 +146,17 @@ Polymer({
     });
   },
 
+  /**
+   * Observer for the scaleMin and scaleMax properties.
+   * Set the internal scale variable based on the change
+   * to one of the limits of the scale.
+   *
+   * @param {string} newScale The value for the scale limit.
+   * @param {string} oldScale THe old value.
+   * @private
+   *
+   * @method _scaleChanged
+   */
   _scaleChanged: function(newScale, oldScale) {
     if(newScale !== oldScale && newScale) {
       this.set("scale", [this.scaleMin, this.scaleMax]);
@@ -222,5 +244,25 @@ Polymer({
   setColors: function(from, to) {
     this.set('scaleColorFrom', from);
     this.set('scaleColorTo', to);
+  },
+
+  /**
+   * Observer for the loading property.
+   * Fixes px-spinner not removing the display none
+   * style when changing finished to false.
+   *
+   * @param {boolean} n Hide / Show the spinner
+   * @param {boolean} o The old value
+   * @private
+   *
+   * @method _loadingChanged
+   */
+  _loadingChanged: function(n, o) {
+    var _this = this;
+    if (n !== undefined && n !== o && n) {
+      setTimeout(function () {
+        Polymer.dom(_this.root).querySelector('px-spinner').style.display = '';
+      });
+    }
   }
 });

@@ -22,7 +22,8 @@ Polymer({
      */
     heatmapData: {
       type: Object,
-      value: []
+      value: [],
+      observer: '_heatmapDataChanged'
     },
 
     /**
@@ -145,8 +146,10 @@ Polymer({
   /**
    * After the component is attached to the DOM calls
    * _dataChanged and _configChanged.
-   * Gets the maxWidth that was set using SASS and
+   * Gets the cell max Width that was set using SASS and
    * saves it in cellMaxWidth.
+   * Gets the Row Header max Width that was set using
+   * SASS and saves it in rowMaxWidth.
    */
   attached: function() {
     this._dataChanged(this.data, []);
@@ -158,6 +161,9 @@ Polymer({
     tempEl.classList.add('table-cell');
     Polymer.dom(this.root).appendChild(tempEl);
     this.set('cellMaxWidth', window.getComputedStyle(tempEl).maxWidth);
+    tempEl.classList.remove('table-cell');
+    tempEl.classList.add('table-row-header');
+    this.set('rowMaxWidth', window.getComputedStyle(tempEl).maxWidth);
     Polymer.dom(this.root).removeChild(tempEl);
   },
 
@@ -183,12 +189,14 @@ Polymer({
   _dataChanged: function(newData, oldData) {
     var self = this;
     if(newData != oldData && newData && newData.length) {
-      var rows = [];
-      var cols = [];
-      var tableData = [];
-      var nColor = [];
-      var iRow = -1;
-      var iCol = -1;
+      var rows = [],
+        cols = [],
+        tableData = [],
+        nColor = [],
+        iRow = -1,
+        iCol = -1,
+        initialRowsOrder = [],
+        initialColsOrder = [];
 
       /**
        * Handles the case where newData is an Array<Array>
@@ -249,13 +257,13 @@ Polymer({
        */
       else if (typeof newData[0] === "object" && newData[0].values) {
         newData.forEach(function (cell, i) {
-          iRow = cell.row ? rows.indexOf(cell.row) : -2;
-          iCol = cell.col ? cols.indexOf(cell.col) : -2;
+          iRow = cell.row ? Object.keys(rows).indexOf(cell.row) : -2;
+          iCol = cell.col ? Object.keys(cols).indexOf(cell.col) : -2;
           if (iCol === -2) {
-            rows.push(cell.row);
+            rows[cell.row] = cell.row;
           };
           if (iRow === -2) {
-            cols.push(cell.col);
+            cols[cell.col] = cell.col;
           };
           cell.values.forEach(function (value, j) {
             nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
@@ -291,16 +299,16 @@ Polymer({
        */
       else if (typeof newData[0] !== "string") {
         newData.forEach(function (cell) {
-          iRow = rows.indexOf(cell.row);
-          iCol = cols.indexOf(cell.col);
+          iRow = Object.keys(rows).indexOf(cell.row);
+          iCol = Object.keys(cols).indexOf(cell.col);
           if (iCol === -1) {
-            cols.push(cell.col);
+            cols[cell.col] = cell.col;
             tableData.push([]);
-            iCol = cols.length - 1;
+            iCol = Object.keys(cols).length - 1;
           };
           if (iRow === -1) {
-            rows.push(cell.row);
-            iRow = rows.length - 1;
+            rows[cell.row] = cell.row;
+            iRow = Object.keys(rows).length - 1;
           };
           nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
           tableData[iCol][iRow] = {
@@ -309,6 +317,10 @@ Polymer({
           };
         });
       };
+
+      // Force set length of array
+      rows.length = Object.keys(rows).length;
+      cols.length = Object.keys(cols).length;
 
       this.set("heatmapData", []);
       this.set("rows", rows);
@@ -320,12 +332,13 @@ Polymer({
 
       // Saves the initial Rows ordering in initialRowsOrder
       if (this.rows && this.rows.length) {
-        this.initialRowsOrder = this.rows.map(function (el, i) {
-          return {
-            "index": i,
-            "value": el
-          }
-        });
+        for (var i = 0; i < this.rows.length; i++) {
+          initialRowsOrder.push({
+            index: i,
+            value: Object.keys(this.rows)[i]
+          });
+        }
+        this.initialRowsOrder = initialRowsOrder;
       }
       // If there's no row header titles uses the first column of data
       else if (this.heatmapData && this.heatmapData.length) {
@@ -339,12 +352,13 @@ Polymer({
 
       // Saves the initial Columns ordering in initialColsOrder
       if (this.cols && this.cols.length) {
-        this.initialColsOrder = this.cols.map(function (el, i) {
-          return {
-            "index": i,
-            "value": el
-          }
-        });
+        for (var i = 0; i < this.cols.length; i++) {
+          initialColsOrder.push({
+            index: i,
+            value: Object.keys(this.cols)[i]
+          });
+        }
+        this.initialColsOrder = initialColsOrder;
       }
       // If there's no column header titles uses the first row of data
       else if (this.heatmapData && this.heatmapData.length) {
@@ -435,16 +449,34 @@ Polymer({
   },
 
   /**
-   * Gets the Column title for the Column Header
+   * Helper method to get headers information
    *
-   * @param {number} iCol The index of the column
-   * @returns {string} The column title
+   * @param {string} option The option for the requested information
+   * @param {number} index The index of the column/row
+   * @returns {string|boolean} Multiple
    *
-   * @method _getColHeader
+   * @method _getHeader
    * @private
    */
-  _getColHeader: function(iCol) {
-    return this._resizeHeader(this.cols[iCol]);
+  _getHeader: function(option, index) {
+    if (option === "col") {
+      return this.cols[Object.keys(this.cols)[index]];
+    }
+    else if (option === "row") {
+      return this.rows[Object.keys(this.rows)[index]];
+    }
+    else if (option === "tooltipRow") {
+      return Object.keys(this.rows).indexOf(this.rows[Object.keys(this.rows)[index]]) !== -1;
+    }
+    else if (option === "tooltipCol") {
+      return Object.keys(this.cols).indexOf(this.cols[Object.keys(this.cols)[index]]) !== -1;
+    }
+    else if (option === "fullRow") {
+      return Object.keys(this.rows)[index];
+    }
+    else if (option === "fullCol") {
+      return Object.keys(this.cols)[index];
+    }
   },
 
   /**
@@ -463,8 +495,9 @@ Polymer({
    * @private
    */
   _hideColHeaderChanged: function(newValue, oldValue) {
-    var rowHeader = Polymer.dom(this.root).querySelector(".table-row-header");
-    var scale = Polymer.dom(this.nextElementSibling.root).querySelector(".scale-container");
+    var rowHeader = Polymer.dom(this.root).querySelector(".table-row-header"),
+      scale = Polymer.dom(this.nextElementSibling.root).querySelector(".scale-container"),
+      _this = this;
     if (newValue !== undefined && newValue !== oldValue) {
       if (rowHeader) {
         newValue === false ? rowHeader.classList.remove("disable-col-header") : rowHeader.classList.add("disable-col-header");
@@ -473,11 +506,14 @@ Polymer({
         newValue === false ? scale.classList.remove("disable-col-header") : scale.classList.add("disable-col-header");
       }
     };
-    if (newValue !== undefined && newValue === false && newValue !== oldValue && this.cols && (!this.cols.length || !this.cols[0])) {
+    if (newValue !== undefined && newValue === false && newValue !== oldValue && this.cols && (!this.cols.length || !Object.keys(this.cols)[0])) {
       this.hideColHeader = true;
       if (rowHeader) rowHeader.classList.add("disable-col-header");
       if (scale) scale.classList.add("disable-col-header");
     }
+    setTimeout(function() {
+      _this._resizeColHeaderText();
+    });
   },
 
   /**
@@ -515,10 +551,10 @@ Polymer({
     // Reset sorting
     else {
       temp = [];
-      if(this.rows && this.rows.length && this.rows[0]) {
+      if(this.rows && this.rows.length && Object.keys(this.rows)[0]) {
         this.initialRowsOrder.forEach(function (r) {
           temp.push({
-            "index": _this.rows.indexOf(r.value)
+            "index": Object.keys(_this.rows).indexOf(r.value)
           });
         });
       }
@@ -534,15 +570,21 @@ Polymer({
         });
       }
     }
+
     newData = this.heatmapData.map(function(hd) {
       return temp.map(function(t) {
         return hd[t.index];
       });
     });
+
     rows = this.rows;
-    newRows = temp.map(function(t) {
-      return rows[t.index];
-    });
+    newRows = [];
+    for (var i = 0; i < temp.length; i ++) {
+      newRows[Object.keys(rows)[temp[i].index]] = rows[Object.keys(rows)[temp[i].index]];
+    }
+    // Force set length of array
+    newRows.length = Object.keys(newRows).length;
+
     this.set("heatmapData", []);
     this.set("rows", []);
     this.set("heatmapData", newData);
@@ -583,10 +625,10 @@ Polymer({
     // Reset sorting
     else {
       temp = [];
-      if (this.cols && this.cols.length && this.cols[0]) {
+      if (this.cols && this.cols.length && Object.keys(this.cols)[0]) {
         this.initialColsOrder.forEach(function (r) {
           temp.push({
-            "index": _this.cols.indexOf(r.value)
+            "index": Object.keys(_this.cols).indexOf(r.value)
           });
         });
       }
@@ -602,14 +644,21 @@ Polymer({
           });
         }
     }
+
     hd = this.heatmapData;
     newData = temp.map(function(t) {
       return hd[t.index];
     });
+
     cols = this.cols;
-    newCols = temp.map(function(t) {
-      return cols[t.index];
-    });
+    newCols = [];
+    for (var i = 0; i < temp.length; i ++) {
+      newCols[Object.keys(cols)[temp[i].index]] = cols[Object.keys(cols)[temp[i].index]];
+    }
+
+    //Force set length of Array
+    newCols.length = Object.keys(newCols).length;
+
     this.set("cols", []);
     this.set("heatmapData", []);
     this.set("cols", newCols);
@@ -822,24 +871,6 @@ Polymer({
   },
 
   /**
-   * Resizes the text based on the configured max width of the cell.
-   *
-   * @param {string} text The text to be resized.
-   * @returns {string} The resized text
-   *
-   * @method _resizeHeader
-   * @private
-   */
-  _resizeHeader: function(text) {
-    var cellMaxWidth = this.cellMaxWidth;
-    if(cellMaxWidth !== "none") {
-      cellMaxWidth = Number(cellMaxWidth.split('px')[0]);
-      return cellMaxWidth < 60 || !text ? "-" : text.substr(0, (cellMaxWidth / 10) - 6 | 1) + '...';
-    }
-    return text;
-  },
-
-  /**
    * Observes the changes to scaleColorFrom and triggers
    * _configChanged if newColor exists and is different
    * than oldColor.
@@ -885,12 +916,16 @@ Polymer({
    * @private
    */
   _hideRowHeaderChanged: function(nHide, oHide) {
-    if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !this.rows[0])) {
+    var _this = this;
+    if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !Object.keys(this.rows)[0])) {
       this.hideRowHeader = true;
     }
     else if(!nHide && oHide) {
       this.hideRowHeader = false;
     }
+    setTimeout(function() {
+      _this._resizeRowHeaderText();
+    });
   },
 
   /**
@@ -911,5 +946,123 @@ Polymer({
         this.set('showColAggregation', nShow);
       }
     }
+  },
+
+  /**
+   * Observes the changes to heatmapData and triggers
+   * the resize helper methods.
+   *
+   * @param {object} newData The new heatmap data
+   * @param {object} oldData The old heatmap data
+   * @private
+   */
+  _heatmapDataChanged: function(newData, oldData) {
+    var _this = this;
+    setTimeout(function() {
+      _this._resizeRowHeaderText();
+      _this._resizeColHeaderText();
+    });
+  },
+
+  /**
+   * Helper method to resize the Row header based on
+   * the available space (width) for rendering the text.
+   *
+   * @private
+   */
+  _resizeRowHeaderText: function() {
+    var _this = this,
+      headers = Polymer.dom(this.root).querySelectorAll(".row-header-text"),
+      rowMaxWidth = this.rowMaxWidth,
+      rows, spanEl, initialText, finalText;
+
+    if (rowMaxWidth !== "none") {
+      rowMaxWidth = Number(rowMaxWidth.split('px')[0]) - 30;
+
+      if (headers && headers.length) {
+        headers.forEach(function (headerEl) {
+          headerEl.style.width = rowMaxWidth + 'px';
+          spanEl = headerEl.children[0];
+          initialText = spanEl.innerText;
+          finalText = _this._resizeHelper(headerEl, spanEl);
+          if (finalText) {
+            _this.rows[initialText] = finalText;
+          }
+        });
+
+        // Force notify Polymer that rows object changed
+        rows = this.rows;
+        this.set('rows', []);
+        this.set('rows', rows);
+      }
+    }
+  },
+
+  /**
+   * Helper method to resize the Column header based on
+   * the available space (width) for rendering the text.
+   *
+   * @private
+   */
+  _resizeColHeaderText: function() {
+    var _this = this,
+      headers = Polymer.dom(this.root).querySelectorAll(".col-header-text"),
+      cellMaxWidth = this.cellMaxWidth,
+      cols, spanEl, initialText, finalText;
+
+    if (cellMaxWidth !== "none") {
+      cellMaxWidth = Number(cellMaxWidth.split('px')[0]) - 30;
+
+      if (headers && headers.length) {
+        headers.forEach(function (headerEl) {
+          headerEl.style.width = cellMaxWidth + 'px';
+          spanEl = headerEl.children[0];
+          initialText = spanEl.innerText;
+          finalText = _this._resizeHelper(headerEl, spanEl);
+          if (finalText) {
+            _this.cols[initialText] = finalText;
+          }
+        });
+
+        // Force notify Polymer that cols object changed
+        cols = this.cols;
+        this.set('cols', []);
+        this.set('cols', cols);
+      }
+    }
+  },
+
+  /**
+   * Helper method to reduce the innerText of the child element
+   * based on the width of the parent element, adding ellipses
+   * to the end of the text.
+   *
+   * @method _resizeHelper
+   * @private
+   *
+   * @param {HTMLElement} parent The parent Element
+   * @param {HTMLElement} child The child Element
+   *
+   * @returns {string|null} The reduced text if the child was
+   * bigger than parent, or null if the child was
+   * smaller than parent.
+   */
+  _resizeHelper: function(parent, child) {
+    var childWidth = window.getComputedStyle(child).width.replace('px', '') / 1,
+      parentWidth = window.getComputedStyle(parent).width.replace('px', '') / 1,
+      changed = false;
+
+    while (childWidth > parentWidth) {
+
+      if (child.innerText.substr(child.innerText.length - 3, child.innerText.length) !== '...') {
+        child.innerText += '...';
+      }
+      child.innerText = child.innerText.substr(0, child.innerText.length - 4) + '...';
+      childWidth = window.getComputedStyle(child).width.replace('px', '') / 1;
+      parentWidth = window.getComputedStyle(parent).width.replace('px', '') / 1;
+      changed = true;
+    }
+
+    return changed ? child.innerText : null;
   }
 });

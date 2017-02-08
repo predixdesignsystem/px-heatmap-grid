@@ -26,7 +26,8 @@
   "dependencies": {
     "polymer": "^1.6.1",
     "px-theme": "^1.1.2",
-    "px-tooltip": "^0.9.19"
+    "px-tooltip": "^0.9.19",
+    "px-spinner": "https://github.com/PredixDev/px-spinner.git#~0.5.3"
   },
   "devDependencies": {
     "px-forms-design": "^0.3.17",
@@ -53,6 +54,7 @@
     "px-theme": "^2.0.1",
     "px-defaults-design": "^1.0.2",
     "px-colors-design": "^0.3.0",
-    "px-mixins-design": "^0.3.0"
+    "px-mixins-design": "^0.3.0",
+    "px-layout-design": "^0.4.0"
   }
 }

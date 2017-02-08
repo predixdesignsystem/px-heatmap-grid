@@ -2,6 +2,8 @@
 @import "px-colors-design/_settings.colors.scss";
 @import "ev-heatmap-table";
 
+$ev-heatmap-scale-width: var(--ev-heatmap-scale-width, 75px);
+
 .scale-gradient {
   background: linear-gradient(to top, $ev-heatmap-start-color, $ev-heatmap-end-color);
   align-self: stretch;
@@ -14,8 +16,11 @@
 }
 
 .scale-container {
-  margin-left: calculateRem(20px);
+  padding-left: calculateRem(10px);
+  padding-right: calculateRem(10px);
   font-size: 12px;
   color: $gray8;
   margin-top: $table-header-height;
+  max-width: $ev-heatmap-scale-width;
+  min-width: $ev-heatmap-scale-width;
 }

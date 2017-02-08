@@ -15,14 +15,19 @@
         <div class="table-row-header flex flex--col flex--justify">
           <template is="dom-if" if="{{showAggregation}}">
             <div class="row-header">
-              <span>{{aggregationType}}</span>
+              <div class="row-header-text"><span>{{aggregationType}}</span></div>
             </div>
           </template>
           <template is="dom-repeat" items="{{rows}}" as="row">
             <div class="row-header" on-click="_sortRow">
-              <span>{{row}}</span>
-              <i class="fa fa-caret-left" hidden$="{{_sortingIcon(index,'row','up',heatmapData)}}"></i>
-              <i class="fa fa-caret-right" hidden$="{{_sortingIcon(index,'row','down',heatmapData)}}"></i>
+              <div class="row-header-text"><span>{{_getHeader("row", index, rows)}}</span></div>
+              <i class="fa fa-caret-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></i>
+              <i class="fa fa-caret-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></i>
+              <px-tooltip smart-orientation="true"
+                          delay="100"
+                          tooltip-message="{{_getHeader('fullRow', index, rows)}}"
+                          hidden$="{{_getHeader('tooltipRow', index, rows)}}">
+              </px-tooltip>
             </div>
           </template>
         </div>
@@ -30,7 +35,9 @@
       <div class="table-container flex flex--row flex--left flex--top">
         <template is="dom-if" if="{{showRowAggregation}}">
           <div class="table-column">
-            <div class="col-header" hidden$="{{hideColHeader}}"><span>{{_resizeHeader(aggregationType)}}</span></div>
+            <div class="col-header" hidden$="{{hideColHeader}}">
+              <div class="col-header-text"><span>{{aggregationType}}</span></div>
+            </div>
             <div class="table-empty-cell" hidden$="{{!showColAggregation}}">
               <span>&nbsp;</span>
             </div>
@@ -45,9 +52,14 @@
           <div class="table-column">
             <template is="dom-if" if="{{!hideColHeader}}">
               <div class="col-header" on-click="_sortCol">
-                <span>{{_getColHeader(index, cols)}}</span>
+                <div class="col-header-text"><span>{{_getHeader("col", index, cols)}}</span></div>
                 <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></i>
                 <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>
+                <px-tooltip smart-orientation="true"
+                            delay="100"
+                            tooltip-message="{{_getHeader('fullCol', index, cols)}}"
+                            hidden$="{{_getHeader('tooltipCol', index, cols)}}">
+                </px-tooltip>
               </div>
             </template>
             <template is="dom-if" if="{{showColAggregation}}">

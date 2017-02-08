@@ -5,11 +5,11 @@
 $ev-heatmap-start-color: var(--ev-heatmap-start-color, $gray1);
 $ev-heatmap-end-color: var(--ev-heatmap-end-color, $alert-red);
 $ev-heatmap-cell-min-width: var(--ev-heatmap-cell-min-width, 50px);
-$ev-heatmap-cell-max-width: var(--ev-heatmap-cell-max-width, none);
+$ev-heatmap-cell-max-width: var(--ev-heatmap-cell-max-width, 120px);
 $ev-heatmap-cell-min-height: var(--ev-heatmap-cell-min-height, 25px);
 $ev-heatmap-cell-max-height: var(--ev-heatmap-cell-max-height, none);
 $ev-heatmap-table-border-width: var(--ev-heatmap-table-border-width, 1px);
-$ev-heatmap-table-border-color: var(--ev-heatmap-table-border-color, $gray6);
+$ev-heatmap-table-border-color: var(--ev-heatmap-table-border-color, $gray4);
 $ev-heatmap-table-border-style: var(--ev-heatmap-table-border-style, solid);
 $ev-heatmap-values-font-size: var(--ev-heatmap-values-font-size, 14px);
 $ev-heatmap-values-font-color: var(--ev-heatmap-values-font-color, $dv-dark-gray);
@@ -18,6 +18,7 @@ $ev-heatmap-header-font-size: var(--ev-heatmap-header-font-size, 15px);
 $ev-heatmap-header-font-color: var(--ev-heatmap-header-font-color, $black);
 $ev-heatmap-header-font-weight: var(--ev-heatmap-header-font-weight, bold);
 $ev-heatmap-sorting-icon-color: var(--ev-heatmap-sorting-icon-color, $blue-light);
+$ev-heatmap-column-header-width: var(--ev-heatmap-column-header-width, 150px);
 $table-header-height: 22px;
 
 [hidden] {
@@ -64,10 +65,11 @@ $table-header-height: 22px;
 }
 
 .table-row-header {
-  padding-right: calculateRem(20px);
+  padding-right: calculateRem(10px);
+  padding-left: calculateRem(10px);
   margin-top: $table-header-height;
-  min-height: $ev-heatmap-cell-min-height;
-  max-height: $ev-heatmap-cell-max-height;
+  min-width: $ev-heatmap-column-header-width;
+  max-width: $ev-heatmap-column-header-width;
 }
 
 .disable-col-header {
@@ -82,11 +84,19 @@ $table-header-height: 22px;
   white-space: nowrap;
 }
 
+.row-header-text {
+  display: inline-block;
+}
+
+.row-header-text > span {
+  display: inline-block;
+}
+
 .col-header {
   font-size: $ev-heatmap-header-font-size;
   font-weight: $ev-heatmap-header-font-weight;
   color: $ev-heatmap-header-font-color;
-  padding-right: calculateRem(13px);
+  padding-right: calculateRem(3px);
   padding-left: calculateRem(3px);
   padding-bottom: calculateRem(3px);
   max-height: $table-header-height;
@@ -96,6 +106,14 @@ $table-header-height: 22px;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.col-header-text {
+  display: inline-block;
+}
+
+.col-header-text > span {
+  display: inline-block;
 }
 
 .fa-caret-up, .fa-caret-down, .fa-caret-left, .fa-caret-right {

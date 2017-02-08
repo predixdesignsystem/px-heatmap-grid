@@ -7,6 +7,7 @@
 <link rel="import" href="css/ev-heatmap-styles.html">
 <link rel="import" href="ev-heatmap-table.html">
 <link rel="import" href="ev-heatmap-scale.html">
+<link rel="import" href="../px-spinner/px-spinner.html"/>
 
 <!--
 The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
@@ -190,20 +191,25 @@ Custom property | Description | Default
   <template>
     <style include="ev-heatmap-styles"></style>
     <div class="flex flex--row flex--left flex--top flex--stretch">
-      <ev-heatmap-table data="{{heatmapData}}"
-                        scale="{{scale}}"
-                        hide-row-header="{{hideRowHeader}}"
-                        hide-col-header="{{hideColHeader}}"
-                        aggregation-type="{{aggregationType}}"
-                        hide-values="{{hideValues}}"
-                        scale-color-from="{{scaleColorFrom}}"
-                        scale-color-to="{{scaleColorTo}}"
-      ></ev-heatmap-table>
-      <ev-heatmap-scale scale="{{scale}}"
-                        hidden$="{{hideScale}}"
-                        scale-color-from="{{scaleColorFrom}}"
-                        scale-color-to="{{scaleColorTo}}"
-      ></ev-heatmap-scale>
+      <template is="dom-if" if="{{loading}}">
+        <px-spinner finished="{{!loading}}" size="50" class="spinner"></px-spinner>
+      </template>
+      <template is="dom-if" if="{{!loading}}">
+        <ev-heatmap-table data="{{heatmapData}}"
+                          scale="{{scale}}"
+                          hide-row-header="{{hideRowHeader}}"
+                          hide-col-header="{{hideColHeader}}"
+                          aggregation-type="{{aggregationType}}"
+                          hide-values="{{hideValues}}"
+                          scale-color-from="{{scaleColorFrom}}"
+                          scale-color-to="{{scaleColorTo}}">
+        </ev-heatmap-table>
+        <ev-heatmap-scale scale="{{scale}}"
+                          hidden$="{{hideScale}}"
+                          scale-color-from="{{scaleColorFrom}}"
+                          scale-color-to="{{scaleColorTo}}">
+        </ev-heatmap-scale>
+      </template>
     </div>
   </template>
 </dom-module>

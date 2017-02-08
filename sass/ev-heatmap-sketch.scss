@@ -49,6 +49,9 @@ Predix branding rules go in ev-heatmap-predix.scss, not in this file.
 ev-heatmap-scale {
   display: flex;
 }
+.spinner {
+  margin: 0 auto;
+}
 // Trumps
 @import "inuit-clearfix/_trumps.clearfix.scss";
 @import "px-spacing-responsive-design/_trumps.spacing-responsive.scss";

@@ -52,7 +52,7 @@
       <div class="tabContainer u-pt++ u-pl++">
         <px-tab-set selected="{{selected}}" bare no-bottom-border>
           <template is="dom-repeat" items="{{optionsArray}}">
-            <px-tab>Option {{indexPlusOne(index)}}</px-tab>
+            <px-tab on-tap="_refreshHeatmap">Option {{indexPlusOne(index)}}</px-tab>
           </template>
         </px-tab-set>
       </div>
@@ -82,6 +82,11 @@
                   <input id="hideValues{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideValues::change}}">
                   <label for$="hideValues{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
                   <div class="u-ml-">Hide Values</div>
+                </div>
+                <div class="flex u-mb-">
+                  <input id="loading{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.loading::change}}">
+                  <label for$="loading{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
+                  <div class="u-ml-">Loading</div>
                 </div>
                 <div class="u-mb-">Scale Min: <input class="text-input" type="text" placeholder="{{item.scaleMin}}" value="{{item.scaleMin::input}}" /></div>
                 <div class="u-mb-">Scale Max: <input class="text-input" type="text" placeholder="{{item.scaleMax}}" value="{{item.scaleMax::input}}" /></div>
@@ -118,7 +123,8 @@
                                     scale-max="{{item.scaleMax}}"
                                     scale-color-from="{{item.scaleColorFrom}}"
                                     scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]">
+                                    aggregation-type="[[item.aggregationType]]"
+                                    loading="{{item.loading}}">
                         </ev-heatmap>
                       </template>
 
@@ -133,7 +139,8 @@
                                     scale-max="{{item.scaleMax}}"
                                     scale-color-from="{{item.scaleColorFrom}}"
                                     scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]">
+                                    aggregation-type="[[item.aggregationType]]"
+                                    loading="{{item.loading}}">
                         </ev-heatmap>
                       </template>
 
@@ -148,7 +155,8 @@
                                     scale-max="{{item.scaleMax}}"
                                     scale-color-from="{{item.scaleColorFrom}}"
                                     scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]">
+                                    aggregation-type="[[item.aggregationType]]"
+                                    loading="{{item.loading}}">
                         </ev-heatmap>
                       </template>
 
@@ -162,7 +170,8 @@
                                     scale-max="{{item.scaleMax}}"
                                     scale-color-from="{{item.scaleColorFrom}}"
                                     scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]">
+                                    aggregation-type="[[item.aggregationType]]"
+                                    loading="{{item.loading}}">
                         </ev-heatmap>
                       </template>
 
@@ -176,7 +185,8 @@
                                     scale-max="{{item.scaleMax}}"
                                     scale-color-from="{{item.scaleColorFrom}}"
                                     scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]">
+                                    aggregation-type="[[item.aggregationType]]"
+                                    loading="{{item.loading}}">
                         </ev-heatmap>
                       </template>
                     </div>
@@ -237,7 +247,8 @@
               "aggregationType": "disabled",
               "scaleColorFrom": "",
               "scaleColorTo": "",
-              "heatmapData": "{{data}}"
+              "heatmapData": "{{data}}",
+              "loading": false
             },
             {
               "hideScale": false,
@@ -248,7 +259,8 @@
               "aggregationType": "disabled",
               "scaleColorFrom": "",
               "scaleColorTo": "",
-              "heatmapData": "{{data}}"
+              "heatmapData": "{{data}}",
+              "loading": false
             },
             {
               "hideScale": false,
@@ -259,7 +271,8 @@
               "aggregationType": "disabled",
               "scaleColorFrom": "",
               "scaleColorTo": "",
-              "heatmapData": "{{data}}"
+              "heatmapData": "{{data}}",
+              "loading": false
             },
             {
               "hideScale": false,
@@ -269,7 +282,8 @@
               "aggregationType": "disabled",
               "scaleColorFrom": "",
               "scaleColorTo": "",
-              "heatmapData": "{{data}}"
+              "heatmapData": "{{data}}",
+              "loading": false
             },
             {
               "hideScale": true,
@@ -279,7 +293,8 @@
               "aggregationType": "disabled",
               "scaleColorFrom": "",
               "scaleColorTo": "",
-              "heatmapData": "{{data}}"
+              "heatmapData": "{{data}}",
+              "loading": false
             }
           ],
           indexPlusOne = function(num) {
@@ -293,6 +308,12 @@
           },
           isTab = function(num1, num2) {
             return num1 === num2;
+          },
+          _refreshHeatmap = function(e) {
+            var hm = document.querySelector('#ev_heatmap_'+e.model.index);
+            var hmt = Polymer.dom(hm.root).querySelector('ev-heatmap-table');
+            hmt._hideColHeaderChanged(false, true);
+            hmt._hideRowHeaderChanged(false, true);
           },
           ironAjaxEl = document.createElement('iron-ajax'),
           nodes;
@@ -315,6 +336,7 @@
       template.hideColHeaderToggle = hideColHeaderToggle;
       template.hideRowHeaderToggle = hideRowHeaderToggle;
       template.isTab = isTab;
+      template._refreshHeatmap = _refreshHeatmap;
     });
   </script>
 </body>
