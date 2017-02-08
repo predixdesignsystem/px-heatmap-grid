@@ -1,3 +1,9 @@
+v0.5.0
+==================
+* Added loading animation functionality
+* Added auto ellipses to header titles
+* Added tooltip to ellipsed titles
+
 v0.4.2
 ==================
 * Bug fixes
