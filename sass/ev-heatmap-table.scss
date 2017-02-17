@@ -1,5 +1,5 @@
-@import 'px-flexbox-design/_base.flexbox.scss';
 @import "px-colors-design/_settings.colors.scss";
+@import 'px-flexbox-design/_base.flexbox.scss';
 @import "px-iconography-design/_base.iconography.scss";
 
 $ev-heatmap-start-color: var(--ev-heatmap-start-color, $gray1);
@@ -35,7 +35,6 @@ $table-header-height: 22px;
   font-size: $ev-heatmap-values-font-size;
   font-weight: $ev-heatmap-values-font-weight;
   color: $dv-dark-gray;
-  padding: calculateRem(3px);
   text-align: right;
 }
 
@@ -44,7 +43,6 @@ $table-header-height: 22px;
   min-width: $ev-heatmap-cell-min-width;
   max-width: $ev-heatmap-cell-max-width;
   color: $ev-heatmap-values-font-color;
-  padding: calculateRem(3px);
 }
 
 .table-cell:nth-last-child(2) {
@@ -65,8 +63,6 @@ $table-header-height: 22px;
 }
 
 .table-row-header {
-  padding-right: calculateRem(10px);
-  padding-left: calculateRem(10px);
   margin-top: $table-header-height;
   min-width: $ev-heatmap-column-header-width;
   max-width: $ev-heatmap-column-header-width;
@@ -96,9 +92,6 @@ $table-header-height: 22px;
   font-size: $ev-heatmap-header-font-size;
   font-weight: $ev-heatmap-header-font-weight;
   color: $ev-heatmap-header-font-color;
-  padding-right: calculateRem(3px);
-  padding-left: calculateRem(3px);
-  padding-bottom: calculateRem(3px);
   max-height: $table-header-height;
   min-height: $table-header-height;
   min-width: $ev-heatmap-cell-min-width;

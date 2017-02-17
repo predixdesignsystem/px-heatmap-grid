@@ -12,7 +12,7 @@
     <style include="ev-heatmap-table-styles"></style>
     <div class="table-container flex flex--row">
       <template is="dom-if" if="{{!hideRowHeader}}">
-        <div class="table-row-header flex flex--col flex--justify">
+        <div class="u-pl- u-pr- table-row-header flex flex--col flex--justify">
           <template is="dom-if" if="{{showAggregation}}">
             <div class="row-header">
               <div class="row-header-text"><span>{{aggregationType}}</span></div>
@@ -35,14 +35,14 @@
       <div class="table-container flex flex--row flex--left flex--top">
         <template is="dom-if" if="{{showRowAggregation}}">
           <div class="table-column">
-            <div class="col-header" hidden$="{{hideColHeader}}">
+            <div class="u-pr-- u-pb-- u-pl-- col-header" hidden$="{{hideColHeader}}">
               <div class="col-header-text"><span>{{aggregationType}}</span></div>
             </div>
-            <div class="table-empty-cell" hidden$="{{!showColAggregation}}">
+            <div class="u-p-- table-empty-cell" hidden$="{{!showColAggregation}}">
               <span>&nbsp;</span>
             </div>
             <template is="dom-repeat" items="{{rowAggregatedData}}">
-              <div class="table-cell">
+              <div class="u-p-- table-cell">
                 <span>{{item}}</span>
               </div>
             </template>
@@ -51,7 +51,7 @@
         <template is="dom-repeat" items="{{heatmapData}}" as="items" id="heatmapDataRepeat">
           <div class="table-column">
             <template is="dom-if" if="{{!hideColHeader}}">
-              <div class="col-header" on-click="_sortCol">
+              <div class="u-pr-- u-pb-- u-pl-- col-header" on-click="_sortCol">
                 <div class="col-header-text"><span>{{_getHeader("col", index, cols)}}</span></div>
                 <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></i>
                 <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>
@@ -63,12 +63,12 @@
               </div>
             </template>
             <template is="dom-if" if="{{showColAggregation}}">
-              <div class="table-cell">
+              <div class="u-p-- table-cell">
                 <span>{{_getColAggregation(index, colAggregatedData)}}</span>
               </div>
             </template>
             <template is="dom-repeat" items="{{items}}" as="item">
-              <div class="table-cell cell-values" style$="[[item.color]]">
+              <div class="u-p-- table-cell cell-values" style$="[[item.color]]">
                 <span hidden$="{{hideValues}}">{{item.value}}</span>
                 <template is="dom-if" if="{{hideValues}}">
                   <px-tooltip smart-orientation="true" delay="100" tooltip-message="{{item.value}}"></px-tooltip>

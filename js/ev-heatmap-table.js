@@ -440,11 +440,9 @@ Polymer({
    */
   _scaleChanged: function(newScale, oldScale) {
     if(newScale !== oldScale && newScale && newScale.length === 2) {
-      var config = this.config;
-      config.minValue = newScale[0];
-      config.maxValue = newScale[1];
-      this.set("config", config);
-      this._configChanged(config, {});
+      this.set("config.minValue", newScale[0]);
+      this.set("config.maxValue", newScale[1]);
+      this._configChanged(this.config, {});
     }
   },
 
