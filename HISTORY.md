@@ -1,3 +1,9 @@
+v0.5.1
+==================
+* Updated padding and margin to use px-spacing-design
+* Removed duplicated SCSS imports
+* Minor code patches
+
 v0.5.0
 ==================
 * Added loading animation functionality
