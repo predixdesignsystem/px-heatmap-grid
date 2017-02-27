@@ -4,13 +4,13 @@
     'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
 -->
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="css/ev-heatmap-styles.html">
-<link rel="import" href="ev-heatmap-table.html">
-<link rel="import" href="ev-heatmap-scale.html">
+<link rel="import" href="css/px-heatmap-grid-styles.html">
+<link rel="import" href="px-heatmap-grid-table.html">
+<link rel="import" href="px-heatmap-grid-scale.html">
 <link rel="import" href="../px-spinner/px-spinner.html"/>
 
 <!--
-The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
+The px-heatmap-grid is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
 There are 5 different options based on the dataset used. The options to customize the component are detailed in the API reference below.
 
 ### Option 1
@@ -157,45 +157,45 @@ Also when displaying the aggregations, the column aggregation is not displayed.
 
 ### Basic Usage
 
-    <ev-heatmap heatmap-data={{data}}></ev-heatmap>
+    <px-heatmap-grid heatmap-data={{data}}></px-heatmap-grid>
 
 ### Styling
 The following variables are available for styling:
 
 Custom property | Description | Default
 ----------------|-------------|----------
-`--ev-heatmap-start-color` | The color mapped to the scale min | `$gray1`
-`--ev-heatmap-end-color` | The color mapped to the scale max | `$alert-red`
-`--ev-heatmap-cell-min-width` | The min width for each cell | `50px`
-`--ev-heatmap-cell-max-width` | The max width for each cell | `none`
-`--ev-heatmap-cell-min-height` | The min height for each cell | `25px`
-`--ev-heatmap-cell-max-height` | The max height for each cell | `none`
-`--ev-heatmap-table-border-width` | The heatmap table border width | `1px`
-`--ev-heatmap-table-border-color` | The heatmap table border color | `$gray6`
-`--ev-heatmap-table-border-style` | The heatmap table border style | `solid`
-`--ev-heatmap-values-font-size` | The heatmap values font size | `14px`
-`--ev-heatmap-values-font-color` | The heatmap values font color | `$dv-dark-gray`
-`--ev-heatmap-values-font-weight` | The heatmap values font weight | `normal`
-`--ev-heatmap-header-font-size` | The heatmap column and row headers font size | `15px`
-`--ev-heatmap-header-font-color` | The heatmap column and row headers font color | `$black`
-`--ev-heatmap-header-font-weight` | The heatmap column and row headers font weight | `bold`
-`--ev-heatmap-sorting-icon-color` | The sorting icon color | `$blue-light`
+`--px-heatmap-grid-start-color` | The color mapped to the scale min | `$gray1`
+`--px-heatmap-grid-end-color` | The color mapped to the scale max | `$alert-red`
+`--px-heatmap-grid-cell-min-width` | The min width for each cell | `50px`
+`--px-heatmap-grid-cell-max-width` | The max width for each cell | `none`
+`--px-heatmap-grid-cell-min-height` | The min height for each cell | `25px`
+`--px-heatmap-grid-cell-max-height` | The max height for each cell | `none`
+`--px-heatmap-grid-table-border-width` | The heatmap table border width | `1px`
+`--px-heatmap-grid-table-border-color` | The heatmap table border color | `$gray6`
+`--px-heatmap-grid-table-border-style` | The heatmap table border style | `solid`
+`--px-heatmap-grid-values-font-size` | The heatmap values font size | `14px`
+`--px-heatmap-grid-values-font-color` | The heatmap values font color | `$dv-dark-gray`
+`--px-heatmap-grid-values-font-weight` | The heatmap values font weight | `normal`
+`--px-heatmap-grid-header-font-size` | The heatmap column and row headers font size | `15px`
+`--px-heatmap-grid-header-font-color` | The heatmap column and row headers font color | `$black`
+`--px-heatmap-grid-header-font-weight` | The heatmap column and row headers font weight | `bold`
+`--px-heatmap-grid-sorting-icon-color` | The sorting icon color | `$blue-light`
 
-@element ev-heatmap
+@element px-heatmap-grid
 @blurb A highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors
 @homepage index.html
 @demo index.html
 -->
 
-<dom-module id="ev-heatmap">
+<dom-module id="px-heatmap-grid">
   <template>
-    <style include="ev-heatmap-styles"></style>
+    <style include="px-heatmap-grid-styles"></style>
     <div class="flex flex--row flex--left flex--top flex--stretch">
       <template is="dom-if" if="{{loading}}">
         <px-spinner finished="{{!loading}}" size="50" class="spinner"></px-spinner>
       </template>
       <template is="dom-if" if="{{!loading}}">
-        <ev-heatmap-table data="{{heatmapData}}"
+        <px-heatmap-grid-table data="{{heatmapData}}"
                           scale="{{scale}}"
                           hide-row-header="{{hideRowHeader}}"
                           hide-col-header="{{hideColHeader}}"
@@ -203,12 +203,12 @@ Custom property | Description | Default
                           hide-values="{{hideValues}}"
                           scale-color-from="{{scaleColorFrom}}"
                           scale-color-to="{{scaleColorTo}}">
-        </ev-heatmap-table>
-        <ev-heatmap-scale scale="{{scale}}"
+        </px-heatmap-grid-table>
+        <px-heatmap-grid-scale scale="{{scale}}"
                           hidden$="{{hideScale}}"
                           scale-color-from="{{scaleColorFrom}}"
                           scale-color-to="{{scaleColorTo}}">
-        </ev-heatmap-scale>
+        </px-heatmap-grid-scale>
       </template>
     </div>
   </template>
@@ -217,7 +217,7 @@ Custom property | Description | Default
 <script>
   Polymer({
 
-    is: 'ev-heatmap',
+    is: 'px-heatmap-grid',
 
     properties: {
       /**

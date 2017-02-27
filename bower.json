@@ -1,8 +1,8 @@
 {
-  "name": "ev-heatmap",
+  "name": "px-heatmap-grid",
   "version": "0.5.1",
   "main": [
-    "ev-heatmap.html"
+    "px-heatmap-grid.html"
   ],
   "ignore": [
     ".*",
@@ -15,7 +15,7 @@
     "OSS_Notice.pdf",
     "scripts",
     ".github",
-    "ev-heatmap.png",
+    "px-heatmap-grid.png",
     "LICENSE.md",
     "CONTRIBUTING.md",
     "HISTORY.md",

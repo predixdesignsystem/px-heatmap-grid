@@ -9,14 +9,14 @@
  */
 
 //
-// Sass for the "sketch" notion of the ev-heatmap component
+// Sass for the "sketch" notion of the px-heatmap-grid component
 //
 // @author
 //
 
 /*
 THIS FILE SHOULD CONTAIN ONLY ABSTRACT/'SKETCH' THEME RULES, NOT SPECIFIC TO PREDIX BRANDING
-Predix branding rules go in ev-heatmap-predix.scss, not in this file.
+Predix branding rules go in px-heatmap-grid-predix.scss, not in this file.
 */
 
 
@@ -38,7 +38,7 @@ $inuit-enable-margins--tiny: true;
 @import "px-viewport-design/_base.viewport.scss";
 @import "px-headings-design/_base.headings.scss";
 
-ev-heatmap-scale {
+px-heatmap-grid-scale {
   display: flex;
 }
 

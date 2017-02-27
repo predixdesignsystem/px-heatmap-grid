@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ev-heatmap Demo</title>
-  <link rel="stylesheet" type="text/css" href="css/ev-heatmap-demo.css" />
+  <title>px-heatmap-grid Demo</title>
+  <link rel="stylesheet" type="text/css" href="css/px-heatmap-grid-demo.css" />
   <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
   <script src="../webcomponentsjs/webcomponents-lite.js"></script>
 
@@ -15,7 +15,7 @@
   <link rel="import" href="../px-api-viewer/px-api-viewer.html" />
   <link rel="import" href="../px-tabs/px-tab-set.html" />
   <link rel="import" href="../px-dropdown/px-dropdown.html" />
-  <link rel="import" href="ev-heatmap.html" />
+  <link rel="import" href="px-heatmap-grid.html" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
   <link rel="import" href="../px-demo-snippet/px-demo-snippet.html">
@@ -31,18 +31,18 @@
 
     <!-- description -->
     <div class="hero u-p++ text--shadow">
-      <a class="actionable flex flex--right flex--middle" href="https://github.build.ge.com/emerging-verticals/ev-heatmap" target="_blank">
+      <a class="actionable flex flex--right flex--middle" href="https://github.build.ge.com/emerging-verticals/px-heatmap-grid" target="_blank">
         <iron-icon class="menu__open" icon="fa:fa-github"></iron-icon>View on Github
       </a>
-      <h1 class="delta">ev-heatmap</h1>
+      <h1 class="delta">px-heatmap-grid</h1>
       <p class="description-text">
-        The ev-heatmap is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
+        The px-heatmap-grid is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
         There are 5 different options based on the dataset used. The options to customize the component are detailed in the API reference below.
       </p>
       <div class="flex">
-        <img class="u-mr-- " src="https://img.shields.io/travis/PredixDev/ev-heatmap.svg?style=flat-square" alt="Travis"  onerror="this.style.display='none'"/>
-        <img class="u-mr--" src="https://img.shields.io/bower/v/ev-heatmap.svg?style=flat-square" alt="Bower" onerror="this.style.display='none'" />
-        <img class="u-mr--" src="https://img.shields.io/github/issues-raw/PredixDev/ev-heatmap.svg?style=flat-square" alt="Issues" onerror="this.style.display='none'" />
+        <img class="u-mr-- " src="https://img.shields.io/travis/PredixDev/px-heatmap-grid.svg?style=flat-square" alt="Travis"  onerror="this.style.display='none'"/>
+        <img class="u-mr--" src="https://img.shields.io/bower/v/px-heatmap-grid.svg?style=flat-square" alt="Bower" onerror="this.style.display='none'" />
+        <img class="u-mr--" src="https://img.shields.io/github/issues-raw/PredixDev/px-heatmap-grid.svg?style=flat-square" alt="Issues" onerror="this.style.display='none'" />
       </div>
     </div>
     <br />
@@ -113,7 +113,7 @@
                     <div class="u-mt+">
                       <!-- Full data example -->
                       <template is="dom-if" if="{{isTab(index, 0)}}">
-                        <ev-heatmap id="ev_heatmap_0"
+                        <px-heatmap-grid id="ev_heatmap_0"
                                     heatmap-data="{{data0}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
@@ -125,12 +125,12 @@
                                     scale-color-to="{{item.scaleColorTo}}"
                                     aggregation-type="[[item.aggregationType]]"
                                     loading="{{item.loading}}">
-                        </ev-heatmap>
+                        </px-heatmap-grid>
                       </template>
 
                       <!-- Columns Example -->
                       <template is="dom-if" if="{{isTab(index, 1)}}">
-                        <ev-heatmap id="ev_heatmap_1"
+                        <px-heatmap-grid id="ev_heatmap_1"
                                     heatmap-data="{{data1}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
@@ -141,12 +141,12 @@
                                     scale-color-to="{{item.scaleColorTo}}"
                                     aggregation-type="[[item.aggregationType]]"
                                     loading="{{item.loading}}">
-                        </ev-heatmap>
+                        </px-heatmap-grid>
                       </template>
 
                       <!-- Rows example -->
                       <template is="dom-if" if="{{isTab(index, 2)}}">
-                        <ev-heatmap id="ev_heatmap_2"
+                        <px-heatmap-grid id="ev_heatmap_2"
                                     heatmap-data="{{data2}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
@@ -157,12 +157,12 @@
                                     scale-color-to="{{item.scaleColorTo}}"
                                     aggregation-type="[[item.aggregationType]]"
                                     loading="{{item.loading}}">
-                        </ev-heatmap>
+                        </px-heatmap-grid>
                       </template>
 
                       <!-- No headers example -->
                       <template is="dom-if" if="{{isTab(index, 3)}}">
-                        <ev-heatmap id="ev_heatmap_3"
+                        <px-heatmap-grid id="ev_heatmap_3"
                                     heatmap-data="{{data3}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
@@ -172,12 +172,12 @@
                                     scale-color-to="{{item.scaleColorTo}}"
                                     aggregation-type="[[item.aggregationType]]"
                                     loading="{{item.loading}}">
-                        </ev-heatmap>
+                        </px-heatmap-grid>
                       </template>
 
                       <!-- Single array example -->
                       <template is="dom-if" if="{{isTab(index, 4)}}">
-                        <ev-heatmap id="ev_heatmap_4"
+                        <px-heatmap-grid id="ev_heatmap_4"
                                     heatmap-data="{{data4}}"
                                     hide-values="[[item.hideValues]]"
                                     hide-scale="[[item.hideScale]]"
@@ -187,14 +187,14 @@
                                     scale-color-to="{{item.scaleColorTo}}"
                                     aggregation-type="[[item.aggregationType]]"
                                     loading="{{item.loading}}">
-                        </ev-heatmap>
+                        </px-heatmap-grid>
                       </template>
                     </div>
                   </div>
                   <div class="flex__item">
                     <px-demo-snippet
                       element-properties={{item}}
-                      element-name="ev-heatmap">
+                      element-name="px-heatmap-grid">
                     </px-demo-snippet>
                   </div>
                 </div>
@@ -203,7 +203,7 @@
             <div class="apiContainer">
               <div class="flex flex--col api u-mt++" >
                 <div>
-                  <px-api-viewer source="ev-heatmap"></px-api-viewer>
+                  <px-api-viewer source="px-heatmap-grid"></px-api-viewer>
                 </div>
               </div>
             </div>
@@ -311,7 +311,7 @@
           },
           _refreshHeatmap = function(e) {
             var hm = document.querySelector('#ev_heatmap_'+e.model.index);
-            var hmt = Polymer.dom(hm.root).querySelector('ev-heatmap-table');
+            var hmt = Polymer.dom(hm.root).querySelector('px-heatmap-grid-table');
             hmt._hideColHeaderChanged(false, true);
             hmt._hideRowHeaderChanged(false, true);
           },

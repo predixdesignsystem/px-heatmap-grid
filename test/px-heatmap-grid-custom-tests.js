@@ -47,29 +47,29 @@ function runCustomTests(testN) {
   heatmapEl.dispatchEvent(event);
   // This is the placeholder suite to place custom tests in
   // Use testCase(options) for a more convenient setup of the test cases
-  suite('Custom Automation Tests for ev-heatmap with ' + testN, function() {
+  suite('Custom Automation Tests for px-heatmap-grid with ' + testN, function() {
     test('Check main element exists', function(done){
-      assert.isTrue(heatmapEl !== undefined, "ev-heatmap doesn't exist");
-      assert.isTrue(heatmapEl !== null, "ev-heatmap is empty");
+      assert.isTrue(heatmapEl !== undefined, "px-heatmap-grid doesn't exist");
+      assert.isTrue(heatmapEl !== null, "px-heatmap-grid is empty");
       done();
     });
 
     test('Check table element exists', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table');
-      assert.isTrue(tableEl !== undefined, "ev-heatmap-table doesn't exist");
-      assert.isTrue(tableEl !== null, "ev-heatmap-table is empty");
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table');
+      assert.isTrue(tableEl !== undefined, "px-heatmap-grid-table doesn't exist");
+      assert.isTrue(tableEl !== null, "px-heatmap-grid-table is empty");
       done();
     });
 
     test('Check scale element exists', function(done){
-      var scaleEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-scale');
-      assert.isTrue(scaleEl !== undefined, "ev-heatmap-scale doesn't exist");
-      assert.isTrue(scaleEl !== null, "ev-heatmap-scale is empty");
+      var scaleEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-scale');
+      assert.isTrue(scaleEl !== undefined, "px-heatmap-grid-scale doesn't exist");
+      assert.isTrue(scaleEl !== null, "px-heatmap-grid-scale is empty");
       done();
     });
 
     test('Check row header element exists', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
           rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
       assert.isTrue(rowHeader !== undefined, "row header element doesn't exist");
       assert.isTrue(rowHeader !== null, "row header element is empty");
@@ -77,7 +77,7 @@ function runCustomTests(testN) {
     });
 
     test('Check column header element exists', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         colHeader = Polymer.dom(tableEl.root).querySelector('.col-header');
       if (testN !== "dataset without headers" && testN !== "single array dataset" && testN !== "rows only") {
         assert.isTrue(colHeader !== undefined, "column header element doesn't exist");
@@ -87,7 +87,7 @@ function runCustomTests(testN) {
     });
 
     test('Check table column element exists', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         tableCol = Polymer.dom(tableEl.root).querySelector('.table-column');
       assert.isTrue(tableCol !== undefined, "table column element doesn't exist");
       assert.isTrue(tableCol !== null, "table column element is empty");
@@ -95,7 +95,7 @@ function runCustomTests(testN) {
     });
 
     test('Check cell element exists', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         cell = Polymer.dom(tableEl.root).querySelector('.table-cell');
       assert.isTrue(cell !== undefined, "cell element doesn't exist");
       assert.isTrue(cell !== null, "cell element is empty");
@@ -103,7 +103,7 @@ function runCustomTests(testN) {
     });
 
     test('Check row headers have correct data', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         rowHeader = Polymer.dom(tableEl.root).querySelectorAll('.row-header'),
         headers = [];
       if (testN !== "dataset without headers" && testN !== "single array dataset" && testN !== "columns only") {
@@ -120,7 +120,7 @@ function runCustomTests(testN) {
     });
 
     test('Check column headers have correct data', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         colHeader = Polymer.dom(tableEl.root).querySelectorAll('.col-header'),
         headers = [];
       if (testN !== "dataset without headers" && testN !== "single array dataset" && testN !== "rows only") {
@@ -137,7 +137,7 @@ function runCustomTests(testN) {
     });
 
     test('Check table cells have correct data', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         tableCells = Polymer.dom(tableEl.root).querySelectorAll('.table-cell'),
         cells = [];
       tableCells.forEach(function (x) {
@@ -172,26 +172,26 @@ function runCustomTests(testN) {
     });
 
     test('Check hide/show color scale functionality', function(done){
-      var scaleEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-scale');
-      assert.isFalse(heatmapEl.hideScale, "ev-heatmap hideScale property was supposed to be false");
+      var scaleEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-scale');
+      assert.isFalse(heatmapEl.hideScale, "px-heatmap-grid hideScale property was supposed to be false");
       assert.notEqual(window.getComputedStyle(scaleEl).display, 'none', "scale element was not supposed to be hidden");
       heatmapEl.toggleScale();
 
-      assert.isTrue(heatmapEl.hideScale, "ev-heatmap hideScale property was supposed to be true");
+      assert.isTrue(heatmapEl.hideScale, "px-heatmap-grid hideScale property was supposed to be true");
       assert.equal(window.getComputedStyle(scaleEl).display, 'none', "scale element was supposed to be hidden");
       done();
     });
 
     test('Check hide/show row headers functionality', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
       if (testN !== "dataset without headers" &&  testN !== "single array dataset" && testN !== "columns only") {
-        assert.isFalse(heatmapEl.hideRowHeader, "ev-heatmap hideRowHeader property was supposed to be false");
+        assert.isFalse(heatmapEl.hideRowHeader, "px-heatmap-grid hideRowHeader property was supposed to be false");
         assert.equal(window.getComputedStyle(rowHeader).display, "flex", "row header element was not supposed to be hidden");
 
         heatmapEl.toggleRowHeader();
         setTimeout(function () {
-          assert.isTrue(heatmapEl.hideRowHeader, "ev-heatmap hideRowHeader property was supposed to be true");
+          assert.isTrue(heatmapEl.hideRowHeader, "px-heatmap-grid hideRowHeader property was supposed to be true");
           assert.equal(window.getComputedStyle(rowHeader).display, "none", "row header element was supposed to be hidden");
           done();
         }, 10);
@@ -202,11 +202,11 @@ function runCustomTests(testN) {
     });
 
     test('Check hide/show column headers functionality', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         colHeader = Polymer.dom(tableEl.root).querySelectorAll('.col-header'),
         rowHeader = Polymer.dom(tableEl.root).querySelector('.table-row-header');
       if (testN !== "dataset without headers" &&  testN !== "single array dataset" && testN !== "rows only") {
-        assert.isFalse(heatmapEl.hideColHeader, "ev-heatmap hideColHeader property was supposed to be false");
+        assert.isFalse(heatmapEl.hideColHeader, "px-heatmap-grid hideColHeader property was supposed to be false");
         assert.isFalse(rowHeader.classList.contains('disable-col-header'), "row header should not contain class 'disable-col-header'");
         colHeader.forEach(function (x) {
           assert.equal(window.getComputedStyle(x).display, "block", "row header '" + x.innerText + "' was not supposed to be hidden");
@@ -214,7 +214,7 @@ function runCustomTests(testN) {
 
         heatmapEl.toggleColHeader();
         setTimeout(function () {
-          assert.isTrue(heatmapEl.hideColHeader, "ev-heatmap hideColHeader property was supposed to be true");
+          assert.isTrue(heatmapEl.hideColHeader, "px-heatmap-grid hideColHeader property was supposed to be true");
           assert.isTrue(rowHeader.classList.contains('disable-col-header'), "row header should contain class 'disable-col-header'");
           colHeader.forEach(function (x) {
             assert.equal(window.getComputedStyle(x).display, "none", "row header '" + x.innerText + "' was supposed to be hidden");
@@ -239,7 +239,7 @@ function runCustomTests(testN) {
     });
 
     test('Check Aggregation functionality', function(done) {
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table');
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table');
       aggregationsTypes.map(function(at) {
         heatmapEl.set("aggregationType", at);
         tableEl.rowAggregatedData.map(function (d, i) {
@@ -256,7 +256,7 @@ function runCustomTests(testN) {
     });
 
     test('Check Sorting functionality', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table');
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table');
       var e = {
         "model": {
           "index": 0
@@ -333,7 +333,7 @@ function runCustomTests(testN) {
     });
 
     test('Check hide/show values functionality', function(done){
-      var tableEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-table'),
+      var tableEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-table'),
         values = Polymer.dom(tableEl.root).querySelectorAll('.cell-values span');
       heatmapEl.hideValues = false;
       values.forEach(function (v) {
@@ -352,7 +352,7 @@ function runCustomTests(testN) {
     });
 
     test('Check scale color changes are propagated', function(done) {
-      var scaleEl = Polymer.dom(heatmapEl.root).querySelector('ev-heatmap-scale'),
+      var scaleEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-scale'),
         colorFrom = scaleEl.scaleColorFrom,
         colorTo = scaleEl.scaleColorTo;
       heatmapEl.setColors('#cccccc', '#00ff77');

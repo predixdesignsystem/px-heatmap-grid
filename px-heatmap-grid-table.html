@@ -4,12 +4,12 @@
     'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
 -->
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="css/ev-heatmap-table-styles.html">
+<link rel="import" href="css/px-heatmap-grid-table-styles.html">
 <link rel="import" href="../px-tooltip/px-tooltip.html">
 
-<dom-module id="ev-heatmap-table">
+<dom-module id="px-heatmap-grid-table">
   <template>
-    <style include="ev-heatmap-table-styles"></style>
+    <style include="px-heatmap-grid-table-styles"></style>
     <div class="table-container flex flex--row">
       <template is="dom-if" if="{{!hideRowHeader}}">
         <div class="u-pl- u-pr- table-row-header flex flex--col flex--justify">
@@ -85,7 +85,7 @@
 <script>
   Polymer({
 
-    is: 'ev-heatmap-table',
+    is: 'px-heatmap-grid-table',
 
     properties: {
       /**
