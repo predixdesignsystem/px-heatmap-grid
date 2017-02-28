@@ -260,8 +260,9 @@
      * Triggers the aggregation calculation and the hide/show
      * method to hide/show the titles according to the data.
      *
-     * newData accepts 3 different data formats:
-     * Array<Object>
+     * newData accepts 4 different data formats:
+     * Array<Object> (with rows and columns)
+     * Array<Object> (with rows or columns)
      * Array<Array>
      * Array<number>
      *
@@ -272,149 +273,43 @@
      * @private
      */
     _dataChanged: function(newData, oldData) {
-      var self = this;
       if(newData != oldData && newData && newData.length) {
         var rows = [],
           cols = [],
           tableData = [],
-          nColor = [],
-          iRow = -1,
-          iCol = -1,
-          initialRowsOrder = [],
-          initialColsOrder = [];
+          response = {};
 
-        /**
-         * Handles the case where newData is an Array<Array>
-         * [
-         *   [0, 1, 2, 3, 4, 5, 6],
-         *   [7, 8, 9, 10, 11, 12, 13],
-         *   [14, 15, 16, 17, 18, 19, 20]
-         * ]
-         *
-         */
+        //Handles the case where newData is an Array<Array>
         if (Array.isArray(newData[0])) {
-          for (var i = 0; i < newData.length; i++) {
-            var colArr = newData[i];
-            for (var j = 0; j < colArr.length; j++) {
-              var value = colArr[j];
-              if(!tableData[j]) tableData.push([]);
-              nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
-              tableData[j][i] = {
-                "value": value,
-                "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
-              };
-            }
-          }
+          tableData = this._processNewDataArray(newData);
         }
-        /**
-         * Handles the case where newData is an Array<number>
-         *
-         * [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-         *
-         */
+
+        //Handles the case where newData is an Array<number>
         else if (typeof newData[0] !== "object" && typeof newData[0] !== "string") {
-          for (var i = 0; i < newData.length; i++) {
-            var value = newData[i];
-            nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
-            tableData.push( [{
-              "value": value,
-              "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
-            }]);
-          }
+          tableData = this._processNewDataNumber(newData)
         }
-        /**
-         * Handles the case where newData is an Array<Object>
-         * and the Object has the property values
-         *
-         * [
-         *   {
-         *     "row": "Row Title",
-         *     "values": [0, 1, 2, 3, 4, 5]
-         *   }
-         * ]
-         *
-         * or
-         *
-         * [
-         *   {
-         *     "col": "Column Title",
-         *     "values": [0, 1, 2, 3, 4, 5]
-         *   }
-         * ]
-         *
-         */
+
+        //Handles the case where newData is an Array<Object> and the Object has the property values
         else if (typeof newData[0] === "object" && newData[0].values) {
-          for (var i = 0; i < newData.length; i++) {
-            var cell = newData[i];
-            iRow = cell.row ? Object.keys(rows).indexOf(cell.row) : -2;
-            iCol = cell.col ? Object.keys(cols).indexOf(cell.col) : -2;
-            if (iCol === -2) {
-              rows[cell.row] = cell.row;
-            };
-            if (iRow === -2) {
-              cols[cell.col] = cell.col;
-            };
-            for (var j = 0; j < cell.values.length; j++) {
-              var value = cell.values[j];
-              nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
-              if (iCol === -2) {
-                if (i === 0 ) tableData.push([]);
-                tableData[j].push({
-                  "value": value,
-                  "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
-                });
-              }
-              else {
-                if (j === 0 ) tableData.push([]);
-                tableData[i].push({
-                  "value": value,
-                  "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
-                });
-              }
-            }
-          }
+          response = this._processNewDataObject(newData);
+          tableData = response['tableData'];
+          rows = response['rows'];
+          cols = response['cols'];
         }
-        /**
-         * Finally handles the last newData type where newData
-         * is an Array<Object>
-         *
-         * [
-         *   {
-         *     "row": "Row Title",
-         *     "col": "Column Title",
-         *     "value": 10
-         *   }
-         * ]
-         *
-         */
+
+        //Finally handles the last newData type where newData is an Array<Object>
         else if (typeof newData[0] !== "string") {
-          for (var i = 0; i < newData.length; i ++) {
-            var cell = newData[i];
-            if (cell) {
-              iRow = Object.keys(rows).indexOf(cell.row);
-              iCol = Object.keys(cols).indexOf(cell.col);
-              if (iCol === -1) {
-                cols[cell.col] = cell.col;
-                tableData.push([]);
-                iCol = Object.keys(cols).length - 1;
-              };
-              if (iRow === -1) {
-                rows[cell.row] = cell.row;
-                iRow = Object.keys(rows).length - 1;
-              };
-              nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
-              tableData[iCol][iRow] = {
-                "value": cell.value,
-                "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
-              };
-            }
-          }
-        };
+          response = this._processNewDataFullObject(newData);
+          tableData = response['tableData'];
+          rows = response['rows'];
+          cols = response['cols'];
+        }
 
         // Force set length of array
         rows.length = Object.keys(rows).length;
         cols.length = Object.keys(cols).length;
 
+        // Initialize the heatmap
         this.set("heatmapData", []);
         this.set("rows", rows);
         this.set("cols", cols);
@@ -422,46 +317,270 @@
         this._calculateAggregation(this.aggregationType, "");
         this._hideColHeaderChanged(false, true);
         this._hideRowHeaderChanged(false, true);
+        this._initializeRowsOrdering();
+        this._initializeColsOrdering();
+      }
+    },
 
-        // Saves the initial Rows ordering in initialRowsOrder
-        if (this.rows && this.rows.length) {
-          for (var i = 0; i < this.rows.length; i++) {
-            initialRowsOrder.push({
-              index: i,
-              value: Object.keys(this.rows)[i]
+    /**
+     * Processes the heatmap data and creates the data model used to render the grid.
+     *
+     * Handles the case where the data is an Array<Array>
+     * [
+     *   [0, 1, 2, 3, 4, 5, 6],
+     *   [7, 8, 9, 10, 11, 12, 13],
+     *   [14, 15, 16, 17, 18, 19, 20]
+     * ]
+     *
+     * @param {Array<Array>} data The heatmap data.
+     *
+     * @returns {Array<Object>} The heatmap data in the format to be rendered.
+     *
+     * @method _processNewDataArray
+     * @private
+     */
+    _processNewDataArray: function(data) {
+      var nColor = [],
+        tableData = [];
+
+      for (var i = 0; i < data.length; i++) {
+        var colArr = data[i];
+        for (var j = 0; j < colArr.length; j++) {
+          var value = colArr[j];
+          if(!tableData[j]) tableData.push([]);
+          nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
+          tableData[j][i] = {
+            "value": value,
+            "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
+          };
+        }
+      }
+
+      return tableData;
+    },
+
+    /**
+     * Processes the heatmap data and creates the data model used to render the grid.
+     *
+     * Handles the case where newData is an Array<Object> and the Object has the property values
+     *
+     * [
+     *   {
+     *     "row": "Row Title",
+     *     "values": [0, 1, 2, 3, 4, 5]
+     *   }
+     * ]
+     *
+     * or
+     *
+     * [
+     *   {
+     *     "col": "Column Title",
+     *     "values": [0, 1, 2, 3, 4, 5]
+     *   }
+     * ]
+     *
+     * @param {Array<Object>} data The heatmap data.
+     *
+     * @returns {Object} The heatmap data in the format to be rendered, the list of col titles and the list of row titles.
+     *
+     * @method _processNewDataArray
+     * @private
+     */
+    _processNewDataObject: function(data) {
+      var nColor = [],
+        iRow = -1,
+        iCol = -1,
+        tableData = [],
+        rows = [],
+        cols = [];
+
+      for (var i = 0; i < data.length; i++) {
+        var cell = data[i];
+        iRow = cell.row ? Object.keys(rows).indexOf(cell.row) : -2;
+        iCol = cell.col ? Object.keys(cols).indexOf(cell.col) : -2;
+
+        if (iCol === -2) {
+          rows[cell.row] = cell.row;
+        }
+
+        if (iRow === -2) {
+          cols[cell.col] = cell.col;
+        }
+
+        for (var j = 0; j < cell.values.length; j++) {
+          var value = cell.values[j];
+          nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
+
+          if (iCol === -2) {
+            if (i === 0 ) tableData.push([]);
+            tableData[j].push({
+              "value": value,
+              "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
             });
           }
-          this.initialRowsOrder = initialRowsOrder;
+          else {
+            if (j === 0 ) tableData.push([]);
+            tableData[i].push({
+              "value": value,
+              "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
+            });
+          }
         }
-        // If there's no row header titles uses the first column of data
-        else if (this.heatmapData && this.heatmapData.length) {
-          this.initialRowsOrder = this.heatmapData[0].map(function (value, i) {
-            return {
-              "index": i,
-              "value": value.value
-            }
+      }
+
+      return {
+        tableData: tableData,
+        rows: rows,
+        cols: cols
+      };
+    },
+
+    /**
+     * Processes the heatmap data and creates the data model used to render the grid.
+     *
+     * Handles the case where newData is an Array<number>
+     *
+     * [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+     *
+     *
+     * @param {Array<Array>} data The heatmap data.
+     *
+     * @returns {Array<Object>} The heatmap data in the format to be rendered.
+     *
+     * @method _processNewDataArray
+     * @private
+     */
+    _processNewDataNumber: function(data) {
+      var nColor = [],
+        tableData = [];
+
+      for (var i = 0; i < data.length; i++) {
+        var value = data[i];
+        nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
+        tableData.push( [{
+          "value": value,
+          "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
+        }]);
+      }
+
+      return tableData;
+    },
+
+    /**
+     * Processes the heatmap data and creates the data model used to render the grid.
+     *
+     * Handles the last newData type where newData is an Array<Object>
+     *
+     * [
+     *   {
+     *     "row": "Row Title",
+     *     "col": "Column Title",
+     *     "value": 10
+     *   }
+     * ]
+     *
+     * @param {Array<Object>} data The heatmap data.
+     *
+     * @returns {Object} The heatmap data in the format to be rendered, the list of col titles and the list of row titles.
+     *
+     * @method _processNewDataArray
+     * @private
+     */
+    _processNewDataFullObject: function(data) {
+      var nColor = [],
+        iRow = -1,
+        iCol = -1,
+        tableData = [],
+        rows = [],
+        cols = [];
+
+      for (var i = 0; i < data.length; i ++) {
+        var cell = data[i];
+        if (cell) {
+          iRow = Object.keys(rows).indexOf(cell.row);
+          iCol = Object.keys(cols).indexOf(cell.col);
+          if (iCol === -1) {
+            cols[cell.col] = cell.col;
+            tableData.push([]);
+            iCol = Object.keys(cols).length - 1;
+          };
+          if (iRow === -1) {
+            rows[cell.row] = cell.row;
+            iRow = Object.keys(rows).length - 1;
+          };
+          nColor = this.config != undefined ? this._calculateColor(cell.value) : [255, 255, 255];
+          tableData[iCol][iRow] = {
+            "value": cell.value,
+            "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
+          };
+        }
+      }
+
+      return {
+        tableData: tableData,
+        rows: rows,
+        cols: cols
+      };
+    },
+
+    /**
+     * Saves the initial Rows ordering in initialRowsOrder
+     *
+     * @method _initializeRowsOrdering
+     * @private
+     */
+    _initializeRowsOrdering: function() {
+      var initialRowsOrder = [];
+
+      if (this.rows && this.rows.length) {
+        for (var i = 0; i < this.rows.length; i++) {
+          initialRowsOrder.push({
+            index: i,
+            value: Object.keys(this.rows)[i]
           });
         }
+        this.initialRowsOrder = initialRowsOrder;
+      }
 
-        // Saves the initial Columns ordering in initialColsOrder
-        if (this.cols && this.cols.length) {
-          for (var i = 0; i < this.cols.length; i++) {
-            initialColsOrder.push({
-              index: i,
-              value: Object.keys(this.cols)[i]
-            });
+      // If there's no row header titles uses the first column of data
+      else if (this.heatmapData && this.heatmapData.length) {
+        this.initialRowsOrder = this.heatmapData[0].map(function (value, i) {
+          return {
+            "index": i,
+            "value": value.value
           }
-          this.initialColsOrder = initialColsOrder;
+        });
+      }
+    },
+
+    /**
+     * Saves the initial Columns ordering in initialColsOrder
+     *
+     * @method _initializeColsOrdering
+     * @private
+     */
+    _initializeColsOrdering: function() {
+      var initialColsOrder = [];
+
+      if (this.cols && this.cols.length) {
+        for (var i = 0; i < this.cols.length; i++) {
+          initialColsOrder.push({
+            index: i,
+            value: Object.keys(this.cols)[i]
+          });
         }
-        // If there's no column header titles uses the first row of data
-        else if (this.heatmapData && this.heatmapData.length) {
-          this.initialColsOrder = this.heatmapData.map(function (col, i) {
-            return {
-              "index": i,
-              "value": col[0].value
-            }
-          })
-        }
+        this.initialColsOrder = initialColsOrder;
+      }
+
+      // If there's no column header titles uses the first row of data
+      else if (this.heatmapData && this.heatmapData.length) {
+        this.initialColsOrder = this.heatmapData.map(function (col, i) {
+          return {
+            "index": i,
+            "value": col[0].value
+          }
+        })
       }
     },
 
@@ -477,10 +596,22 @@
      * @private
      */
     _calculateColor: function(value) {
-      var config = this.config;
-      return value < config.minValue ? null : value > config.maxValue ? null : config.factors.map(function (x, i) {
-        return Math.round(x * (value - config.minValue)) + config.startColor[i];
-      })
+      var config = this.config,
+        colors = [];
+
+      // if value is outside the range return a null
+      if (value < config.minValue || value > config.maxValue) {
+        colors = null;
+      }
+
+      // otherwise calculate the colors based on the color and values range
+      else {
+        colors = config.factors.map(function (x, i) {
+          return Math.round(x * (value - config.minValue)) + config.startColor[i];
+        });
+      }
+
+      return colors;
     },
 
     /**
@@ -617,10 +748,14 @@
      */
     _sortCol: function(e) {
       var col = e.model.index,
-        // 0 sort ascending, 1 sort descending 2 reset sorting
-        order = this.sortColOrder ? this.sortColOrder.index === col ? this.sortColOrder.order === 2 ? 0 : ++this.sortColOrder.order : 0 : 0,
+        order = 0,
         _this = this,
         temp, newData, rows, newRows, tempRowsReduced;
+
+      // 0 sort ascending, 1 sort descending 2 reset sorting
+      if (this.sortColOrder && this.sortColOrder.index === col && this.sortColOrder.order !== 2) {
+        order = ++this.sortColOrder.order;
+      }
 
       this.sortColOrder = {
         "index": col,
@@ -700,10 +835,14 @@
      */
     _sortRow: function(e) {
       var row = e.model.index,
-        // 0 sort ascending, 1 sort descending 2 reset sorting
-        order = this.sortRowOrder ? this.sortRowOrder.index === row ? this.sortRowOrder.order === 2 ? 0 : ++this.sortRowOrder.order : 0 : 0,
+        order = 0,
         _this = this,
         temp, hd, newData, cols, newCols, tempColsReduced;
+
+      // 0 sort ascending, 1 sort descending 2 reset sorting
+      if (this.sortRowOrder && this.sortRowOrder.index === row && this.sortRowOrder.order !== 2) {
+        order = ++this.sortRowOrder.order;
+      }
 
       this.sortRowOrder = {
         "index": row,
@@ -780,13 +919,45 @@
      * @private
      */
     _sortingIcon: function(i,h,d) {
-      if (this.sortColOrder && h.toLowerCase() === 'col') {
-        return this.sortColOrder.index === i ? d.toLowerCase() === 'up' ? this.sortColOrder.order === 0 ? false : true : this.sortColOrder.order === 1 ? false : true : true;
+      var hideIcon = true;
+
+      // If h is a col and the current sorting column is the one in i
+      if (this.sortColOrder && h.toLowerCase() === 'col' && this.sortColOrder.index === i) {
+
+        // If it's the up arrow and current sorting ascending
+        if (d.toLowerCase() === 'up' && this.sortColOrder.order === 0) {
+
+          // Show the icon
+          hideIcon = false;
+        }
+
+        // Otherwise if it's the down arrow and sorting descending
+        else if (d.toLowerCase() === 'down' && this.sortColOrder.order === 1) {
+
+          // Show the icon
+          hideIcon = false;
+        }
       }
-      else if (this.sortRowOrder && h.toLowerCase() === 'row') {
-        return this.sortRowOrder.index === i ? d.toLowerCase() === 'up' ? this.sortRowOrder.order === 0 ? false : true : this.sortRowOrder.order === 1 ? false : true : true;
+
+      // If h is a row and the current sorting row is the one in i
+      else if (this.sortRowOrder && h.toLowerCase() === 'row' && this.sortRowOrder.index === i) {
+
+        // If it's the up arrow and current sorting ascending
+        if (d.toLowerCase() === 'up' && this.sortRowOrder.order === 0) {
+
+          // Show the icon
+          hideIcon = false;
+        }
+
+        // Otherwise if it's the down arrow and sorting descending
+        else if (d.toLowerCase() === 'down' && this.sortRowOrder.order === 1) {
+
+          // Show the icon
+          hideIcon = false;
+        }
       }
-      return true;
+
+      return hideIcon;
     },
 
     /**
