@@ -343,24 +343,39 @@ Custom property | Description | Default
        * @event heatmap-data-changed
        * @param {heatmapData} value The new Heatmap Data.
        */
-
     },
 
     ready: function() {
-      /**
-       * Listener for changing the Heatmap Data
-       *
-       * @event set-heatmap-data
-       * @param {heatmapData} data The Heatmap Data
-       */
-      this.addEventListener('set-heatmap-data', function(e) {
-        this.setData(e.detail.data);
-      });
+      this.addEventListener('set-heatmap-data', this._setHeatmapDataEventCallback);
+      this.addEventListener('scale-colors-changed', this._scaleColorsChangedEventCallback);
+    },
 
-      this.addEventListener('scale-colors-changed', function(e) {
-        e.stopPropagation();
-        this.setColors(e.detail.from, e.detail.to);
-      });
+    detached: function() {
+      this.removeEventListener('set-heatmap-data', this._setHeatmapDataEventMethod);
+      this.removeEventListener('scale-colors-changed', this._scaleColorsChangedEventCallback);
+    },
+
+    /**
+     * Listener for changing the Heatmap Data
+     *
+     * @event set-heatmap-data
+     * @param {heatmapData} data The Heatmap Data
+     */
+    _setHeatmapDataEventCallback: function(e) {
+      this.setData(e.detail.data);
+    },
+
+    /**
+     * Listener for changing the Heatmap Scale colors
+     *
+     * @event scale-colors-changed
+     * @param {from} The scale from color
+     * @param {to} The scale to color
+     * @private
+     */
+    _scaleColorsChangedEventCallback: function(e) {
+      e.stopPropagation();
+      this.setColors(e.detail.from, e.detail.to);
     },
 
     /**
