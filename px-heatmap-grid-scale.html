@@ -74,6 +74,16 @@
         type: String,
         observer: '_scaleColorToChanged'
       }
+
+      /**
+       * Sent to notify the color change with the new properties in the
+       * event detail property. The event bubbles up.
+       *
+       * @event scale-colors-changed
+       * @param {Number} from The new scale from color.
+       * @param {Number} to The new scale to color.
+       * @private
+       */
     },
 
     /**
