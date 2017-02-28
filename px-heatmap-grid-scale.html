@@ -101,7 +101,7 @@
       if(newScale !== oldScale && newScale && newScale.length === 2 && this.computedScale) {
         var computedScale = {
           "min": newScale[0],
-          "mid": (Math.round((newScale[1] - newScale[0]) / 2)) + newScale[0]/1,
+          "mid": (Math.round((newScale[1] - newScale[0]) / 2)) + Number(newScale[0]),
           "max": newScale[1]
         }
         this.set("computedScale", computedScale);

@@ -502,12 +502,12 @@
         var config = this.config;
         if(this.scaleColorFrom) {
           config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(function (x) {
-            return x / 1;
+            return Number(x);
           });
         }
         if(this.scaleColorTo) {
           config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(function (x) {
-            return x / 1;
+            return Number(x);
           });
         }
         nValues = config.maxValue - config.minValue;
@@ -1153,8 +1153,8 @@
      * smaller than parent.
      */
     _resizeHelper: function(parent, child) {
-      var childWidth = window.getComputedStyle(child).width.replace('px', '') / 1,
-        parentWidth = window.getComputedStyle(parent).width.replace('px', '') / 1,
+      var childWidth = Number(window.getComputedStyle(child).width.replace('px', '')),
+        parentWidth = Number(window.getComputedStyle(parent).width.replace('px', '')),
         changed = false;
 
       while (childWidth > parentWidth) {
@@ -1163,8 +1163,8 @@
           child.innerText += '...';
         }
         child.innerText = child.innerText.substr(0, child.innerText.length - 4) + '...';
-        childWidth = window.getComputedStyle(child).width.replace('px', '') / 1;
-        parentWidth = window.getComputedStyle(parent).width.replace('px', '') / 1;
+        childWidth = Number(window.getComputedStyle(child).width.replace('px', ''));
+        parentWidth = Number(window.getComputedStyle(parent).width.replace('px', ''));
         changed = true;
       }
 
