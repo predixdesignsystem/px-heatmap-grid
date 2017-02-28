@@ -35,7 +35,7 @@
        */
       scale: {
         type: Array,
-        value: [0, 100],
+        value: function() { return [0, 100]; },
         observer: '_scaleChanged'
       },
 
@@ -46,10 +46,12 @@
        */
       computedScale: {
         type: Object,
-        value: {
-          "min": 0,
-          "mid": 50,
-          "max": 100
+        value: function() {
+          return {
+            min: 0,
+            mid: 50,
+            max: 100
+          };
         }
       },
 

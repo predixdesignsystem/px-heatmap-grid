@@ -95,7 +95,7 @@
        */
       data: {
         type: Object,
-        value: [],
+        value: function() { return []; },
         notify: true,
         observer: '_dataChanged'
       },
@@ -107,7 +107,7 @@
        */
       heatmapData: {
         type: Object,
-        value: [],
+        value: function() { return []; },
         observer: '_heatmapDataChanged'
       },
 
@@ -118,12 +118,14 @@
        */
       config: {
         type: Object,
-        value: {
-          "minValue": 0,
-          "maxValue": 0,
-          "startColor": [],
-          "endColor": [],
-          "factors" : []
+        value: function() {
+          return {
+            minValue: 0,
+            maxValue: 0,
+            startColor: [],
+            endColor: [],
+            factors : []
+          };
         },
         observer: '_configChanged'
       },
@@ -134,7 +136,7 @@
        */
       scale: {
         type: Array,
-        value: [0, 100],
+        value: function() { return [0, 100]; },
         observer: '_scaleChanged'
       },
 
