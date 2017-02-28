@@ -293,16 +293,18 @@
          *
          */
         if (Array.isArray(newData[0])) {
-          newData.forEach(function (colArr, i) {
-            colArr.forEach(function (value, j) {
+          for (var i = 0; i < newData.length; i++) {
+            var colArr = newData[i];
+            for (var j = 0; j < colArr.length; j++) {
+              var value = colArr[j];
               if(!tableData[j]) tableData.push([]);
               nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
               tableData[j][i] = {
                 "value": value,
                 "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
               };
-            });
-          });
+            }
+          }
         }
         /**
          * Handles the case where newData is an Array<number>
@@ -311,13 +313,14 @@
          *
          */
         else if (typeof newData[0] !== "object" && typeof newData[0] !== "string") {
-          newData.forEach(function (value) {
+          for (var i = 0; i < newData.length; i++) {
+            var value = newData[i];
             nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
             tableData.push( [{
               "value": value,
               "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
             }]);
-          });
+          }
         }
         /**
          * Handles the case where newData is an Array<Object>
@@ -325,23 +328,24 @@
          *
          * [
          *   {
-       *     "row": "Row Title",
-       *     "values": [0, 1, 2, 3, 4, 5]
-       *   }
+         *     "row": "Row Title",
+         *     "values": [0, 1, 2, 3, 4, 5]
+         *   }
          * ]
          *
          * or
          *
          * [
          *   {
-       *     "col": "Column Title",
-       *     "values": [0, 1, 2, 3, 4, 5]
-       *   }
+         *     "col": "Column Title",
+         *     "values": [0, 1, 2, 3, 4, 5]
+         *   }
          * ]
          *
          */
         else if (typeof newData[0] === "object" && newData[0].values) {
-          newData.forEach(function (cell, i) {
+          for (var i = 0; i < newData.length; i++) {
+            var cell = newData[i];
             iRow = cell.row ? Object.keys(rows).indexOf(cell.row) : -2;
             iCol = cell.col ? Object.keys(cols).indexOf(cell.col) : -2;
             if (iCol === -2) {
@@ -350,7 +354,8 @@
             if (iRow === -2) {
               cols[cell.col] = cell.col;
             };
-            cell.values.forEach(function (value, j) {
+            for (var j = 0; j < cell.values.length; j++) {
+              var value = cell.values[j];
               nColor = self.config != undefined ? self._calculateColor(value) : [255, 255, 255];
               if (iCol === -2) {
                 if (i === 0 ) tableData.push([]);
@@ -366,8 +371,8 @@
                   "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
                 });
               }
-            });
-          });
+            }
+          }
         }
         /**
          * Finally handles the last newData type where newData
@@ -375,32 +380,35 @@
          *
          * [
          *   {
-       *     "row": "Row Title",
-       *     "col": "Column Title",
-       *     "value": 10
-       *   }
+         *     "row": "Row Title",
+         *     "col": "Column Title",
+         *     "value": 10
+         *   }
          * ]
          *
          */
         else if (typeof newData[0] !== "string") {
-          newData.forEach(function (cell) {
-            iRow = Object.keys(rows).indexOf(cell.row);
-            iCol = Object.keys(cols).indexOf(cell.col);
-            if (iCol === -1) {
-              cols[cell.col] = cell.col;
-              tableData.push([]);
-              iCol = Object.keys(cols).length - 1;
-            };
-            if (iRow === -1) {
-              rows[cell.row] = cell.row;
-              iRow = Object.keys(rows).length - 1;
-            };
-            nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
-            tableData[iCol][iRow] = {
-              "value": cell.value,
-              "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
-            };
-          });
+          for (var i = 0; i < newData.length; i ++) {
+            var cell = newData[i];
+            if (cell) {
+              iRow = Object.keys(rows).indexOf(cell.row);
+              iCol = Object.keys(cols).indexOf(cell.col);
+              if (iCol === -1) {
+                cols[cell.col] = cell.col;
+                tableData.push([]);
+                iCol = Object.keys(cols).length - 1;
+              };
+              if (iRow === -1) {
+                rows[cell.row] = cell.row;
+                iRow = Object.keys(rows).length - 1;
+              };
+              nColor = self.config != undefined ? self._calculateColor(cell.value) : [255, 255, 255];
+              tableData[iCol][iRow] = {
+                "value": cell.value,
+                "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
+              };
+            }
+          }
         };
 
         // Force set length of array
@@ -638,22 +646,24 @@
       else {
         temp = [];
         if(this.rows && this.rows.length && Object.keys(this.rows)[0]) {
-          this.initialRowsOrder.forEach(function (r) {
+          for (var i = 0; i < this.initialRowsOrder.length; i++) {
+            var r = this.initialRowsOrder[i];
             temp.push({
               "index": Object.keys(_this.rows).indexOf(r.value)
             });
-          });
+          }
         }
         // If there's no row header titles uses the first column of data
         else {
           tempRowsReduced = this.heatmapData[0].map(function (value) {
             return value.value;
           });
-          this.initialRowsOrder.forEach(function (r) {
+          for (var i = 0; i < this.initialRowsOrder.length; i++) {
+            var r = this.initialRowsOrder[i];
             temp.push({
               "index": tempRowsReduced.indexOf(r.value)
             });
-          });
+          }
         }
       }
 
@@ -715,22 +725,24 @@
       else {
         temp = [];
         if (this.cols && this.cols.length && Object.keys(this.cols)[0]) {
-          this.initialColsOrder.forEach(function (r) {
+          for (var i = 0; i < this.initialColsOrder.length; i++) {
+            var r = this.initialColsOrder[i];
             temp.push({
               "index": Object.keys(_this.cols).indexOf(r.value)
             });
-          });
+          }
         }
         // If there's no column header titles uses the first row of data
         else {
           tempColsReduced = this.heatmapData.map(function (col) {
             return col[0].value;
           });
-          this.initialColsOrder.forEach(function (r) {
+          for (var i = 0; i < this.initialColsOrder.length; i++) {
+            var r = this.initialColsOrder[i];
             temp.push({
               "index": tempColsReduced.indexOf(r.value)
             });
-          });
+          }
         }
       }
 
@@ -1071,7 +1083,8 @@
         rowMaxWidth = Number(rowMaxWidth.split('px')[0]) - 30;
 
         if (headers && headers.length) {
-          headers.forEach(function (headerEl) {
+          for (var i = 0; i < headers.length; i++) {
+            var headerEl = headers[i];
             headerEl.style.width = rowMaxWidth + 'px';
             spanEl = headerEl.children[0];
             initialText = spanEl.innerText;
@@ -1079,7 +1092,7 @@
             if (finalText) {
               _this.rows[initialText] = finalText;
             }
-          });
+          }
 
           // Force notify Polymer that rows object changed
           rows = this.rows;
@@ -1105,7 +1118,8 @@
         cellMaxWidth = Number(cellMaxWidth.split('px')[0]) - 30;
 
         if (headers && headers.length) {
-          headers.forEach(function (headerEl) {
+          for (var i = 0; i < headers.length; i++) {
+            var headerEl = headers[i];
             headerEl.style.width = cellMaxWidth + 'px';
             spanEl = headerEl.children[0];
             initialText = spanEl.innerText;
@@ -1113,7 +1127,7 @@
             if (finalText) {
               _this.cols[initialText] = finalText;
             }
-          });
+          }
 
           // Force notify Polymer that cols object changed
           cols = this.cols;
