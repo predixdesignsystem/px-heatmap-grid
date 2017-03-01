@@ -82,10 +82,9 @@ $table-header-height: 22px;
 
 .row-header-text {
   display: inline-block;
-}
-
-.row-header-text > span {
-  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(var(--px-heatmap-grid-column-header-width, 150px) - 30px);
 }
 
 .col-header {
@@ -103,12 +102,12 @@ $table-header-height: 22px;
 
 .col-header-text {
   display: inline-block;
-}
-
-.col-header-text > span {
-  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(var(--px-heatmap-grid-cell-max-width, 120px) - 30px);
 }
 
 .fa-caret-up, .fa-caret-down, .fa-caret-left, .fa-caret-right {
   color: $px-heatmap-grid-sorting-icon-color;
+  vertical-align: super;
 }

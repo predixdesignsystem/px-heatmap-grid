@@ -20,13 +20,14 @@
           </template>
           <template is="dom-repeat" items="{{rows}}" as="row">
             <div class="row-header" on-click="_sortRow">
-              <div class="row-header-text"><span>{{_getHeader("row", index, rows)}}</span></div>
+              <div class="row-header-text" id="row-header-{{index}}">{{_getHeader("row", index, rows)}}</div>
               <i class="fa fa-caret-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></i>
               <i class="fa fa-caret-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></i>
               <px-tooltip smart-orientation="true"
+                          orientation="top"
+                          for="row-header-{{index}}"
                           delay="100"
-                          tooltip-message="{{_getHeader('fullRow', index, rows)}}"
-                          hidden$="{{_getHeader('tooltipRow', index, rows)}}">
+                          tooltip-message="{{_getHeader('row', index, rows)}}">
               </px-tooltip>
             </div>
           </template>
@@ -36,7 +37,7 @@
         <template is="dom-if" if="{{showRowAggregation}}">
           <div class="table-column">
             <div class="u-pr-- u-pb-- u-pl-- col-header" hidden$="{{hideColHeader}}">
-              <div class="col-header-text"><span>{{aggregationType}}</span></div>
+              <div class="col-header-text">{{aggregationType}}</div>
             </div>
             <div class="u-p-- table-empty-cell" hidden$="{{!showColAggregation}}">
               <span>&nbsp;</span>
@@ -52,13 +53,16 @@
           <div class="table-column">
             <template is="dom-if" if="{{!hideColHeader}}">
               <div class="u-pr-- u-pb-- u-pl-- col-header" on-click="_sortCol">
-                <div class="col-header-text"><span>{{_getHeader("col", index, cols)}}</span></div>
+                <div class="col-header-text" id="col-header-{{index}}">
+                  {{_getHeader("col", index, cols)}}
+                </div>
                 <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></i>
                 <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>
                 <px-tooltip smart-orientation="true"
+                            orientation="top"
+                            for="col-header-{{index}}"
                             delay="100"
-                            tooltip-message="{{_getHeader('fullCol', index, cols)}}"
-                            hidden$="{{_getHeader('tooltipCol', index, cols)}}">
+                            tooltip-message="{{_getHeader('col', index, cols)}}">
                 </px-tooltip>
               </div>
             </template>
@@ -71,7 +75,7 @@
               <div class="u-p-- table-cell cell-values" style$="[[item.color]]">
                 <span hidden$="{{hideValues}}">{{item.value}}</span>
                 <template is="dom-if" if="{{hideValues}}">
-                  <px-tooltip smart-orientation="true" delay="100" tooltip-message="{{item.value}}"></px-tooltip>
+                  <px-tooltip smart-orientation="true" orientation="top" delay="100" tooltip-message="{{item.value}}"></px-tooltip>
                 </template>
               </div>
             </template>
@@ -233,25 +237,14 @@
     /**
      * After the component is attached to the DOM calls
      * _dataChanged and _configChanged.
-     * Gets the cell max Width that was set using SASS and
-     * saves it in cellMaxWidth.
-     * Gets the Row Header max Width that was set using
-     * SASS and saves it in rowMaxWidth.
      */
     attached: function() {
       this._dataChanged(this.data, []);
       this._configChanged(this.config, {});
+    },
 
-      // Hack to get cell max width set with sass
-      var tempEl = document.createElement('div');
-      tempEl.style.display = 'none';
-      tempEl.classList.add('table-cell');
-      Polymer.dom(this.root).appendChild(tempEl);
-      this.set('cellMaxWidth', window.getComputedStyle(tempEl).maxWidth);
-      tempEl.classList.remove('table-cell');
-      tempEl.classList.add('table-row-header');
-      this.set('rowMaxWidth', window.getComputedStyle(tempEl).maxWidth);
-      Polymer.dom(this.root).removeChild(tempEl);
+    ready: function() {
+      document.addEventListener('px-tooltip-request-show', this._hideTooltip);
     },
 
     /**
@@ -673,11 +666,11 @@
     },
 
     /**
-     * Helper method to get headers information
+     * Helper method to get header titles
      *
-     * @param {string} option The option for the requested information
+     * @param {string} option Either col or row
      * @param {number} index The index of the column/row
-     * @returns {string|boolean} Multiple
+     * @returns {string} The header title
      *
      * @method _getHeader
      * @private
@@ -689,17 +682,23 @@
       else if (option === "row") {
         return this.rows[Object.keys(this.rows)[index]];
       }
-      else if (option === "tooltipRow") {
-        return Object.keys(this.rows).indexOf(this.rows[Object.keys(this.rows)[index]]) !== -1;
-      }
-      else if (option === "tooltipCol") {
-        return Object.keys(this.cols).indexOf(this.cols[Object.keys(this.cols)[index]]) !== -1;
-      }
-      else if (option === "fullRow") {
-        return Object.keys(this.rows)[index];
-      }
-      else if (option === "fullCol") {
-        return Object.keys(this.cols)[index];
+    },
+
+    /**
+     * Determine if the tooltip should be displayed or not
+     * based on the text overflow of it's sibling div
+     *
+     * @param {event} e The px-tooltip show request event
+     *
+     * @method _hideTooltip
+     * @private
+     */
+    _hideTooltip: function(e) {
+      var tooltip = e.detail.target,
+        headerEl = tooltip.parentElement.querySelector('div');
+
+      if (headerEl.scrollWidth <= headerEl.clientWidth && tooltip.for != "") {
+        tooltip._hide();
       }
     },
 
@@ -735,9 +734,6 @@
         if (rowHeader) rowHeader.classList.add("disable-col-header");
         if (scale) scale.classList.add("disable-col-header");
       }
-      setTimeout(function() {
-        _this._resizeColHeaderText();
-      });
     },
 
     /**
@@ -1199,9 +1195,6 @@
       else if(!nHide && oHide) {
         this.hideRowHeader = false;
       }
-      setTimeout(function() {
-        _this._resizeRowHeaderText();
-      });
     },
 
     /**
@@ -1234,114 +1227,6 @@
      */
     _heatmapDataChanged: function(newData, oldData) {
       var _this = this;
-      setTimeout(function() {
-        _this._resizeRowHeaderText();
-        _this._resizeColHeaderText();
-      });
-    },
-
-    /**
-     * Helper method to resize the Row header based on
-     * the available space (width) for rendering the text.
-     *
-     * @private
-     */
-    _resizeRowHeaderText: function() {
-      var _this = this,
-        headers = Polymer.dom(this.root).querySelectorAll(".row-header-text"),
-        rowMaxWidth = this.rowMaxWidth,
-        rows, spanEl, initialText, finalText;
-
-      if (rowMaxWidth !== "none") {
-        rowMaxWidth = Number(rowMaxWidth.split('px')[0]) - 30;
-
-        if (headers && headers.length) {
-          for (var i = 0; i < headers.length; i++) {
-            var headerEl = headers[i];
-            headerEl.style.width = rowMaxWidth + 'px';
-            spanEl = headerEl.children[0];
-            initialText = spanEl.innerText;
-            finalText = _this._resizeHelper(headerEl, spanEl);
-            if (finalText) {
-              _this.rows[initialText] = finalText;
-            }
-          }
-
-          // Force notify Polymer that rows object changed
-          rows = this.rows;
-          this.set('rows', []);
-          this.set('rows', rows);
-        }
-      }
-    },
-
-    /**
-     * Helper method to resize the Column header based on
-     * the available space (width) for rendering the text.
-     *
-     * @private
-     */
-    _resizeColHeaderText: function() {
-      var _this = this,
-        headers = Polymer.dom(this.root).querySelectorAll(".col-header-text"),
-        cellMaxWidth = this.cellMaxWidth,
-        cols, spanEl, initialText, finalText;
-
-      if (cellMaxWidth !== "none") {
-        cellMaxWidth = Number(cellMaxWidth.split('px')[0]) - 30;
-
-        if (headers && headers.length) {
-          for (var i = 0; i < headers.length; i++) {
-            var headerEl = headers[i];
-            headerEl.style.width = cellMaxWidth + 'px';
-            spanEl = headerEl.children[0];
-            initialText = spanEl.innerText;
-            finalText = _this._resizeHelper(headerEl, spanEl);
-            if (finalText) {
-              _this.cols[initialText] = finalText;
-            }
-          }
-
-          // Force notify Polymer that cols object changed
-          cols = this.cols;
-          this.set('cols', []);
-          this.set('cols', cols);
-        }
-      }
-    },
-
-    /**
-     * Helper method to reduce the innerText of the child element
-     * based on the width of the parent element, adding ellipses
-     * to the end of the text.
-     *
-     * @method _resizeHelper
-     * @private
-     *
-     * @param {HTMLElement} parent The parent Element
-     * @param {HTMLElement} child The child Element
-     *
-     * @returns {string|null} The reduced text if the child was
-     * bigger than parent, or null if the child was
-     * smaller than parent.
-     */
-    _resizeHelper: function(parent, child) {
-      var childWidth = Number(window.getComputedStyle(child).width.replace('px', '')),
-        parentWidth = Number(window.getComputedStyle(parent).width.replace('px', '')),
-        changed = false;
-
-      while (childWidth > parentWidth) {
-
-        if (child.innerText.substr(child.innerText.length - 3, child.innerText.length) !== '...') {
-          child.innerText += '...';
-        }
-        child.innerText = child.innerText.substr(0, child.innerText.length - 4) + '...';
-        childWidth = Number(window.getComputedStyle(child).width.replace('px', ''));
-        parentWidth = Number(window.getComputedStyle(parent).width.replace('px', ''));
-        changed = true;
-      }
-
-      return changed ? child.innerText : null;
     }
   });
 </script>
