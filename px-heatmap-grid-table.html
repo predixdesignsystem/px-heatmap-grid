@@ -243,8 +243,16 @@
       this._configChanged(this.config, {});
     },
 
+    /**
+     * Add an event listener for the px-tooltip in order to
+     * evaluate when to hide tooltips for non ellipsed text
+     */
     ready: function() {
-      document.addEventListener('px-tooltip-request-show', this._hideTooltip);
+      this.addEventListener('px-tooltip-request-show', this._hideTooltip);
+    },
+
+    detached: function() {
+      this.removeEventListener('px-tooltip-request-show', this._hideTooltip);
     },
 
     /**
