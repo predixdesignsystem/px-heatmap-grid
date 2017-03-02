@@ -111,8 +111,7 @@
        */
       heatmapData: {
         type: Array,
-        value: function() { return []; },
-        observer: '_heatmapDataChanged'
+        value: function() { return []; }
       },
 
       /**
@@ -1311,18 +1310,6 @@
           this.set('showColAggregation', nShow);
         }
       }
-    },
-
-    /**
-     * Observes the changes to heatmapData and triggers
-     * the resize helper methods.
-     *
-     * @param {object} newData The new heatmap data
-     * @param {object} oldData The old heatmap data
-     * @private
-     */
-    _heatmapDataChanged: function(newData, oldData) {
-      var _this = this;
     }
   });
 </script>
