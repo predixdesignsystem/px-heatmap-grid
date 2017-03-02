@@ -276,7 +276,7 @@
      * @private
      */
     _dataChanged: function(newData, oldData) {
-      if(newData != oldData && newData && newData.length) {
+      if(newData != oldData && newData && newData.length && newData[0] !== null) {
         var rows = [],
           cols = [],
           tableData = [],
@@ -344,12 +344,16 @@
      */
     _processNewDataArray: function(data) {
       var nColor = [],
-        tableData = [];
+        tableData = [],
+        stopLen = data.length;
 
-      for (var i = 0; i < data.length; i++) {
-        var colArr = data[i];
-        for (var j = 0; j < colArr.length; j++) {
+      for (var i = 0; i < stopLen; i++) {
+        var colArr = data[i],
+          stopLen2 = colArr.length;
+
+        for (var j = 0; j < stopLen2; j++) {
           var value = colArr[j];
+
           if(!tableData[j]) tableData.push([]);
           nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
           tableData[j][i] = {
@@ -396,10 +400,13 @@
         iCol = -1,
         tableData = [],
         rows = [],
-        cols = [];
+        cols = [],
+        stopLen = data.length;
 
-      for (var i = 0; i < data.length; i++) {
-        var cell = data[i];
+      for (var i = 0; i < stopLen; i++) {
+        var cell = data[i],
+          stopLen2 = cell.values.length;
+
         iRow = cell.row ? Object.keys(rows).indexOf(cell.row) : -2;
         iCol = cell.col ? Object.keys(cols).indexOf(cell.col) : -2;
 
@@ -411,7 +418,7 @@
           cols[cell.col] = cell.col;
         }
 
-        for (var j = 0; j < cell.values.length; j++) {
+        for (var j = 0; j < stopLen2; j++) {
           var value = cell.values[j];
           nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
 
@@ -456,10 +463,12 @@
      */
     _processNewDataNumber: function(data) {
       var nColor = [],
-        tableData = [];
+        tableData = [],
+        stopLen = data.length;
 
-      for (var i = 0; i < data.length; i++) {
+      for (var i = 0; i < stopLen; i++) {
         var value = data[i];
+
         nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
         tableData.push( [{
           "value": value,
@@ -496,10 +505,12 @@
         iCol = -1,
         tableData = [],
         rows = [],
-        cols = [];
+        cols = [],
+        stopLen = data.length;
 
-      for (var i = 0; i < data.length; i ++) {
+      for (var i = 0; i < stopLen; i ++) {
         var cell = data[i];
+
         if (cell) {
           iRow = Object.keys(rows).indexOf(cell.row);
           iCol = Object.keys(cols).indexOf(cell.col);
@@ -534,26 +545,32 @@
      * @private
      */
     _initializeRowsOrdering: function() {
-      var initialRowsOrder = [];
+      var initialRowsOrder = [],
+        stopLen = this.rows.length;
 
-      if (this.rows && this.rows.length) {
-        for (var i = 0; i < this.rows.length; i++) {
+      if (this.rows && stopLen) {
+        for (var i = 0; i < stopLen; i++) {
           initialRowsOrder.push({
             index: i,
             value: Object.keys(this.rows)[i]
           });
         }
+
         this.initialRowsOrder = initialRowsOrder;
       }
 
       // If there's no row header titles uses the first column of data
       else if (this.heatmapData && this.heatmapData.length) {
-        this.initialRowsOrder = this.heatmapData[0].map(function (value, i) {
-          return {
-            "index": i,
-            "value": value.value
-          }
-        });
+        stopLen = this.heatmapData[0].length;
+
+        for (var i = 0; i < stopLen; i++) {
+          initialRowsOrder.push({
+            index: i,
+            value: this.heatmapData[0][i].value
+          });
+        }
+
+        this.initialRowsOrder = initialRowsOrder;
       }
     },
 
@@ -564,26 +581,32 @@
      * @private
      */
     _initializeColsOrdering: function() {
-      var initialColsOrder = [];
+      var initialColsOrder = [],
+        stopLen = this.cols.length;
 
-      if (this.cols && this.cols.length) {
-        for (var i = 0; i < this.cols.length; i++) {
+      if (this.cols && stopLen) {
+        for (var i = 0; i < stopLen; i++) {
           initialColsOrder.push({
             index: i,
             value: Object.keys(this.cols)[i]
           });
         }
+
         this.initialColsOrder = initialColsOrder;
       }
 
       // If there's no column header titles uses the first row of data
       else if (this.heatmapData && this.heatmapData.length) {
-        this.initialColsOrder = this.heatmapData.map(function (col, i) {
-          return {
-            "index": i,
-            "value": col[0].value
-          }
-        })
+        stopLen = this.heatmapData.length;
+
+        for (var i = 0; i < stopLen; i++) {
+          initialColsOrder.push({
+            index: i,
+            value: this.heatmapData[i][0].value
+          });
+        }
+
+        this.initialColsOrder = initialColsOrder;
       }
     },
 
@@ -609,9 +632,11 @@
 
       // otherwise calculate the colors based on the color and values range
       else {
-        colors = config.factors.map(function (x, i) {
-          return Math.round(x * (value - config.minValue)) + config.startColor[i];
-        });
+        var stopLen = config.factors.length;
+
+        for (var i = 0; i < stopLen; i++) {
+          colors.push(Math.round(config.factors[i] * (value - config.minValue)) + config.startColor[i]);
+        }
       }
 
       return colors;
@@ -633,22 +658,37 @@
      */
     _configChanged: function(newConfig, oldConfig) {
       if(newConfig !== oldConfig && newConfig) {
-        var config = this.config;
+        var config = this.config,
+          temp, stopLen, nValues, data;
+
         if(this.scaleColorFrom) {
-          config.startColor = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',').map(function (x) {
-            return Number(x);
-          });
+          temp = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',');
+          config.startColor = [];
+          stopLen = temp.length;
+
+          for (var i = 0; i < stopLen; i++) {
+            config.startColor.push(Number(temp[i]));
+          }
         }
         if(this.scaleColorTo) {
-          config.endColor = this.scaleColorTo.replace(/[^\d,]/g, '').split(',').map(function (x) {
-            return Number(x);
-          });
+          temp = this.scaleColorTo.replace(/[^\d,]/g, '').split(',');
+          config.endColor = [];
+          stopLen = temp.length;
+
+          for (var i = 0; i < stopLen; i++) {
+            config.endColor.push(Number(temp[i]));
+          }
         }
+
         nValues = config.maxValue - config.minValue;
-        config.factors = config.endColor.map(function(c,i) {
-          return (c - config.startColor[i]) / nValues;
-        });
-        var data = [].concat(this.data);
+        stopLen = config.endColor.length;
+        config.factors = [];
+
+        for (var i = 0; i < stopLen; i++) {
+          config.factors.push((config.endColor[i] - config.startColor[i]) / nValues);
+        }
+
+        data = [].concat(this.data);
         this.set("data", data);
       }
     },
@@ -756,7 +796,7 @@
       var col = e.model.index,
         order = 0,
         _this = this,
-        temp, newData, rows, newRows, tempRowsReduced;
+        temp, newData, rows, newRows, tempRowsReduced, stopLen, stopLen2;
 
       // 0 sort ascending, 1 sort descending 2 reset sorting
       if (this.sortColOrder && this.sortColOrder.index === col && this.sortColOrder.order !== 2) {
@@ -771,7 +811,9 @@
       // Sort ascending / descending
       if (order < 2) {
         temp = [];
-        for (var i = 0; i < this.heatmapData[col].length; i++) {
+        stopLen = this.heatmapData[col].length;
+
+        for (var i = 0; i < stopLen; i++) {
           var el = this.heatmapData[col][i];
           temp.push({
             "index": i,
@@ -786,8 +828,11 @@
       // Reset sorting
       else {
         temp = [];
+
         if(this.rows && this.rows.length && Object.keys(this.rows)[0]) {
-          for (var i = 0; i < this.initialRowsOrder.length; i++) {
+          stopLen = this.initialRowsOrder.length;
+
+          for (var i = 0; i < stopLen; i++) {
             var r = this.initialRowsOrder[i];
             temp.push({
               "index": Object.keys(_this.rows).indexOf(r.value)
@@ -796,10 +841,16 @@
         }
         // If there's no row header titles uses the first column of data
         else {
-          tempRowsReduced = this.heatmapData[0].map(function (value) {
-            return value.value;
-          });
-          for (var i = 0; i < this.initialRowsOrder.length; i++) {
+          stopLen = this.heatmapData[0].length;
+          tempRowsReduced = [];
+
+          for (var i = 0; i < stopLen; i++) {
+            tempRowsReduced.push(this.heatmapData[0][i].value);
+          }
+
+          stopLen = this.initialRowsOrder.length;
+
+          for (var i = 0; i < stopLen; i++) {
             var r = this.initialRowsOrder[i];
             temp.push({
               "index": tempRowsReduced.indexOf(r.value)
@@ -808,16 +859,26 @@
         }
       }
 
-      newData = this.heatmapData.map(function(hd) {
-        return temp.map(function(t) {
-          return hd[t.index];
-        });
-      });
+      stopLen = this.heatmapData.length;
+      stopLen2 = temp.length;
+      newData = [];
+
+      for (var i = 0; i < stopLen; i++) {
+        var newSubData = [];
+
+        for (var j = 0; j < stopLen2; j++) {
+          newSubData.push(this.heatmapData[i][temp[j].index]);
+        }
+
+        newData.push(newSubData);
+      }
 
       rows = this.rows;
       newRows = [];
+      stopLen = temp.length;
+
       if (rows.length) {
-        for (var i = 0; i < temp.length; i++) {
+        for (var i = 0; i < stopLen; i++) {
           newRows[Object.keys(rows)[temp[i].index]] = rows[Object.keys(rows)[temp[i].index]];
         }
 
@@ -843,7 +904,7 @@
       var row = e.model.index,
         order = 0,
         _this = this,
-        temp, hd, newData, cols, newCols, tempColsReduced;
+        temp, hd, newData, cols, newCols, tempColsReduced, stopLen;
 
       // 0 sort ascending, 1 sort descending 2 reset sorting
       if (this.sortRowOrder && this.sortRowOrder.index === row && this.sortRowOrder.order !== 2) {
@@ -856,12 +917,18 @@
       };
       // Sort ascending / descending
       if (order < 2) {
-        temp = this.heatmapData.map(function (el, i) {
-          return {
-            "index": i,
-            "value": el[row] ? typeof el[row].value === "number" ? el[row].value : -Infinity : -Infinity
-          }
-        });
+        stopLen = this.heatmapData.length;
+        temp = [];
+
+        for (var i = 0; i < stopLen; i++) {
+          var tempItem = this.heatmapData[i][row];
+
+          temp.push({
+            index: i,
+            value: tempItem ? typeof tempItem.value === "number" ? tempItem.value : -Infinity : -Infinity
+          });
+        }
+
         temp.sort(function (a, b) {
           return order ? b.value - a.value : a.value - b.value;
         });
@@ -869,8 +936,11 @@
       // Reset sorting
       else {
         temp = [];
+
         if (this.cols && this.cols.length && Object.keys(this.cols)[0]) {
-          for (var i = 0; i < this.initialColsOrder.length; i++) {
+          stopLen = this.initialColsOrder.length;
+
+          for (var i = 0; i < stopLen; i++) {
             var r = this.initialColsOrder[i];
             temp.push({
               "index": Object.keys(_this.cols).indexOf(r.value)
@@ -879,10 +949,16 @@
         }
         // If there's no column header titles uses the first row of data
         else {
-          tempColsReduced = this.heatmapData.map(function (col) {
-            return col[0].value;
-          });
-          for (var i = 0; i < this.initialColsOrder.length; i++) {
+          stopLen = this.heatmapData.length;
+          tempColsReduced = [];
+
+          for (var i = 0; i < stopLen; i++) {
+            tempColsReduced.push(this.heatmapData[i][0].value);
+          }
+
+          stopLen = this.initialColsOrder.length;
+
+          for (var i = 0; i < stopLen; i++) {
             var r = this.initialColsOrder[i];
             temp.push({
               "index": tempColsReduced.indexOf(r.value)
@@ -892,14 +968,19 @@
       }
 
       hd = this.heatmapData;
-      newData = temp.map(function(t) {
-        return hd[t.index];
-      });
+      stopLen = temp.length;
+      newData = [];
+
+      for (var i = 0; i < stopLen; i++) {
+        newData.push(hd[temp[i].index]);
+      }
 
       cols = this.cols;
       newCols = [];
       if (cols.length) {
-        for (var i = 0; i < temp.length; i++) {
+        stopLen = temp.length;
+
+        for (var i = 0; i < stopLen; i++) {
           newCols[Object.keys(cols)[temp[i].index]] = cols[Object.keys(cols)[temp[i].index]];
         }
 
@@ -986,37 +1067,44 @@
         this.set("showAggregation", true);
         var rowAggregation = [],
           colAggregation = [],
-          data = this.heatmapData.map(function(hd) {
-            return hd.map(function(v) {
-              return v.value;
-            });
-          }),
-          // Find max decimal digits for the data in each column
-          colDigits = data.map(function(hd) {
-            return hd.map(function(a) {
-              if (a && typeof a === "number") {
-                var temp = (a + "").split(".");
-                temp = temp[1] ? temp[1].length : 0;
-                return temp;
-              }
-              return 0;
-            }).reduce(function(a, b, i) {
-              return i === 0 ? b : a > b ? b : a;
-            });
-          }),
-          // Find the max decimal digits for the data in each row
-          rowDigits = data[0].map(function(hd, i) {
-            return data.map(function(a) {
-              if (a[i] && typeof a[i] === "number") {
-                var temp = (a[i] + "").split(".");
-                temp = temp[1] ? temp[1].length : 0;
-                return temp;
-              }
-              return 0;
-            }).reduce(function(a, b, i) {
-              return i === 0 ? b : a > b ? b : a;
-            });
+          data = [],
+          colDigits = [],
+          rowDigits = [];
+
+        data = this.heatmapData.map(function(hd) {
+          return hd.map(function(v) {
+            return v.value;
           });
+        });
+
+        // Find max decimal digits for the data in each column
+        colDigits = data.map(function(hd) {
+          return hd.map(function(a) {
+            if (a && typeof a === "number") {
+              var temp = (a + "").split(".");
+              temp = temp[1] ? temp[1].length : 0;
+              return temp;
+            }
+            return 0;
+          }).reduce(function(a, b, i) {
+            return i === 0 ? b : a > b ? b : a;
+          });
+        });
+
+        // Find the max decimal digits for the data in each row
+        rowDigits = data[0].map(function(hd, i) {
+          return data.map(function(a) {
+            if (a[i] && typeof a[i] === "number") {
+              var temp = (a[i] + "").split(".");
+              temp = temp[1] ? temp[1].length : 0;
+              return temp;
+            }
+            return 0;
+          }).reduce(function(a, b, i) {
+            return i === 0 ? b : a > b ? b : a;
+          });
+        });
+
         this.set("rowAggregatedData", []);
         this.set("colAggregatedData", []);
         switch (n.toUpperCase()) {
