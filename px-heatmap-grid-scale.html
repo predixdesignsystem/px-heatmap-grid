@@ -186,8 +186,7 @@
 
       // Dispatch an event to notify the color change with the new properties in the
       // event detail property. The event bubbles up.
-      event = new CustomEvent('scale-colors-changed', {bubbles: true, detail: {from: this.scaleColorFrom, to: this.scaleColorTo}});
-      this.dispatchEvent(event);
+      this.fire('scale-colors-changed', {from: this.scaleColorFrom, to: this.scaleColorTo});
     }
   });
 </script>
