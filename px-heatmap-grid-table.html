@@ -6,6 +6,7 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="css/px-heatmap-grid-table-styles.html">
 <link rel="import" href="../px-tooltip/px-tooltip.html">
+<link rel="import" href="../px-polymer-font-awesome/px-polymer-font-awesome.html">
 
 <dom-module id="px-heatmap-grid-table">
   <template>
@@ -19,10 +20,12 @@
             </div>
           </template>
           <template is="dom-repeat" items="{{rows}}" as="row">
-            <div class="row-header" on-click="_sortRow">
+            <div class="row-header flex flex--row flex--middle flex--justify" on-click="_sortRow">
               <div class="row-header-text" id="row-header-{{index}}">{{_getHeader("row", index, rows)}}</div>
-              <i class="fa fa-caret-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></i>
-              <i class="fa fa-caret-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></i>
+              <iron-icon icon="fa:fa-caret-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></iron-icon>
+              <iron-icon icon="fa:fa-caret-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></iron-icon>
+              <!--<i class="fa fa-caret-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></i>-->
+              <!--<i class="fa fa-caret-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></i>-->
               <px-tooltip smart-orientation="true"
                           orientation="top"
                           for="row-header-{{index}}"
@@ -52,12 +55,14 @@
         <template is="dom-repeat" items="{{heatmapData}}" as="items" id="heatmapDataRepeat">
           <div class="table-column">
             <template is="dom-if" if="{{!hideColHeader}}">
-              <div class="u-pr-- u-pb-- u-pl-- col-header" on-click="_sortCol">
+              <div class="u-pr-- u-pb-- u-pl-- col-header flex flex--row flex--middle flex--justify" on-click="_sortCol">
                 <div class="col-header-text" id="col-header-{{index}}">
                   {{_getHeader("col", index, cols)}}
                 </div>
-                <i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></i>
-                <i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>
+                <iron-icon icon="fa:fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></iron-icon>
+                <iron-icon icon="fa:fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></iron-icon>
+                <!--<i class="fa fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></i>-->
+                <!--<i class="fa fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></i>-->
                 <px-tooltip smart-orientation="true"
                             orientation="top"
                             for="col-header-{{index}}"

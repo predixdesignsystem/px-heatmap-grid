@@ -107,7 +107,6 @@ $table-header-height: 22px;
   width: calc(var(--px-heatmap-grid-cell-max-width, 120px) - 30px);
 }
 
-.fa-caret-up, .fa-caret-down, .fa-caret-left, .fa-caret-right {
+iron-icon {
   color: $px-heatmap-grid-sorting-icon-color;
-  vertical-align: super;
 }
