@@ -192,7 +192,7 @@ Custom property | Description | Default
     <style include="px-heatmap-grid-styles"></style>
     <div class="flex flex--row flex--left flex--top flex--stretch">
       <template is="dom-if" if="{{loading}}">
-        <px-spinner finished="{{!loading}}" size="50" class="spinner"></px-spinner>
+        <px-spinner size="50" class="spinner"></px-spinner>
       </template>
       <template is="dom-if" if="{{!loading}}">
         <px-heatmap-grid-table data="{{heatmapData}}"
@@ -492,10 +492,26 @@ Custom property | Description | Default
      */
     _loadingChanged: function(n, o) {
       var _this = this;
-      if (n !== undefined && n !== o && n) {
-        setTimeout(function () {
-          Polymer.dom(_this.root).querySelector('px-spinner').style.display = '';
-        });
+
+      if (n !== undefined && n !== o) {
+        if (n) {
+          setTimeout(function () {
+            var spinner = Polymer.dom(_this.root).querySelector('px-spinner');
+
+            if (spinner) {
+              spinner.finished = false;
+            }
+          });
+        }
+        else {
+          setTimeout(function () {
+            var spinner = Polymer.dom(_this.root).querySelector('px-spinner');
+
+            if (spinner) {
+              spinner.finished = true;
+            }
+          });
+        }
       }
     }
   });
