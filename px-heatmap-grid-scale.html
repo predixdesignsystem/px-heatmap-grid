@@ -172,19 +172,19 @@
      * @private
      */
     _lookupColors: function() {
-      var iColor, sColor, eColor, event;
+      var reg = /rgb\(([0-9+,?\s?]+)\)/g,
+        matches,
+        colors = [],
+        iColor = window.getComputedStyle(Polymer.dom(this.root).querySelector('.scale-gradient')).backgroundImage;
 
-      // The style backgroundImage works better cross browsers than the background style
-      iColor = window.getComputedStyle(Polymer.dom(this.root).querySelector('.scale-gradient')).backgroundImage;
-      sColor = iColor.indexOf('linear-gradient');
-      eColor = iColor.indexOf(')', sColor) + 1;
-      sColor = iColor.indexOf('rgb', sColor);
-      this.scaleColorFrom = iColor.substr(sColor, eColor - sColor);
-      sColor = iColor.indexOf('rgb', sColor + 3);
-      eColor = iColor.indexOf(')', sColor) + 1;
-      this.scaleColorTo = iColor.substr(sColor, eColor - sColor);
+      while ((matches = reg.exec(iColor)) !== null) {
+        colors.push(matches[1]);
+      }
 
-      // Dispatch an event to notify the color change with the new properties in the
+      this.scaleColorFrom = 'rgb(' + colors[0] + ')';
+      this.scaleColorTo = 'rgb(' + colors[1] + ')';
+
+        // Dispatch an event to notify the color change with the new properties in the
       // event detail property. The event bubbles up.
       this.fire('scale-colors-changed', {from: this.scaleColorFrom, to: this.scaleColorTo});
     }
