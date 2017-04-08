@@ -1,343 +1,99 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Predix UI</title>
+    <link rel="stylesheet" type="text/css" href="css/px-heatmap-grid-demo.css" />
+    <!--
+      Fast bootstrapping of the webcomponents-lite library. Only loads the library
+      if the browser doesn't natively support web components.
+    -->
+    <script type="text/javascript">
+    (function() {
+      'use strict';
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>px-heatmap-grid Demo</title>
-  <link rel="stylesheet" type="text/css" href="css/px-heatmap-grid-demo.css" />
-  <!-- Import custom element. Note: see comment about relative paths to dependencies in the *.html file referenced below -->
-  <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+      var onload = function() {
+        // For native Imports, manually fire WebComponentsReady so user code
+        // can use the same code path for native and polyfill'd imports.
+        if (!window.HTMLImports) {
+          document.dispatchEvent(
+            new CustomEvent('WebComponentsReady', {bubbles: true})
+          );
+        }
+      };
 
-  <link rel="import" href="../px-theme/px-theme-styles.html">
-  <style include="px-theme-styles" is="custom-style"></style>
-  <link rel="import" href="../iron-ajax/iron-ajax.html" />
-  <link rel="import" href="../px-api-viewer/px-api-viewer.html" />
-  <link rel="import" href="../px-tabs/px-tab-set.html" />
-  <link rel="import" href="../px-dropdown/px-dropdown.html" />
-  <link rel="import" href="px-heatmap-grid.html" />
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+      var webComponentsSupported = (
+        'registerElement' in document && 'import' in document.createElement('link') && 'content' in document.createElement('template')
+      );
 
-  <link rel="import" href="../px-demo-snippet/px-demo-snippet.html">
-  <link rel="import" href="../px-polymer-font-awesome/polymer-font-awesome.html" />
-  <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
-</head>
+      if (!webComponentsSupported) {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '../webcomponentsjs/webcomponents-lite.min.js';
+        script.onload = onload;
+        document.head.appendChild(script);
+      } else {
+        onload();
+      }
+    })();
+    </script>
 
-<body>
+    <!--
+      Load the Polymer library.
+    -->
+    <link rel="import" href="../polymer/polymer.html" />
 
-  <!-- Wrap elements with auto-binding template to -->
-  <!-- allow use of Polymer bindings in main document -->
-  <template id="just-for-demo" is="dom-bind">
+    <!--
+      Load the light theme (default theme).
+    -->
+    <link rel="import" href="../px-theme/px-theme-styles.html">
+    <style include="px-theme-styles" is="custom-style"></style>
 
-    <!-- description -->
-    <div class="hero u-p++ text--shadow">
-      <a class="actionable flex flex--right flex--middle" href="https://github.build.ge.com/emerging-verticals/px-heatmap-grid" target="_blank">
-        <iron-icon class="menu__open" icon="fa:fa-github"></iron-icon>View on Github
-      </a>
-      <h1 class="delta">px-heatmap-grid</h1>
-      <p class="description-text">
-        The px-heatmap-grid is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
-        There are 5 different options based on the dataset used. The options to customize the component are detailed in the API reference below.
-      </p>
-      <div class="flex">
-        <img class="u-mr-- " src="https://img.shields.io/travis/PredixDev/px-heatmap-grid.svg?style=flat-square" alt="Travis"  onerror="this.style.display='none'"/>
-        <img class="u-mr--" src="https://img.shields.io/bower/v/px-heatmap-grid.svg?style=flat-square" alt="Bower" onerror="this.style.display='none'" />
-        <img class="u-mr--" src="https://img.shields.io/github/issues-raw/PredixDev/px-heatmap-grid.svg?style=flat-square" alt="Issues" onerror="this.style.display='none'" />
-      </div>
-    </div>
-    <br />
+    <!--
+      Asynchronously import the px-catalog element, which is the entrypoint
+      for our application.
+    -->
+    <link
+        async
+        id="main-element-import"
+        rel="import"
+        href="demo/index.html">
 
-    <!-- mega demo -->
-    <div style="position: relative;" class="u-pb++ flex flex--col" id="defaultTab">
-      <div class="tabContainer u-pt++ u-pl++">
-        <px-tab-set selected="{{selected}}" bare no-bottom-border>
-          <template is="dom-repeat" items="{{optionsArray}}">
-            <px-tab on-tap="_refreshHeatmap">Option {{indexPlusOne(index)}}</px-tab>
-          </template>
-        </px-tab-set>
-      </div>
-      <px-tab-pages selected="{{selected}}">
-        <template is="dom-repeat" items="{{optionsArray}}">
-          <section class="tab-page">
-            <div class="mega-demo flex u-ph++ u-pb++">
-              <!-- Properties -->
-              <div class="properties u-ph+ u-pb+ u-mt+">
-                <p class="epsilon">Properties</p>
-                <div class="flex u-mb-">
-                  <input id="hideScale{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideScale::change}}">
-                  <label for$="hideScale{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                  <div class="u-ml-">Hide Color Scale</div>
-                </div>
-                <div class="flex u-mb-" hidden$="{{hideColHeaderToggle(index)}}">
-                  <input id="hideColHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideColHeader::change}}">
-                  <label for$="hideColHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                  <div class="u-ml-">Hide Column Header</div>
-                </div>
-                <div class="flex u-mb-" hidden$="{{hideRowHeaderToggle(index)}}">
-                  <input id="hideRowHeader{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideRowHeader::change}}">
-                  <label for$="hideRowHeader{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                  <div class="u-ml-">Hide Row Header</div>
-                </div>
-                <div class="flex u-mb-">
-                  <input id="hideValues{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.hideValues::change}}">
-                  <label for$="hideValues{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                  <div class="u-ml-">Hide Values</div>
-                </div>
-                <div class="flex u-mb-">
-                  <input id="loading{{indexPlusOne(index)}}" class="toggle__input toggle__input--small" type="checkbox" checked="{{item.loading::change}}">
-                  <label for$="loading{{indexPlusOne(index)}}" class="toggle__label toggle__label--small"></label>
-                  <div class="u-ml-">Loading</div>
-                </div>
-                <div class="u-mb-">Scale Min: <input class="text-input" type="text" placeholder="{{item.scaleMin}}" value="{{item.scaleMin::input}}" /></div>
-                <div class="u-mb-">Scale Max: <input class="text-input" type="text" placeholder="{{item.scaleMax}}" value="{{item.scaleMax::input}}" /></div>
-                <div class="u-mb-">Color From: <input class="text-input" type="text" placeholder="{{item.scaleColorFrom}}" value="{{item.scaleColorFrom::input}}" /></div>
-                <div class="u-mb-">Color To: <input class="text-input" type="text" placeholder="{{item.scaleColorTo}}" value="{{item.scaleColorTo::input}}" /></div>
-                <div class="u-mb-">
-                  <div class="u-mb-">Aggregation:</div>
-                  <select class="input--regular" value="{{item.aggregationType::change}}">
-                    <option value="disabled">Disabled</option>
-                    <option value="Average">Average</option>
-                    <option value="Std">Standard Deviation</option>
-                    <option value="Sum">Sum</option>
-                    <option value="Max">Max</option>
-                    <option value="Min">Min</option>
-                    <option value="Count">Count</option>
-                  </select>
-                </div>
-              </div>
+    <!--
+      Load the app icon and manifest for Android devices.
+    -->
+    <link defer rel="icon" href="favicon.ico" type="image/x-icon" />
 
-              <div class="demoContainer u-mt+">
-                <!-- demo -->
-                <div class="flex flex--col">
-                  <div class="flex__item demo u-ph+ u-pb+">
-                    <div class="u-mt+">
-                      <!-- Full data example -->
-                      <template is="dom-if" if="{{isTab(index, 0)}}">
-                        <px-heatmap-grid id="ev_heatmap_0"
-                                    heatmap-data="{{data0}}"
-                                    hide-values="[[item.hideValues]]"
-                                    hide-scale="[[item.hideScale]]"
-                                    hide-col-header="[[item.hideColHeader]]"
-                                    hide-row-header="[[item.hideRowHeader]]"
-                                    scale-min="{{item.scaleMin}}"
-                                    scale-max="{{item.scaleMax}}"
-                                    scale-color-from="{{item.scaleColorFrom}}"
-                                    scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]"
-                                    loading="{{item.loading}}">
-                        </px-heatmap-grid>
-                      </template>
+    <!--
+      Basic page styles.
+    -->
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
 
-                      <!-- Columns Example -->
-                      <template is="dom-if" if="{{isTab(index, 1)}}">
-                        <px-heatmap-grid id="ev_heatmap_1"
-                                    heatmap-data="{{data1}}"
-                                    hide-values="[[item.hideValues]]"
-                                    hide-scale="[[item.hideScale]]"
-                                    hide-col-header="[[item.hideColHeader]]"
-                                    scale-min="{{item.scaleMin}}"
-                                    scale-max="{{item.scaleMax}}"
-                                    scale-color-from="{{item.scaleColorFrom}}"
-                                    scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]"
-                                    loading="{{item.loading}}">
-                        </px-heatmap-grid>
-                      </template>
+  <body>
+    <!-- Elements wait on the page and are upgraded after demo/index.html is loaded. -->
+    <local-element-demo></local-element-demo>
 
-                      <!-- Rows example -->
-                      <template is="dom-if" if="{{isTab(index, 2)}}">
-                        <px-heatmap-grid id="ev_heatmap_2"
-                                    heatmap-data="{{data2}}"
-                                    hide-values="[[item.hideValues]]"
-                                    hide-scale="[[item.hideScale]]"
-                                    hide-row-header="[[item.hideRowHeader]]"
-                                    scale-min="{{item.scaleMin}}"
-                                    scale-max="{{item.scaleMax}}"
-                                    scale-color-from="{{item.scaleColorFrom}}"
-                                    scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]"
-                                    loading="{{item.loading}}">
-                        </px-heatmap-grid>
-                      </template>
-
-                      <!-- No headers example -->
-                      <template is="dom-if" if="{{isTab(index, 3)}}">
-                        <px-heatmap-grid id="ev_heatmap_3"
-                                    heatmap-data="{{data3}}"
-                                    hide-values="[[item.hideValues]]"
-                                    hide-scale="[[item.hideScale]]"
-                                    scale-min="{{item.scaleMin}}"
-                                    scale-max="{{item.scaleMax}}"
-                                    scale-color-from="{{item.scaleColorFrom}}"
-                                    scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]"
-                                    loading="{{item.loading}}">
-                        </px-heatmap-grid>
-                      </template>
-
-                      <!-- Single array example -->
-                      <template is="dom-if" if="{{isTab(index, 4)}}">
-                        <px-heatmap-grid id="ev_heatmap_4"
-                                    heatmap-data="{{data4}}"
-                                    hide-values="[[item.hideValues]]"
-                                    hide-scale="[[item.hideScale]]"
-                                    scale-min="{{item.scaleMin}}"
-                                    scale-max="{{item.scaleMax}}"
-                                    scale-color-from="{{item.scaleColorFrom}}"
-                                    scale-color-to="{{item.scaleColorTo}}"
-                                    aggregation-type="[[item.aggregationType]]"
-                                    loading="{{item.loading}}">
-                        </px-heatmap-grid>
-                      </template>
-                    </div>
-                  </div>
-                  <div class="flex__item">
-                    <px-demo-snippet
-                      element-properties={{item}}
-                      element-name="px-heatmap-grid">
-                    </px-demo-snippet>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="apiContainer">
-              <div class="flex flex--col api u-mt++" >
-                <div>
-                  <px-api-viewer source="px-heatmap-grid"></px-api-viewer>
-                </div>
-              </div>
-            </div>
-          </section>
-        </template>
-      </px-tab-pages>
-    </div>
-    <footer class="footer flex flex--center">
-      <div class="footer__container u-pv++">
-        <div>
-          <a href="https://ge.com/digital" >
-            <img src="monogram-wdmk.png" alt="GE Monogram" class="footer__img">
-          </a>
-        </div>
-        <div class="footer__list">
-          <ul class="list-inline list-inline--delimited">
-            <li>
-              <a href="http://predix.io/legal" class="footer__list--lnk">Legal</a>
-            </li>
-            <li>
-              <a href="mailto:info@predix.io" class="footer__list--lnk">Contact Us</a>
-            </li>
-            <li>Copyright &copy; 2016 General Electric Company. All rights reserved.</li>
-          </ul>
-        </div>
-      </div>
-    </footer>
-  </template>
-  <script>
-    window.addEventListener('WebComponentsReady', function() {
-
-      var template = document.querySelector('template[is=dom-bind]'),
-          optionsArray = [
-            {
-              "hideScale": false,
-              "scaleMin": "0",
-              "scaleMax": "100",
-              "hideColHeader": false,
-              "hideRowHeader": false,
-              "hideValues": false,
-              "aggregationType": "disabled",
-              "scaleColorFrom": "",
-              "scaleColorTo": "",
-              "heatmapData": "{{data}}",
-              "loading": false
-            },
-            {
-              "hideScale": false,
-              "scaleMin": "0",
-              "scaleMax": "100",
-              "hideColHeader": false,
-              "hideValues": false,
-              "aggregationType": "disabled",
-              "scaleColorFrom": "",
-              "scaleColorTo": "",
-              "heatmapData": "{{data}}",
-              "loading": false
-            },
-            {
-              "hideScale": false,
-              "scaleMin": "0",
-              "scaleMax": "100",
-              "hideRowHeader": false,
-              "hideValues": false,
-              "aggregationType": "disabled",
-              "scaleColorFrom": "",
-              "scaleColorTo": "",
-              "heatmapData": "{{data}}",
-              "loading": false
-            },
-            {
-              "hideScale": false,
-              "scaleMin": "0",
-              "scaleMax": "100",
-              "hideValues": false,
-              "aggregationType": "disabled",
-              "scaleColorFrom": "",
-              "scaleColorTo": "",
-              "heatmapData": "{{data}}",
-              "loading": false
-            },
-            {
-              "hideScale": true,
-              "scaleMin": "0",
-              "scaleMax": "100",
-              "hideValues": false,
-              "aggregationType": "disabled",
-              "scaleColorFrom": "",
-              "scaleColorTo": "",
-              "heatmapData": "{{data}}",
-              "loading": false
-            }
-          ],
-          indexPlusOne = function(num) {
-            return num + 1;
-          },
-          hideColHeaderToggle = function(index) {
-            return index === 0 || index === 1 ? false : true;
-          },
-          hideRowHeaderToggle = function(index) {
-            return index === 0 || index === 2 ? false : true;
-          },
-          isTab = function(num1, num2) {
-            return num1 === num2;
-          },
-          _refreshHeatmap = function(e) {
-            var hm = document.querySelector('#ev_heatmap_'+e.model.index);
-            var hmt = Polymer.dom(hm.root).querySelector('px-heatmap-grid-table');
-            hmt._hideColHeaderChanged(false, true);
-            hmt._hideRowHeaderChanged(false, true);
-          },
-          ironAjaxEl = document.createElement('iron-ajax'),
-          nodes;
-
-      ironAjaxEl.handleAs = "json";
-      ironAjaxEl.url = "data/sample-data.json";
-      ironAjaxEl.addEventListener('response', function(evt) {
-        nodes = evt.detail.response;
-        template.data0 = nodes.fullData;
-        template.data1 = nodes.colsOnly;
-        template.data2 = nodes.rowsOnly;
-        template.data3 = nodes.arraysData;
-        template.data4 = nodes.singleArray;
-      });
-      ironAjaxEl.generateRequest();
-
-      template.selected = "0";
-      template.optionsArray = optionsArray;
-      template.indexPlusOne = indexPlusOne;
-      template.hideColHeaderToggle = hideColHeaderToggle;
-      template.hideRowHeaderToggle = hideRowHeaderToggle;
-      template.isTab = isTab;
-      template._refreshHeatmap = _refreshHeatmap;
-    });
-  </script>
-</body>
+    <!--
+      Attempt to register a service worker with the correct scope. Fail quietly
+      if this doesn't work, but log the result to the console.
+    -->
+    <script type="text/javascript">
+      // if ('serviceWorker' in navigator) {
+      //   navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+      //     // Registration was successful
+      //     console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      //   }).catch(function(err) {
+      //     // registration failed :(
+      //     console.log('ServiceWorker registration failed: ', err);
+      //   });
+      // }
+    </script>
+  </body>
 </html>
