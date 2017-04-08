@@ -13,7 +13,7 @@
     <style include="px-heatmap-grid-table-styles"></style>
     <div class="table-container flex flex--row">
       <template is="dom-if" if="{{!hideRowHeader}}">
-        <div class="u-pl- u-pr- table-row-header flex flex--col flex--justify">
+        <div class$="u-pl- u-pr- table-row-header flex flex--col flex--justify {{disabledHeader}}">
           <template is="dom-if" if="{{showAggregation}}">
             <div class="row-header">
               <div class="row-header-text"><span>{{aggregationType}}</span></div>
@@ -152,7 +152,8 @@
       hideColHeader: {
         type: Boolean,
         value: false,
-        observer: '_hideColHeaderChanged'
+        observer: '_hideColHeaderChanged',
+        notify: true
       },
 
       /**
@@ -753,8 +754,7 @@
     /**
      * Observes the changes to hideColHeader and hide/show
      * the Column headers based on newValue and applies a css
-     * to the scale component and rows container to adjust their
-     * size.
+     * to the  rows container to adjust it's size.
      * Only if newValue exists and is different than oldValue.
      * Sets the column header visibility to false if there's no
      * column header titles.
@@ -766,21 +766,13 @@
      * @private
      */
     _hideColHeaderChanged: function(newValue, oldValue) {
-      var rowHeader = Polymer.dom(this.root).querySelector(".table-row-header"),
-        scale = Polymer.dom(this.nextElementSibling.root).querySelector(".scale-container"),
-        _this = this;
       if (newValue !== undefined && newValue !== oldValue) {
-        if (rowHeader) {
-          newValue === false ? rowHeader.classList.remove("disable-col-header") : rowHeader.classList.add("disable-col-header");
-        }
-        if (scale) {
-          newValue === false ? scale.classList.remove("disable-col-header") : scale.classList.add("disable-col-header");
-        }
-      };
+        newValue === false ? this.disabledHeader = "" : this.disabledHeader = "disable-col-header";
+      }
+
       if (newValue !== undefined && newValue === false && newValue !== oldValue && this.cols && (!this.cols.length || !Object.keys(this.cols)[0])) {
-        this.hideColHeader = true;
-        if (rowHeader) rowHeader.classList.add("disable-col-header");
-        if (scale) scale.classList.add("disable-col-header");
+        this.set('hideColHeader', undefined);
+        this.set('hideColHeader', true);
       }
     },
 

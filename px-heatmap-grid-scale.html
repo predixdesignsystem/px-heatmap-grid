@@ -11,7 +11,7 @@
 <dom-module id="px-heatmap-grid-scale">
   <template class="flex flex--col flex--left flex--justify flex--stretch">
     <style include="px-heatmap-grid-scale-styles"></style>
-    <div class="u-pl- u-pr- scale-container flex flex--row flex--left flex--top">
+    <div class$="u-pl- u-pr- scale-container flex flex--row flex--left flex--top {{disabledHeader}}">
       <div class="scale-gradient"></div>
       <div class="u-ml-- scale-values flex flex--col flex--justify">
         <div>{{computedScale.max}}</div>
@@ -73,6 +73,17 @@
       scaleColorTo: {
         type: String,
         observer: '_scaleColorToChanged'
+      },
+
+      /**
+       * When the table header is hidden, applies a CSS fix
+       *
+       * @property hideColHeader
+       */
+      hideColHeader: {
+        type: Boolean,
+        value: false,
+        observer: '_hideColHeaderChanged'
       }
 
       /**
@@ -187,6 +198,22 @@
         // Dispatch an event to notify the color change with the new properties in the
       // event detail property. The event bubbles up.
       this.fire('scale-colors-changed', {from: this.scaleColorFrom, to: this.scaleColorTo});
+    },
+
+    /**
+     * Observes the changes to hideColHeader and applies a css
+     * to the scale component to adjust it's size
+     *
+     * @param {boolean} newValue Hide or don't the Column Headers
+     * @param {boolean} oldValue The old value.
+     *
+     * @method _hideColHeaderChanged
+     * @private
+     */
+    _hideColHeaderChanged: function(newValue, oldValue) {
+      if (newValue !== undefined && newValue !== oldValue) {
+        newValue === false ? this.disabledHeader = "" : this.disabledHeader = "disable-col-header";
+      }
     }
   });
 </script>

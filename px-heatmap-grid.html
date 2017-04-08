@@ -207,7 +207,8 @@ Custom property | Description | Default
         <px-heatmap-grid-scale scale="{{scale}}"
                           hidden$="{{hideScale}}"
                           scale-color-from="{{scaleColorFrom}}"
-                          scale-color-to="{{scaleColorTo}}">
+                          scale-color-to="{{scaleColorTo}}"
+                          hide-col-header="{{hideColHeader}}">
         </px-heatmap-grid-scale>
       </template>
     </div>
@@ -337,7 +338,7 @@ Custom property | Description | Default
         type: Boolean,
         value: false,
         observer: '_loadingChanged'
-      },
+      }
       /**
        * Sent when the Heatmap Data is changed.
        *
