@@ -1,6 +1,6 @@
 @import "px-heatmap-grid-table";
 
-$px-heatmap-grid-scale-width: var(--px-heatmap-grid-scale-width, 75px);
+$px-heatmap-grid-scale-width: var(--px-heatmap-grid-scale-width, calculateRem(75px));
 
 .scale-gradient {
   background: linear-gradient(to top, $px-heatmap-grid-start-color, $px-heatmap-grid-end-color);
@@ -13,7 +13,7 @@ $px-heatmap-grid-scale-width: var(--px-heatmap-grid-scale-width, 75px);
 }
 
 .scale-container {
-  font-size: 12px;
+  font-size: calculateRem(12px);
   color: $gray8;
   margin-top: $table-header-height;
   max-width: $px-heatmap-grid-scale-width;
