@@ -3,14 +3,15 @@
     siblings. When this component is run from its own repo (e.g. tests, examples), we assume the server is started with
     'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
 -->
-<link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="css/px-heatmap-grid-table-styles.html">
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="css/px-heatmap-grid-styles.html">
 <link rel="import" href="../px-tooltip/px-tooltip.html">
-<link rel="import" href="../px-polymer-font-awesome/px-polymer-font-awesome.html">
+<link rel="import" href="../px-icon-set/px-icon-set.html">
+<link rel="import" href="../px-icon-set/px-icon.html">
 
 <dom-module id="px-heatmap-grid-table">
   <template>
-    <style include="px-heatmap-grid-table-styles"></style>
+    <style include="px-heatmap-grid-styles"></style>
     <div class="table-container flex flex--row">
       <template is="dom-if" if="{{!hideRowHeader}}">
         <div class$="u-pl- u-pr- table-row-header flex flex--col flex--justify {{disabledHeader}}">
@@ -22,13 +23,9 @@
           <template is="dom-repeat" items="{{rows}}" as="row">
             <div class="row-header flex flex--row flex--middle flex--justify" on-click="_sortRow">
               <div class="row-header-text" id="row-header-{{index}}">{{_getHeader("row", index, rows)}}</div>
-              <iron-icon icon="fa:fa-caret-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></iron-icon>
-              <iron-icon icon="fa:fa-caret-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></iron-icon>
-              <px-tooltip smart-orientation="true"
-                          orientation="top"
-                          for="row-header-{{index}}"
-                          delay="100"
-                          tooltip-message="{{_getHeader('row', index, rows)}}">
+              <px-icon class="actionable actionable--select u-ml-" icon="px-utl:chevron-left" hidden$="{{_sortingIcon(index,'row','up', heatmapData)}}"></px-icon>
+              <px-icon class="actionable actionable--select u-ml-" icon="px-utl:chevron-right" hidden$="{{_sortingIcon(index,'row','down', heatmapData)}}"></px-icon>
+              <px-tooltip smart-orientation="true" orientation="right" for="row-header-{{index}}" delay="100" tooltip-message="{{_getHeader('row', index, rows)}}">
               </px-tooltip>
             </div>
           </template>
@@ -57,13 +54,9 @@
                 <div class="col-header-text" id="col-header-{{index}}">
                   {{_getHeader("col", index, cols)}}
                 </div>
-                <iron-icon icon="fa:fa-caret-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></iron-icon>
-                <iron-icon icon="fa:fa-caret-down" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></iron-icon>
-                <px-tooltip smart-orientation="true"
-                            orientation="top"
-                            for="col-header-{{index}}"
-                            delay="100"
-                            tooltip-message="{{_getHeader('col', index, cols)}}">
+                <px-icon class="actionable actionable--select u-ml-" icon="px-utl:chevron-up" hidden$="{{_sortingIcon(index,'col','up',heatmapData)}}"></px-icon>
+                <px-icon class="actionable actionable--select u-ml-" icon="px-utl:chevron" hidden$="{{_sortingIcon(index,'col','down',heatmapData)}}"></px-icon>
+                <px-tooltip smart-orientation="true" orientation="bottom" for="col-header-{{index}}" delay="100" tooltip-message="{{_getHeader('col', index, cols)}}">
                 </px-tooltip>
               </div>
             </template>
@@ -76,7 +69,7 @@
               <div class="u-p-- table-cell cell-values" style$="[[item.color]]">
                 <span hidden$="{{hideValues}}">{{item.value}}</span>
                 <template is="dom-if" if="{{hideValues}}">
-                  <px-tooltip smart-orientation="true" orientation="top" delay="100" tooltip-message="{{item.value}}"></px-tooltip>
+                  <px-tooltip smart-orientation="true" orientation="bottom" delay="100" tooltip-message="{{item.value}}"></px-tooltip>
                 </template>
               </div>
             </template>
@@ -100,7 +93,7 @@
        */
       data: {
         type: Array,
-        value: function() { return []; },
+        value: function () { return []; },
         notify: true,
         observer: '_dataChanged'
       },
@@ -112,7 +105,7 @@
        */
       heatmapData: {
         type: Array,
-        value: function() { return []; }
+        value: function () { return []; }
       },
 
       /**
@@ -122,13 +115,13 @@
        */
       config: {
         type: Object,
-        value: function() {
+        value: function () {
           return {
             minValue: 0,
             maxValue: 0,
             startColor: [],
             endColor: [],
-            factors : []
+            factors: []
           };
         },
         observer: '_configChanged'
@@ -140,7 +133,7 @@
        */
       scale: {
         type: Array,
-        value: function() { return [0, 100]; },
+        value: function () { return [0, 100]; },
         observer: '_scaleChanged'
       },
 
@@ -239,7 +232,7 @@
      * After the component is attached to the DOM calls
      * _dataChanged and _configChanged.
      */
-    attached: function() {
+    attached: function () {
       this._dataChanged(this.data, []);
       this._configChanged(this.config, {});
     },
@@ -248,11 +241,11 @@
      * Add an event listener for the px-tooltip in order to
      * evaluate when to hide tooltips for non ellipsed text
      */
-    ready: function() {
+    ready: function () {
       this.addEventListener('px-tooltip-request-show', this._hideTooltip);
     },
 
-    detached: function() {
+    detached: function () {
       this.removeEventListener('px-tooltip-request-show', this._hideTooltip);
     },
 
@@ -276,8 +269,8 @@
      * @method _dataChanged
      * @private
      */
-    _dataChanged: function(newData, oldData) {
-      if(newData != oldData && newData && newData.length && newData[0] !== null) {
+    _dataChanged: function (newData, oldData) {
+      if (newData != oldData && newData && newData.length && newData[0] !== null) {
         var rows = [],
           cols = [],
           tableData = [],
@@ -343,7 +336,7 @@
      * @method _processNewDataArray
      * @private
      */
-    _processNewDataArray: function(data) {
+    _processNewDataArray: function (data) {
       var nColor = [],
         tableData = [],
         stopLen = data.length;
@@ -355,7 +348,7 @@
         for (var j = 0; j < stopLen2; j++) {
           var value = colArr[j];
 
-          if(!tableData[j]) tableData.push([]);
+          if (!tableData[j]) tableData.push([]);
           nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
           tableData[j][i] = {
             "value": value,
@@ -395,7 +388,7 @@
      * @method _processNewDataArray
      * @private
      */
-    _processNewDataObject: function(data) {
+    _processNewDataObject: function (data) {
       var nColor = [],
         iRow = -1,
         iCol = -1,
@@ -424,14 +417,14 @@
           nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
 
           if (iCol === -2) {
-            if (i === 0 ) tableData.push([]);
+            if (i === 0) tableData.push([]);
             tableData[j].push({
               "value": value,
               "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
             });
           }
           else {
-            if (j === 0 ) tableData.push([]);
+            if (j === 0) tableData.push([]);
             tableData[i].push({
               "value": value,
               "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
@@ -462,7 +455,7 @@
      * @method _processNewDataArray
      * @private
      */
-    _processNewDataNumber: function(data) {
+    _processNewDataNumber: function (data) {
       var nColor = [],
         tableData = [],
         stopLen = data.length;
@@ -471,7 +464,7 @@
         var value = data[i];
 
         nColor = this.config != undefined ? this._calculateColor(value) : [255, 255, 255];
-        tableData.push( [{
+        tableData.push([{
           "value": value,
           "color": nColor ? "background-color: rgb(" + nColor[0] + "," + nColor[1] + "," + nColor[2] + ");" : ""
         }]);
@@ -500,7 +493,7 @@
      * @method _processNewDataArray
      * @private
      */
-    _processNewDataFullObject: function(data) {
+    _processNewDataFullObject: function (data) {
       var nColor = [],
         iRow = -1,
         iCol = -1,
@@ -509,7 +502,7 @@
         cols = [],
         stopLen = data.length;
 
-      for (var i = 0; i < stopLen; i ++) {
+      for (var i = 0; i < stopLen; i++) {
         var cell = data[i];
 
         if (cell) {
@@ -545,7 +538,7 @@
      * @method _initializeRowsOrdering
      * @private
      */
-    _initializeRowsOrdering: function() {
+    _initializeRowsOrdering: function () {
       var initialRowsOrder = [],
         stopLen = this.rows.length;
 
@@ -581,7 +574,7 @@
      * @method _initializeColsOrdering
      * @private
      */
-    _initializeColsOrdering: function() {
+    _initializeColsOrdering: function () {
       var initialColsOrder = [],
         stopLen = this.cols.length;
 
@@ -622,7 +615,7 @@
      * @method _calculateColor
      * @private
      */
-    _calculateColor: function(value) {
+    _calculateColor: function (value) {
       var config = this.config,
         colors = [];
 
@@ -657,12 +650,12 @@
      * @method _configChanged
      * @private
      */
-    _configChanged: function(newConfig, oldConfig) {
-      if(newConfig !== oldConfig && newConfig) {
+    _configChanged: function (newConfig, oldConfig) {
+      if (newConfig !== oldConfig && newConfig) {
         var config = this.config,
           temp, stopLen, nValues, data;
 
-        if(this.scaleColorFrom) {
+        if (this.scaleColorFrom) {
           temp = this.scaleColorFrom.replace(/[^\d,]/g, '').split(',');
           config.startColor = [];
           stopLen = temp.length;
@@ -671,7 +664,7 @@
             config.startColor.push(Number(temp[i]));
           }
         }
-        if(this.scaleColorTo) {
+        if (this.scaleColorTo) {
           temp = this.scaleColorTo.replace(/[^\d,]/g, '').split(',');
           config.endColor = [];
           stopLen = temp.length;
@@ -706,8 +699,8 @@
      * @method _scaleChanged
      * @private
      */
-    _scaleChanged: function(newScale, oldScale) {
-      if(newScale !== oldScale && newScale && newScale.length === 2) {
+    _scaleChanged: function (newScale, oldScale) {
+      if (newScale !== oldScale && newScale && newScale.length === 2) {
         this.set("config.minValue", newScale[0]);
         this.set("config.maxValue", newScale[1]);
         this._configChanged(this.config, {});
@@ -724,7 +717,7 @@
      * @method _getHeader
      * @private
      */
-    _getHeader: function(option, index) {
+    _getHeader: function (option, index) {
       if (option === "col") {
         return this.cols[Object.keys(this.cols)[index]];
       }
@@ -742,7 +735,7 @@
      * @method _hideTooltip
      * @private
      */
-    _hideTooltip: function(e) {
+    _hideTooltip: function (e) {
       var tooltip = e.detail.target,
         headerEl = tooltip.parentElement.querySelector('div');
 
@@ -765,7 +758,7 @@
      * @method _hideColHeaderChanged
      * @private
      */
-    _hideColHeaderChanged: function(newValue, oldValue) {
+    _hideColHeaderChanged: function (newValue, oldValue) {
       if (newValue !== undefined && newValue !== oldValue) {
         newValue === false ? this.disabledHeader = "" : this.disabledHeader = "disable-col-header";
       }
@@ -784,7 +777,7 @@
      * @method _sortCol
      * @private
      */
-    _sortCol: function(e) {
+    _sortCol: function (e) {
       var col = e.model.index,
         order = 0,
         _this = this,
@@ -821,7 +814,7 @@
       else {
         temp = [];
 
-        if(this.rows && this.rows.length && Object.keys(this.rows)[0]) {
+        if (this.rows && this.rows.length && Object.keys(this.rows)[0]) {
           stopLen = this.initialRowsOrder.length;
 
           for (var i = 0; i < stopLen; i++) {
@@ -892,7 +885,7 @@
      * @method _sortCol
      * @private
      */
-    _sortRow: function(e) {
+    _sortRow: function (e) {
       var row = e.model.index,
         order = 0,
         _this = this,
@@ -997,7 +990,7 @@
      * @method _sortingIcon
      * @private
      */
-    _sortingIcon: function(i,h,d) {
+    _sortingIcon: function (i, h, d) {
       var hideIcon = true;
 
       // If h is a col and the current sorting column is the one in i
@@ -1054,8 +1047,8 @@
      * @method _calculateAggregation
      * @private
      */
-    _calculateAggregation: function(n, o) {
-      if(this.aggregationType && this.aggregationType != null && n && n !== o && this.availableAggregations && this.availableAggregations.indexOf(n.toUpperCase()) !== -1 && this.heatmapData.length > 0) {
+    _calculateAggregation: function (n, o) {
+      if (this.aggregationType && this.aggregationType != null && n && n !== o && this.availableAggregations && this.availableAggregations.indexOf(n.toUpperCase()) !== -1 && this.heatmapData.length > 0) {
         this.set("showAggregation", true);
         var rowAggregation = [],
           colAggregation = [],
@@ -1063,36 +1056,36 @@
           colDigits = [],
           rowDigits = [];
 
-        data = this.heatmapData.map(function(hd) {
-          return hd.map(function(v) {
+        data = this.heatmapData.map(function (hd) {
+          return hd.map(function (v) {
             return v.value;
           });
         });
 
         // Find max decimal digits for the data in each column
-        colDigits = data.map(function(hd) {
-          return hd.map(function(a) {
+        colDigits = data.map(function (hd) {
+          return hd.map(function (a) {
             if (a && typeof a === "number") {
               var temp = (a + "").split(".");
               temp = temp[1] ? temp[1].length : 0;
               return temp;
             }
             return 0;
-          }).reduce(function(a, b, i) {
+          }).reduce(function (a, b, i) {
             return i === 0 ? b : a > b ? b : a;
           });
         });
 
         // Find the max decimal digits for the data in each row
-        rowDigits = data[0].map(function(hd, i) {
-          return data.map(function(a) {
+        rowDigits = data[0].map(function (hd, i) {
+          return data.map(function (a) {
             if (a[i] && typeof a[i] === "number") {
               var temp = (a[i] + "").split(".");
               temp = temp[1] ? temp[1].length : 0;
               return temp;
             }
             return 0;
-          }).reduce(function(a, b, i) {
+          }).reduce(function (a, b, i) {
             return i === 0 ? b : a > b ? b : a;
           });
         });
@@ -1102,86 +1095,86 @@
         switch (n.toUpperCase()) {
           // Sums the data on each row and each column
           case "SUM":
-            rowAggregation = data[0].map(function(c, i) {
-              return data.reduce(function(a, b) {
+            rowAggregation = data[0].map(function (c, i) {
+              return data.reduce(function (a, b) {
                 return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
               }, 0);
             });
-            colAggregation = data.map(function(c) {
-              return c.reduce(function(a, b) {
+            colAggregation = data.map(function (c) {
+              return c.reduce(function (a, b) {
                 return a + (b && typeof b === "number" ? b : 0);
               }, 0);
             });
             break;
           // Calculates the average for each row and each column
           case "AVERAGE":
-            rowAggregation = data[0].map(function(c,i) {
-              return (data.reduce(function(a, b) {
-                  return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
-                }, 0)) / data.reduce(function(a, b) {
-                  return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
-                }, 0);
+            rowAggregation = data[0].map(function (c, i) {
+              return (data.reduce(function (a, b) {
+                return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
+              }, 0)) / data.reduce(function (a, b) {
+                return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
+              }, 0);
             });
-            colAggregation = data.map(function(c, i) {
-              return c.reduce(function(a, b) {
-                  return a + (b && typeof b === "number" ? b : 0);
-                }, 0) / data[i].reduce(function(a, b) {
-                  return a + (b && typeof b === "number" ? 1 : 0);
-                }, 0);
+            colAggregation = data.map(function (c, i) {
+              return c.reduce(function (a, b) {
+                return a + (b && typeof b === "number" ? b : 0);
+              }, 0) / data[i].reduce(function (a, b) {
+                return a + (b && typeof b === "number" ? 1 : 0);
+              }, 0);
             });
             break;
           // Calculates the standard deviation for each row and each column
           case "STD":
-            rowAggregation = data[0].map(function(c,i) {
-              return (data.reduce(function(a, b) {
-                  return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
-                }, 0)) / data.reduce(function(a, b) {
-                  return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
-                }, 0);
+            rowAggregation = data[0].map(function (c, i) {
+              return (data.reduce(function (a, b) {
+                return a + (b[i] && typeof b[i] === "number" ? b[i] : 0)
+              }, 0)) / data.reduce(function (a, b) {
+                return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
+              }, 0);
             });
             rowAggregation = data[0].map(function (c, i) {
-              return Math.sqrt((data.reduce(function (a,b) {
-                  return a + (b[i] && typeof b[i] === "number" ? Math.pow((b[i] - rowAggregation[i]), 2) : 0);
-                }, 0)) / data.reduce(function (a, b) {
-                  return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
-                }, 0));
+              return Math.sqrt((data.reduce(function (a, b) {
+                return a + (b[i] && typeof b[i] === "number" ? Math.pow((b[i] - rowAggregation[i]), 2) : 0);
+              }, 0)) / data.reduce(function (a, b) {
+                return a + (b[i] && typeof b[i] === "number" ? 1 : 0);
+              }, 0));
             });
-            colAggregation = data.map(function(c, i) {
-              return c.reduce(function(a, b) {
-                  return a + (b && typeof b === "number" ? b : 0);
-                }, 0) / data[i].reduce(function(a, b) {
-                  return a + (b && typeof b === "number" ? 1 : 0);
-                }, 0);
+            colAggregation = data.map(function (c, i) {
+              return c.reduce(function (a, b) {
+                return a + (b && typeof b === "number" ? b : 0);
+              }, 0) / data[i].reduce(function (a, b) {
+                return a + (b && typeof b === "number" ? 1 : 0);
+              }, 0);
             });
             colAggregation = data.map(function (c, i) {
               return Math.sqrt((c.reduce(function (a, b) {
-                  return a + (b && typeof b === "number" ? Math.pow((b - colAggregation[i]), 2) : 0);
-                }, 0)) / data[i].reduce(function (a, b) {
-                  return a + (b && typeof b === "number" ? 1 : 0);
-                }, 0));
+                return a + (b && typeof b === "number" ? Math.pow((b - colAggregation[i]), 2) : 0);
+              }, 0)) / data[i].reduce(function (a, b) {
+                return a + (b && typeof b === "number" ? 1 : 0);
+              }, 0));
             });
             break;
           // Finds the max value on each row and each column
           case "MAX":
-            rowAggregation = data[0].map(function(c, i) {
-              return data.reduce(function(a, b) {
+            rowAggregation = data[0].map(function (c, i) {
+              return data.reduce(function (a, b) {
                 return typeof b[i] === "number" ? a > b[i] ? a : b[i] : a;
               }, -Infinity);
             });
-            colAggregation = data.map(function(c) {
-              return c.reduce(function(a, b) {
+            colAggregation = data.map(function (c) {
+              return c.reduce(function (a, b) {
                 return typeof b === "number" ? a > b ? a : b : a;
               }, -Infinity);
             });
             break;
           // Finds the min value on each row and each column
           case "MIN":
-            rowAggregation = data[0].map(function(c, i) {
-              return data.reduce(function(a, b) {
+            rowAggregation = data[0].map(function (c, i) {
+              return data.reduce(function (a, b) {
                 return typeof b[i] === "number" ? a < b[i] ? a : b[i] : a;
               }, Infinity);
             });
-            colAggregation = data.map(function(c) {
+            colAggregation = data.map(function (c) {
               return c.reduce(function (a, b) {
                 return typeof b === "number" ? a < b ? a : b : a;
               }, Infinity);
@@ -1211,7 +1204,7 @@
         this.set("colAggregatedData", colAggregation);
       }
       // If n is invalid, disables the aggregation
-      else if(this.aggregationType && o && n && o !== n && this.availableAggregations.indexOf(n.toUpperCase()) === -1) {
+      else if (this.aggregationType && o && n && o !== n && this.availableAggregations.indexOf(n.toUpperCase()) === -1) {
         this.set("aggregationType", "");
         this.set("showAggregation", false);
       }
@@ -1226,7 +1219,7 @@
      * @method _getColAggregation
      * @private
      */
-    _getColAggregation: function(i) {
+    _getColAggregation: function (i) {
       return this.colAggregatedData ? this.colAggregatedData[i] : '';
     },
 
@@ -1241,7 +1234,7 @@
      * @method _scaleColorFromChanged
      * @private
      */
-    _scaleColorFromChanged: function(newColor, oldColor) {
+    _scaleColorFromChanged: function (newColor, oldColor) {
       if (newColor && newColor !== oldColor) {
         this._configChanged(this.config, {});
       }
@@ -1258,7 +1251,7 @@
      * @method _scaleColorToChanged
      * @private
      */
-    _scaleColorToChanged: function(newColor, oldColor) {
+    _scaleColorToChanged: function (newColor, oldColor) {
       if (newColor && newColor !== oldColor) {
         this._configChanged(this.config, {});
       }
@@ -1275,12 +1268,12 @@
      * @method _hideRowHeaderChanged
      * @private
      */
-    _hideRowHeaderChanged: function(nHide, oHide) {
+    _hideRowHeaderChanged: function (nHide, oHide) {
       var _this = this;
       if (nHide !== undefined && nHide === false && nHide !== oHide && this.rows && (!this.rows.length || !Object.keys(this.rows)[0])) {
         this.hideRowHeader = true;
       }
-      else if(!nHide && oHide) {
+      else if (!nHide && oHide) {
         this.hideRowHeader = false;
       }
     },
@@ -1295,7 +1288,7 @@
      * @param {string} oShow The aggregation type shown before.
      * @private
      */
-    _showAggregationChanged: function(nShow, oShow) {
+    _showAggregationChanged: function (nShow, oShow) {
       if (nShow !== undefined && nShow != oShow) {
         this.set('showRowAggregation', nShow);
         this.set('showColAggregation', false);
@@ -1305,4 +1298,5 @@
       }
     }
   });
+
 </script>

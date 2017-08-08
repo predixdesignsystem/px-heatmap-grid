@@ -5,12 +5,12 @@
 -->
 <link rel="import" href="../polymer/polymer.html"/>
 
-<link rel="import" href="css/px-heatmap-grid-scale-styles.html">
+<link rel="import" href="css/px-heatmap-grid-styles.html">
 
 
 <dom-module id="px-heatmap-grid-scale">
   <template class="flex flex--col flex--left flex--justify flex--stretch">
-    <style include="px-heatmap-grid-scale-styles"></style>
+    <style include="px-heatmap-grid-styles"></style>
     <div class$="u-pl- u-pr- scale-container flex flex--row flex--left flex--top {{disabledHeader}}">
       <div class="scale-gradient"></div>
       <div class="u-ml-- scale-values flex flex--col flex--justify">
@@ -190,6 +190,10 @@
 
       while ((matches = reg.exec(iColor)) !== null) {
         colors.push(matches[1]);
+      }
+
+      if(colors.length < 2) {
+        console.warn('Invalid --px-heatmap-grid-start-color or --px-heatmap-grid-end-color detected. Did you specify it correctly? RGB notation is required for the heatmap to calculate the proper color of each cell based on value.');
       }
 
       this.scaleColorFrom = 'rgb(' + colors[0] + ')';

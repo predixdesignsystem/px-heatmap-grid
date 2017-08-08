@@ -10,45 +10,18 @@
 <link rel="import" href="../px-spinner/px-spinner.html"/>
 
 <!--
-The px-heatmap-grid is a highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors.
-There are 5 different options based on the dataset used. The options to customize the component are detailed in the API reference below.
+
+### Basic Usage
+
+    <px-heatmap-grid heatmap-data={{data}}></px-heatmap-grid>
 
 ### Option 1
-The heat map Data is an array of cell objects.
+The heat map data is an array of cell objects, where:
+- `row` is the title to display for that row
+- `col` is the title to display for that column
+- `value` is the value displayed in the cell and used to calculate the cell color
 
-Sample schema for a simple cell object is detailed below.
-
-<pre>
-{
-  "row": "Application 1",
-  "col": "Operator 1",
-  "value": 16.639
-}
-</pre>
-
-Where:
-- row is the title to display for that row;
-- col is the title to display for that column;
-- value is the value displayed in the cell and used to calculate the cell color.
-
-Cells are grouped by rows and columns with same titles, see the examples below.
-
-<pre>
-[
-  {
-    "row": "Application 1",
-    "col": "Operator 1",
-    "value": 16.639
-  },
-  {
-    "row": "Application 1",
-    "col": "Operator 2",
-    "value": 55.464
-  }
-]
-</pre>
-
-On this example, both cells are going to be displayed on the 'Application 1' row but at two different columns, 'Operator 1' and 'Operator 2'.
+Cells are grouped by rows and columns with same titles. In this example, two cells are going to be displayed on each row and column.
 
 <pre>
 [
@@ -75,12 +48,12 @@ On this example, both cells are going to be displayed on the 'Application 1' row
 ]
 </pre>
 
-On this example, two cells are going to be displayed on each row and column.
-
 ### Option 2
-The heat map Data is an array objects that contain a column of data.
+The heat map data is an array of objects that contain a column of data, where:
+- `col` is the title to display for that column
+- `values` is the array of values displayed for that column
 
-Sample schema is detailed below.
+Example:
 <pre>
 [
   {
@@ -97,16 +70,15 @@ Sample schema is detailed below.
   }
 ]
 </pre>
-Where:
-- col is the title to display for that column;
-- values is the array of values displayed for that column.
 
 As only columns are specified in this dataset, the option to hide/show row titles has no effect.
 
 ### Option 3
-The heat map Data is an array objects that contain a row of data.
+The heat map data is an array of objects that contain a row of data, where:
+- `row` is the title to display for that row;
+- `values` is the array of values displayed for that row.
 
-Sample schema is detailed below.
+Example:
 <pre>
 [
   {
@@ -123,17 +95,13 @@ Sample schema is detailed below.
   }
 ]
 </pre>
-Where:
-- row is the title to display for that row;
-- values is the array of values displayed for that row.
 
 As only rows are specified in this dataset, the option to hide/show column titles has no effect.
 
 ### Option 4
-The heat map Data is an array of arrays that contain all the data.
-Each sub-array is displayed as a row of data in the heat map.
+The heat map data is an array of arrays that contain all of the data. Each sub-array is displayed as a row of data in the heat map.
 
-Sample schema is detailed below.
+Example:
 <pre>
 [
     [0, 1, 2, 3, 4, 5, 6],
@@ -141,45 +109,40 @@ Sample schema is detailed below.
     [14, 15, 16, 17, 18, 19, 20]
 ]
 </pre>
-As no row nor column titles are specified, the options to show/hide the columns or rows titles have no effect.
+
+As no row nor column titles are specified, the options to show/hide the column and row titles have no effect.
 
 ### Option 5
-The heat map Data is an array of all the data.
-The data is displayed as a single row in the heat map.
+The heat map data is a simple array with all of the data. The data is displayed as a single row in the heat map.
 
-Sample schema is detailed below.
+Example:
 <pre>
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 </pre>
-As no row nor column titles are specified, the options to show/hide the columns or rows titles have no effect.
 
-Also when displaying the aggregations, the column aggregation is not displayed.
-
-### Basic Usage
-
-    <px-heatmap-grid heatmap-data={{data}}></px-heatmap-grid>
+As no row nor column titles are specified, the options to show/hide the column and row titles have no effect.
 
 ### Styling
 The following variables are available for styling:
 
-Custom property | Description | Default
-----------------|-------------|----------
-`--px-heatmap-grid-start-color` | The color mapped to the scale min | `$gray1`
-`--px-heatmap-grid-end-color` | The color mapped to the scale max | `$alert-red`
-`--px-heatmap-grid-cell-min-width` | The min width for each cell | `50px`
-`--px-heatmap-grid-cell-max-width` | The max width for each cell | `none`
-`--px-heatmap-grid-cell-min-height` | The min height for each cell | `25px`
-`--px-heatmap-grid-cell-max-height` | The max height for each cell | `none`
-`--px-heatmap-grid-table-border-width` | The heatmap table border width | `1px`
-`--px-heatmap-grid-table-border-color` | The heatmap table border color | `$gray6`
-`--px-heatmap-grid-table-border-style` | The heatmap table border style | `solid`
-`--px-heatmap-grid-values-font-size` | The heatmap values font size | `14px`
-`--px-heatmap-grid-values-font-color` | The heatmap values font color | `$dv-dark-gray`
-`--px-heatmap-grid-values-font-weight` | The heatmap values font weight | `normal`
-`--px-heatmap-grid-header-font-size` | The heatmap column and row headers font size | `15px`
-`--px-heatmap-grid-header-font-color` | The heatmap column and row headers font color | `$black`
-`--px-heatmap-grid-header-font-weight` | The heatmap column and row headers font weight | `bold`
-`--px-heatmap-grid-sorting-icon-color` | The sorting icon color | `$blue-light`
+Custom property | Description
+:----------------|:-------------
+`--px-heatmap-grid-start-color` | The color mapped to the scale min (MUST be in rgb notation)
+`--px-heatmap-grid-end-color` | The color mapped to the scale max (MUST be in rgb notation)
+`--px-heatmap-grid-cell-min-width` | The min width for each cell
+`--px-heatmap-grid-cell-max-width` | The max width for each cell
+`--px-heatmap-grid-cell-min-height` | The min height for each cell
+`--px-heatmap-grid-cell-max-height` | The max height for each cell
+`--px-heatmap-grid-table-border-width` | The heatmap table border width
+`--px-heatmap-grid-table-border-color` | The heatmap table border color
+`--px-heatmap-grid-table-border-style` | The heatmap table border style
+`--px-heatmap-grid-values-font-size` | The heatmap values font size
+`--px-heatmap-grid-values-font-color` | The heatmap values font color
+`--px-heatmap-grid-values-font-weight` | The heatmap values font weight
+`--px-heatmap-grid-header-font-size` | The heatmap column and row headers font size
+`--px-heatmap-grid-header-font-color` | The heatmap column and row headers font color
+`--px-heatmap-grid-header-font-weight` | The heatmap column and row headers font weight
+`--px-heatmap-grid-sorting-icon-color` | The sorting icon color
 
 @element px-heatmap-grid
 @blurb A highly visual and flexible interactive component for visualizing a data set based on a heat map scale of colors
@@ -201,13 +164,13 @@ Custom property | Description | Default
                           hide-col-header="{{hideColHeader}}"
                           aggregation-type="{{aggregationType}}"
                           hide-values="{{hideValues}}"
-                          scale-color-from="{{scaleColorFrom}}"
-                          scale-color-to="{{scaleColorTo}}">
+                          scale-color-from="{{_scaleColorFrom}}"
+                          scale-color-to="{{_scaleColorTo}}">
         </px-heatmap-grid-table>
         <px-heatmap-grid-scale scale="{{scale}}"
                           hidden$="{{hideScale}}"
-                          scale-color-from="{{scaleColorFrom}}"
-                          scale-color-to="{{scaleColorTo}}"
+                          scale-color-from="{{_scaleColorFrom}}"
+                          scale-color-to="{{_scaleColorTo}}"
                           hide-col-header="{{hideColHeader}}">
         </px-heatmap-grid-scale>
       </template>
@@ -222,8 +185,7 @@ Custom property | Description | Default
 
     properties: {
       /**
-       * Holds the heatmap data.
-       * Please se the above options explanation for the different data types.
+       * Holds the heatmap data - see the usage information above for possible data schemas
        *
        * @property heatmapData
        */
@@ -266,7 +228,7 @@ Custom property | Description | Default
       },
 
       /**
-       * Show/hide the Column Header
+       * Show/hide the column header
        *
        * @property hideColHeader
        */
@@ -276,7 +238,7 @@ Custom property | Description | Default
       },
 
       /**
-       * Show/hide the Row Header
+       * Show/hide the row header
        *
        * @property hideRowHeader
        */
@@ -286,7 +248,7 @@ Custom property | Description | Default
       },
 
       /**
-       * Controls when to show/hide the Values in the cells
+       * Show/hide the numeric values in the cells
        */
       hideValues: {
         type: Boolean,
@@ -297,10 +259,8 @@ Custom property | Description | Default
        * Sets the aggregation type.
        * The aggregation result is truncated at the number of
        * significant digits + 1.
-       *
        * Available aggregation types are: Average, Sum, Max
        * Min, Count, Std (Standard Deviation).
-       *
        * If set to anything other than the values specified
        * above the aggregation will be disabled.
        *
@@ -312,25 +272,25 @@ Custom property | Description | Default
       },
 
       /**
-       * Sets the Scale From color.
+       * Color associated with the scale minimum - should be a hex value
        *
        * @property scaleColorFrom
        */
-      scaleColorFrom: {
+      _scaleColorFrom: {
         type: String
       },
 
       /**
-       * Sets the Scale To color.
+       * Color associated with the scale maximum - should be a hex value
        *
        * @property scaleColorTo
        */
-      scaleColorTo: {
+      _scaleColorTo: {
         type: String
       },
 
       /**
-       * Enable / Disable loading animation
+       * Enable / disable the loading animation (spinner)
        *
        * @property loading
        */
@@ -339,12 +299,6 @@ Custom property | Description | Default
         value: false,
         observer: '_loadingChanged'
       }
-      /**
-       * Sent when the Heatmap Data is changed.
-       *
-       * @event heatmap-data-changed
-       * @param {heatmapData} value The new Heatmap Data.
-       */
     },
 
     ready: function() {
@@ -356,38 +310,25 @@ Custom property | Description | Default
       this.removeEventListener('set-heatmap-data', this._setHeatmapDataEventMethod);
       this.removeEventListener('scale-colors-changed', this._scaleColorsChangedEventCallback);
     },
-
     /**
-     * Listener for changing the Heatmap Data
+     * Event callback method for when the data changes
      *
-     * @event set-heatmap-data
-     * @param {heatmapData} data The Heatmap Data
+     * @method _setHeatmapDataEventCallback
      */
     _setHeatmapDataEventCallback: function(e) {
       this.setData(e.detail.data);
     },
-
     /**
-     * Listener for changing the Heatmap Scale colors
+     * Event callback method for when the scale colors change
      *
-     * @event scale-colors-changed
-     * @param {from} The scale from color
-     * @param {to} The scale to color
-     * @private
+     * @method _scaleColorsChangedEventCallback
      */
     _scaleColorsChangedEventCallback: function(e) {
       e.stopPropagation();
       this.setColors(e.detail.from, e.detail.to);
     },
-
     /**
-     * Observer for the scaleMin and scaleMax properties.
-     * Set the internal scale variable based on the change
-     * to one of the limits of the scale.
-     *
-     * @param {string} newScale The value for the scale limit.
-     * @param {string} oldScale THe old value.
-     * @private
+     * Sets the scale when either min or max changes
      *
      * @method _scaleChanged
      */
@@ -398,7 +339,7 @@ Custom property | Description | Default
     },
 
     /**
-     * Toggles the visibility of the Color Scale
+     * Toggles the visibility of the color scale
      *
      * @method toggleScale
      */
@@ -407,7 +348,7 @@ Custom property | Description | Default
     },
 
     /**
-     * Toggles the visibility of the Row Header
+     * Toggles the visibility of the row header
      *
      * @method toggleRowHeader
      */
@@ -416,7 +357,7 @@ Custom property | Description | Default
     },
 
     /**
-     * Toggles the visibility of the Column Header
+     * Toggles the visibility of the column header
      *
      * @method toggleColHeader
      */
@@ -425,7 +366,7 @@ Custom property | Description | Default
     },
 
     /**
-     * Toggles the visibility of both Column and Row Headers
+     * Toggles the visibility of both column and row headers
      *
      * @method toggleHeaders
      */
@@ -444,9 +385,7 @@ Custom property | Description | Default
     },
 
     /**
-     * Sets the Heatmap Data
-     *
-     * @param {heatmapData} data The Heatmap Data.
+     * Sets the heatmap data
      *
      * @method setData
      */
@@ -455,10 +394,7 @@ Custom property | Description | Default
     },
 
     /**
-     * Sets the range for the Heatmap Scale
-     *
-     * @param {number} min The scale lower limit
-     * @param {number} max The scale upper limit
+     * Sets the range for the heatmap scale
      *
      * @method setRange
      */
@@ -468,26 +404,19 @@ Custom property | Description | Default
     },
 
     /**
-     * Sets the range colors for the Heatmap
-     *
-     * @param {string} from The range lower limit color
-     * @param {string} to The range upper limit color
+     * Sets the range colors for the heatmap
      *
      * @method setColors
      */
     setColors: function(from, to) {
-      this.set('scaleColorFrom', from);
-      this.set('scaleColorTo', to);
+      this.set('_scaleColorFrom', from);
+      this.set('_scaleColorTo', to);
     },
 
     /**
      * Observer for the loading property.
      * Fixes px-spinner not removing the display none
      * style when changing finished to false.
-     *
-     * @param {boolean} n Hide / Show the spinner
-     * @param {boolean} o The old value
-     * @private
      *
      * @method _loadingChanged
      */

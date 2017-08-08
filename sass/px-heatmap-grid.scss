@@ -1,0 +1,139 @@
+/*
+ * Copyright (c) 2014 GE Global Research. All rights reserved.
+ *
+ * The copyright to the computer software herein is the property of
+ * GE Global Research. The software may be used and/or copied only
+ * with the written permission of GE Global Research or in accordance
+ * with the terms and conditions stipulated in the agreement/contract
+ * under which the software has been supplied.
+ */
+
+// Settings
+
+// Tools
+
+// Generic
+@import "px-normalize-design/_generic.normalize.scss";
+@import "px-box-sizing-design/_generic.box-sizing.scss";
+@import "px-helpers-design/_generic.helpers.scss";
+
+// Base
+@import "px-flexbox-design/_base.flexbox.scss";
+
+// Meta
+
+// Objects
+@import "px-actionable-design/_objects.actionable.scss";
+
+// Component
+$px-heatmap-grid-start-color: var(--px-heatmap-grid-start-color, rgb(255,255,255));
+$px-heatmap-grid-end-color: var(--px-heatmap-grid-end-color, rgb(254,0,0)); // 255 gets replaced with `red` during sass compilation
+$px-heatmap-grid-cell-min-width: var(--px-heatmap-grid-cell-min-width, calculateRem(50px));
+$px-heatmap-grid-cell-max-width: var(--px-heatmap-grid-cell-max-width, calculateRem(120px));
+$px-heatmap-grid-cell-min-height: var(--px-heatmap-grid-cell-min-height, calculateRem(25px));
+$px-heatmap-grid-cell-max-height: var(--px-heatmap-grid-cell-max-height, none);
+$px-heatmap-grid-table-border-width: var(--px-heatmap-grid-table-border-width, calculateRem(1px));
+$px-heatmap-grid-table-border-color: var(--px-heatmap-grid-table-border-color, gray);
+$px-heatmap-grid-table-border-style: var(--px-heatmap-grid-table-border-style, solid);
+$px-heatmap-grid-scale-width: var(--px-heatmap-grid-scale-width, calculateRem(75px));
+$table-header-height: calculateRem(22px);
+
+// Styles for px-heatmap-grid-scale
+
+px-heatmap-grid-scale {
+  display: flex;
+}
+
+.scale-gradient {
+  background: linear-gradient(to top, $px-heatmap-grid-start-color, $px-heatmap-grid-end-color);
+  align-self: stretch;
+  width: calculateRem(20px);
+}
+
+.scale-values {
+  align-self: stretch;
+}
+
+.scale-container {
+  font-size: calculateRem(12px);
+  margin-top: $table-header-height;
+  max-width: $px-heatmap-grid-scale-width;
+  min-width: $px-heatmap-grid-scale-width;
+}
+
+// Styles for px-heatmap-grid
+
+.spinner {
+  margin: 0 auto;
+}
+
+// Styles for px-heatmap-grid-table
+
+[hidden] {
+  display: none !important;
+}
+
+.table-cell {
+  border-top: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+  border-left: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+  min-width: $px-heatmap-grid-cell-min-width;
+  max-width: $px-heatmap-grid-cell-max-width;
+  min-height: $px-heatmap-grid-cell-min-height;
+  max-height: $px-heatmap-grid-cell-max-height;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-empty-cell {
+  border: 0;
+  min-width: $px-heatmap-grid-cell-min-width;
+  max-width: $px-heatmap-grid-cell-max-width;
+}
+
+.table-cell:nth-last-child(2) {
+  border-bottom: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+}
+
+.table-column:nth-last-child(2) > .table-cell {
+  border-right: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+}
+
+.color-helper {
+  visibility: hidden;
+  display: none;
+  height: 0px;
+  width: 0px;
+  color: $px-heatmap-grid-end-color;
+  background-color: $px-heatmap-grid-start-color;
+}
+
+.table-row-header {
+  margin-top: $table-header-height;
+}
+
+.disable-col-header {
+  margin-top: 0 !important;
+}
+
+.row-header, .col-header {
+  cursor: pointer;
+  white-space: nowrap;
+  max-height: $table-header-height;
+  min-height: $table-header-height;
+  min-width: $px-heatmap-grid-cell-min-width;
+  max-width: $px-heatmap-grid-cell-max-width;
+}
+
+.row-header-text, .col-header-text {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Trumps
+$inuit-enable-paddings--small: true;
+$inuit-enable-paddings--tiny: true;
+$inuit-enable-margins--small: true;
+$inuit-enable-margins--tiny: true;
+@import "px-spacing-design/_trumps.spacing.scss";
