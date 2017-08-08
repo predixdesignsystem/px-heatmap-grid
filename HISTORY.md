@@ -1,3 +1,9 @@
+v1.0.0
+==================
+* move from contribution
+* component redesign
+* fix unit tests
+
 v0.5.1
 ==================
 * Updated padding and margin to use px-spacing-design

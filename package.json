@@ -2,7 +2,7 @@
     "name": "px-heatmap-grid",
     "author": "General Electric",
     "description": "A Px component",
-    "version": "0.5.2",
+    "version": "1.0.0",
     "private": true,
     "extName" : null,
     "repository" :

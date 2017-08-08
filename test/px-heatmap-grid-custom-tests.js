@@ -209,7 +209,7 @@ function runCustomTests(testN) {
         assert.isFalse(heatmapEl.hideColHeader, "px-heatmap-grid hideColHeader property was supposed to be false");
         assert.isFalse(rowHeader.classList.contains('disable-col-header'), "row header should not contain class 'disable-col-header'");
         colHeader.forEach(function (x) {
-          assert.equal(window.getComputedStyle(x).display, "block", "row header '" + x.innerText + "' was not supposed to be hidden");
+          assert.equal(window.getComputedStyle(x).display, "flex", "row header '" + x.innerText + "' was not supposed to be hidden");
         });
 
         heatmapEl.toggleColHeader();
@@ -355,7 +355,7 @@ function runCustomTests(testN) {
       var scaleEl = Polymer.dom(heatmapEl.root).querySelector('px-heatmap-grid-scale'),
         colorFrom = scaleEl.scaleColorFrom,
         colorTo = scaleEl.scaleColorTo;
-      heatmapEl.setColors('#cccccc', '#00ff77');
+      heatmapEl.setColors('rgb(204,204,204)', 'rgb(0,255,119');
       heatmapEl.setRange(0, 100);
       heatmapEl.toggleHeaders();
       heatmapEl.toggleScale();
@@ -363,10 +363,10 @@ function runCustomTests(testN) {
       setTimeout(function() {
         colorFrom = scaleEl.scaleColorFrom;
         colorTo = scaleEl.scaleColorTo;
-        assert.equal(heatmapEl.scaleColorFrom, colorFrom, 'From colors at heatmap and scale should be the same');
-        assert.equal(heatmapEl.scaleColorTo, colorTo, 'To colors at heatmap and scale should be the same');
-        assert.equal(heatmapEl.scaleColorFrom, colorFrom, 'From colors should be the same');
-        assert.equal(heatmapEl.scaleColorTo, colorTo, 'To colors should be the same');
+        assert.equal(heatmapEl._scaleColorFrom, colorFrom, 'From colors at heatmap and scale should be the same');
+        assert.equal(heatmapEl._scaleColorTo, colorTo, 'To colors at heatmap and scale should be the same');
+        assert.equal(heatmapEl._scaleColorFrom, colorFrom, 'From colors should be the same');
+        assert.equal(heatmapEl._scaleColorTo, colorTo, 'To colors should be the same');
         done()
       }, 10);
     });
