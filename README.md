@@ -1,5 +1,5 @@
-#ev-heatmap
-[![ev-heatmap demo](ev-heatmap.png?raw=true)](https://github.build.ge.com/emerging-verticals/ev-heatmap)
+#px-heatmap-grid
+[![px-heatmap-grid demo](px-heatmap-grid.png?raw=true)](https://github.build.ge.com/emerging-verticals/px-heatmap-grid)
 
 ## Overview
 
@@ -20,22 +20,22 @@ Node, npm and bower are necessary to install the component and dependencies. web
 First, install the component via bower on the command line.
 
 ```
-bower install ev-heatmap --save
+bower install px-heatmap-grid --save
 ```
 
 Second, import the component to your application with the following tag in your head.
 
 ```
-<link rel="import" href="/bower_components/ev-heatmap/ev-heatmap.html"/>
+<link rel="import" href="/bower_components/px-heatmap-grid/px-heatmap-grid.html"/>
 ```
 
 Finally, use the component in your application:
 
 ```
-<ev-heatmap
+<px-heatmap-grid
   heatmap-data={{data}}
   scale={{scale}}>
-</ev-heatmap>
+</px-heatmap-grid>
 ```
 
 <br />
@@ -43,7 +43,7 @@ Finally, use the component in your application:
 
 ## Documentation
 
-Read the full API and view the demo [here](https://github.build.ge.com/pages/emerging-verticals/ev-heatmap/ev-heatmap/).
+Read the full API and view the demo [here](https://github.build.ge.com/pages/emerging-verticals/px-heatmap-grid/px-heatmap-grid/).
 
 The documentation in this repository is supplemental to the official Predix documentation, which is continuously updated and maintained by the Predix documentation team. Go to [http://predix.io](http://predix.io)  to see the official Predix documentation.
 
@@ -74,4 +74,4 @@ Navigate to the root of that server (e.g. http://localhost:8080/) in a browser t
 
 ## Known Issues
 
-Please use [Github Issues](https://github.com/PredixDev/ev-heatmap/issues) to submit any bugs you might find.
+Please use [Github Issues](https://github.com/PredixDev/px-heatmap-grid/issues) to submit any bugs you might find.

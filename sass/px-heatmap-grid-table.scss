@@ -1,0 +1,112 @@
+@import "px-colors-design/_settings.colors.scss";
+@import 'px-flexbox-design/_base.flexbox.scss';
+@import "px-iconography-design/_base.iconography.scss";
+
+$px-heatmap-grid-start-color: var(--px-heatmap-grid-start-color, $gray1);
+$px-heatmap-grid-end-color: var(--px-heatmap-grid-end-color, $alert-red);
+$px-heatmap-grid-cell-min-width: var(--px-heatmap-grid-cell-min-width, calculateRem(50px));
+$px-heatmap-grid-cell-max-width: var(--px-heatmap-grid-cell-max-width, calculateRem(120px));
+$px-heatmap-grid-cell-min-height: var(--px-heatmap-grid-cell-min-height, calculateRem(25px));
+$px-heatmap-grid-cell-max-height: var(--px-heatmap-grid-cell-max-height, none);
+$px-heatmap-grid-table-border-width: var(--px-heatmap-grid-table-border-width, calculateRem(1px));
+$px-heatmap-grid-table-border-color: var(--px-heatmap-grid-table-border-color, $gray4);
+$px-heatmap-grid-table-border-style: var(--px-heatmap-grid-table-border-style, solid);
+$px-heatmap-grid-values-font-size: var(--px-heatmap-grid-values-font-size, calculateRem(14px));
+$px-heatmap-grid-values-font-color: var(--px-heatmap-grid-values-font-color, $dv-dark-gray);
+$px-heatmap-grid-values-font-weight: var(--px-heatmap-grid-values-font-weight, normal);
+$px-heatmap-grid-header-font-size: var(--px-heatmap-grid-header-font-size, calculateRem(15px));
+$px-heatmap-grid-header-font-color: var(--px-heatmap-grid-header-font-color, $black);
+$px-heatmap-grid-header-font-weight: var(--px-heatmap-grid-header-font-weight, bold);
+$px-heatmap-grid-sorting-icon-color: var(--px-heatmap-grid-sorting-icon-color, $blue-light);
+$px-heatmap-grid-column-header-width: var(--px-heatmap-grid-column-header-width, calculateRem(150px));
+$table-header-height: calculateRem(22px);
+
+[hidden] {
+  display: none !important;
+}
+
+.table-cell {
+  border-top: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+  border-left: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+  min-width: $px-heatmap-grid-cell-min-width;
+  max-width: $px-heatmap-grid-cell-max-width;
+  min-height: $px-heatmap-grid-cell-min-height;
+  max-height: $px-heatmap-grid-cell-max-height;
+  font-size: $px-heatmap-grid-values-font-size;
+  font-weight: $px-heatmap-grid-values-font-weight;
+  color: $dv-dark-gray;
+  text-align: right;
+}
+
+.table-empty-cell {
+  border: 0;
+  min-width: $px-heatmap-grid-cell-min-width;
+  max-width: $px-heatmap-grid-cell-max-width;
+  color: $px-heatmap-grid-values-font-color;
+}
+
+.table-cell:nth-last-child(2) {
+  border-bottom: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+}
+
+.table-column:nth-last-child(2) > .table-cell {
+  border-right: $px-heatmap-grid-table-border-width $px-heatmap-grid-table-border-style $px-heatmap-grid-table-border-color;
+}
+
+.color-helper {
+  visibility: hidden;
+  display: none;
+  height: 0px;
+  width: 0px;
+  color: $px-heatmap-grid-end-color;
+  background-color: $px-heatmap-grid-start-color;
+}
+
+.table-row-header {
+  margin-top: $table-header-height;
+  min-width: $px-heatmap-grid-column-header-width;
+  max-width: $px-heatmap-grid-column-header-width;
+}
+
+.disable-col-header {
+  margin-top: 0 !important;
+}
+
+.row-header {
+  font-size: $px-heatmap-grid-header-font-size;
+  font-weight: $px-heatmap-grid-header-font-weight;
+  color: $px-heatmap-grid-header-font-color;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.row-header-text {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(var(--px-heatmap-grid-column-header-width, calculateRem(150px)) - calculateRem(30px));
+}
+
+.col-header {
+  font-size: $px-heatmap-grid-header-font-size;
+  font-weight: $px-heatmap-grid-header-font-weight;
+  color: $px-heatmap-grid-header-font-color;
+  max-height: $table-header-height;
+  min-height: $table-header-height;
+  min-width: $px-heatmap-grid-cell-min-width;
+  max-width: $px-heatmap-grid-cell-max-width;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.col-header-text {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(var(--px-heatmap-grid-cell-max-width, calculateRem(120px)) - calculateRem(30px));
+}
+
+iron-icon {
+  color: $px-heatmap-grid-sorting-icon-color;
+}

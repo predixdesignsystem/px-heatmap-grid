@@ -1,0 +1,219 @@
+<!--
+    Relative paths assume component is being run from inside an app or another component, where dependencies are flat
+    siblings. When this component is run from its own repo (e.g. tests, examples), we assume the server is started with
+    'gulp serve' (or similar server setup) to enable correct finding of bower dependencies for local runs.
+-->
+<link rel="import" href="../polymer/polymer.html"/>
+
+<link rel="import" href="css/px-heatmap-grid-scale-styles.html">
+
+
+<dom-module id="px-heatmap-grid-scale">
+  <template class="flex flex--col flex--left flex--justify flex--stretch">
+    <style include="px-heatmap-grid-scale-styles"></style>
+    <div class$="u-pl- u-pr- scale-container flex flex--row flex--left flex--top {{disabledHeader}}">
+      <div class="scale-gradient"></div>
+      <div class="u-ml-- scale-values flex flex--col flex--justify">
+        <div>{{computedScale.max}}</div>
+        <div>{{computedScale.mid}}</div>
+        <div>{{computedScale.min}}</div>
+      </div>
+    </div>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+
+    is: 'px-heatmap-grid-scale',
+
+    properties: {
+      /**
+       * Holds the scale set by the user
+       *
+       * @property scale
+       */
+      scale: {
+        type: Array,
+        value: function() { return [0, 100]; },
+        observer: '_scaleChanged'
+      },
+
+      /**
+       * Holds the computed scale object
+       *
+       * @property computedScale
+       */
+      computedScale: {
+        type: Object,
+        value: function() {
+          return {
+            min: 0,
+            mid: 50,
+            max: 100
+          };
+        }
+      },
+
+      /**
+       * Contains the Scale From color.
+       *
+       * @property scaleColorFrom
+       */
+      scaleColorFrom: {
+        type: String,
+        observer: '_scaleColorFromChanged'
+      },
+
+      /**
+       * Contains the Scale To color.
+       *
+       * @property scaleColorTo
+       */
+      scaleColorTo: {
+        type: String,
+        observer: '_scaleColorToChanged'
+      },
+
+      /**
+       * When the table header is hidden, applies a CSS fix
+       *
+       * @property hideColHeader
+       */
+      hideColHeader: {
+        type: Boolean,
+        value: false,
+        observer: '_hideColHeaderChanged'
+      }
+
+      /**
+       * Sent to notify the color change with the new properties in the
+       * event detail property. The event bubbles up.
+       *
+       * @event scale-colors-changed
+       * @param {Number} from The new scale from color.
+       * @param {Number} to The new scale to color.
+       * @private
+       */
+    },
+
+    /**
+     * After the component is attached to the DOM
+     * call _lookupColors to grab the default colors
+     * and save them internally.
+     * Also calls _scaleChanged to grab the scale
+     * properties and save them internally.
+     */
+    attached: function() {
+      this._scaleChanged(this.scale, []);
+      this._lookupColors();
+    },
+
+    /**
+     * Observes the changes to scale and updates
+     * the computedScale if newScale contains valid data
+     * and newScale is different than oldScale data.
+     *
+     * @param {Array<number>} newScale The new scale data.
+     * @param {Array<number>} oldScale The old scale data.
+     *
+     * @method _scaleChanged
+     * @private
+     */
+    _scaleChanged: function(newScale, oldScale) {
+      if(newScale !== oldScale && newScale && newScale.length === 2 && this.computedScale) {
+        var computedScale = {
+          "min": newScale[0],
+          "mid": (Math.round((newScale[1] - newScale[0]) / 2)) + Number(newScale[0]),
+          "max": newScale[1]
+        }
+        this.set("computedScale", computedScale);
+      }
+    },
+
+    /**
+     * Observes the changes to scaleColorFrom and
+     * updates the scale background gradient if
+     * newColor contains valid data and newColor is
+     * different than oldColor data.
+     *
+     * @param {string} newColor The new from color in RGB or hex format.
+     * @param {string} oldColor The old from color.
+     *
+     * @method _scaleColorFromChanged
+     * @private
+     */
+    _scaleColorFromChanged: function(newColor, oldColor) {
+      if (newColor && newColor !== oldColor) {
+        var scale = Polymer.dom(this.root).querySelector(".scale-gradient");
+        scale.style.background = "linear-gradient(to top, " + newColor + ", " + this.scaleColorTo + ")";
+        this._lookupColors();
+      }
+    },
+
+    /**
+     * Observes the changes to scaleColorTo and
+     * updates the scale background gradient if
+     * newColor contains valid data and newColor
+     * is different than oldColor data.
+     *
+     * @param {string} newColor The new to color in RGB or hex format.
+     * @param {string} oldColor The old to color.
+     *
+     * @method _scaleColorToChanged
+     * @private
+     */
+    _scaleColorToChanged: function(newColor, oldColor) {
+      if (newColor && newColor !== oldColor) {
+        var scale = Polymer.dom(this.root).querySelector(".scale-gradient");
+        scale.style.background = "linear-gradient(to top, " + this.scaleColorFrom + ", " + newColor + ")";
+        this._lookupColors();
+      }
+    },
+
+    /**
+     * Gets the background properties of the scale
+     * element to convert the from and to colors to
+     * a RGB string and saves them in scaleColorFrom
+     * and scaleColorTo properties.
+     * Sends and event with the new colors, the event
+     * bubbles up.
+     *
+     * @method _lookupColors
+     * @private
+     */
+    _lookupColors: function() {
+      var reg = /rgb\(([0-9+,?\s?]+)\)/g,
+        matches,
+        colors = [],
+        iColor = window.getComputedStyle(Polymer.dom(this.root).querySelector('.scale-gradient')).backgroundImage;
+
+      while ((matches = reg.exec(iColor)) !== null) {
+        colors.push(matches[1]);
+      }
+
+      this.scaleColorFrom = 'rgb(' + colors[0] + ')';
+      this.scaleColorTo = 'rgb(' + colors[1] + ')';
+
+        // Dispatch an event to notify the color change with the new properties in the
+      // event detail property. The event bubbles up.
+      this.fire('scale-colors-changed', {from: this.scaleColorFrom, to: this.scaleColorTo});
+    },
+
+    /**
+     * Observes the changes to hideColHeader and applies a css
+     * to the scale component to adjust it's size
+     *
+     * @param {boolean} newValue Hide or don't the Column Headers
+     * @param {boolean} oldValue The old value.
+     *
+     * @method _hideColHeaderChanged
+     * @private
+     */
+    _hideColHeaderChanged: function(newValue, oldValue) {
+      if (newValue !== undefined && newValue !== oldValue) {
+        newValue === false ? this.disabledHeader = "" : this.disabledHeader = "disable-col-header";
+      }
+    }
+  });
+</script>

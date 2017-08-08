@@ -190,12 +190,12 @@ function testCase(options) {
 function runBaseTests() {
   ev_heatmap_1 = document.getElementById('ev_heatmap_1');
 
-  suite('Base Automation Tests for ev-heatmap', function() {
+  suite('Base Automation Tests for px-heatmap-grid', function() {
 
     test('Polymer exists', function() {
       assert.isTrue(Polymer !== null);
     });
-    test('ev-heatmap fixture is created', function() {
+    test('px-heatmap-grid fixture is created', function() {
       assert.isTrue(document.getElementById('ev_heatmap_1') !== null);
     });
 

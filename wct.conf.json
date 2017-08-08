@@ -42,7 +42,7 @@
     }
   },
   "suites": [
-    "test/ev-heatmap-test-fixture.html"
+    "test/px-heatmap-grid-test-fixture.html"
   ]
 
 }
