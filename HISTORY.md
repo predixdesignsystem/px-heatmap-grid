@@ -1,3 +1,7 @@
+v1.0.2
+==================
+* pin wct to v5
+
 v1.0.1
 ==================
 * add travis integration
