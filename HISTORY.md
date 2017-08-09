@@ -1,3 +1,7 @@
+v1.0.5
+==================
+* fix unit tests for windoze
+
 v1.0.4
 ==================
 * update wct config

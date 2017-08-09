@@ -141,31 +141,31 @@ function runCustomTests(testN) {
         tableCells = Polymer.dom(tableEl.root).querySelectorAll('.table-cell'),
         cells = [];
       tableCells.forEach(function (x) {
-        cells.push(x.innerText);
+        cells.push(x.innerText.trim());
       });
 
       if (testN === "dataset without headers") {
         data.forEach(function (item) {
           item.forEach(function (value) {
-            assert.notEqual(cells.indexOf("" + value), -1, "'" + value + "' not found in cells");
+            assert.notEqual(cells.indexOf(value.toString()), -1, "'" + value + "' not found in cells");
           });
         });
       }
       else if (testN === "single array dataset") {
         data.forEach(function (value) {
-          assert.notEqual(cells.indexOf("" + value), -1, "'" + value + "' not found in cells");
+          assert.notEqual(cells.indexOf(value.toString()), -1, "'" + value + "' not found in cells");
         });
       }
       else if (testN === "columns only" ||  testN === "rows only") {
         data.forEach(function (item) {
           item.values.forEach(function (value) {
-            assert.notEqual(cells.indexOf("" + value), -1, "'" + value + "' not found in cells");
+            assert.notEqual(cells.indexOf(value.toString()), -1, "'" + value + "' not found in cells");
           });
         });
       }
       else {
         data.forEach(function (item) {
-          assert.notEqual(cells.indexOf("" + item.value), -1, "'" + item.value + "' not found in cells");
+          assert.notEqual(cells.indexOf(item.value.toString()), -1, "'" + item.value + "' not found in cells");
         });
       }
       done();
