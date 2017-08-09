@@ -1,6 +1,6 @@
 {
   "name": "px-heatmap-grid",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": [
     "px-heatmap-grid.html"
   ],
