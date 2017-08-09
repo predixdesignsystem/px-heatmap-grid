@@ -1,3 +1,7 @@
+v1.0.4
+==================
+* update wct config
+
 v1.0.3
 ==================
 * fix travis.yml

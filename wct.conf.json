@@ -3,7 +3,8 @@
   "plugins": {
     "local": {
       "browsers": [
-        "chrome"
+        "chrome",
+        "firefox"
       ]
     },
     "sauce": {
@@ -16,27 +17,18 @@
         },
         {
           "browserName": "internet explorer",
-          "platform": "Windows 7",
+          "platform": "Windows 8.1",
           "version": "11"
         },
         {
-          "browserName": "internet explorer",
-          "platform": "Windows 7",
-          "version": "10"
+          "browserName": "safari",
+          "platform": "OS X 10.11",
+          "version": "9"
         },
         {
           "browserName": "safari",
           "platform": "OS X 10.11",
           "version": "10"
-        },
-        {
-          "browserName": "safari",
-          "platform": "OS X 10.10",
-          "version": "9"
-        },
-        {
-          "browserName": "firefox",
-          "platform": "OS X 10.11"
         }
       ]
     }
@@ -44,5 +36,4 @@
   "suites": [
     "test/px-heatmap-grid-test-fixture.html"
   ]
-
 }
