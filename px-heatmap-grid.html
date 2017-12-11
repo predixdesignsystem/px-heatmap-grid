@@ -23,7 +23,7 @@ The heat map data is an array of cell objects, where:
 
 Cells are grouped by rows and columns with same titles. In this example, two cells are going to be displayed on each row and column.
 
-<pre>
+```
 [
   {
     "row": "Application 1",
@@ -46,7 +46,7 @@ Cells are grouped by rows and columns with same titles. In this example, two cel
     "value": 47.479
   }
 ]
-</pre>
+```
 
 ### Option 2
 The heat map data is an array of objects that contain a column of data, where:
@@ -54,7 +54,7 @@ The heat map data is an array of objects that contain a column of data, where:
 - `values` is the array of values displayed for that column
 
 Example:
-<pre>
+```
 [
   {
     "col": "Operator 1",
@@ -69,7 +69,7 @@ Example:
     "values": [14, 15, 16, 17, 18, 19, 20]
   }
 ]
-</pre>
+```
 
 As only columns are specified in this dataset, the option to hide/show row titles has no effect.
 
@@ -79,7 +79,7 @@ The heat map data is an array of objects that contain a row of data, where:
 - `values` is the array of values displayed for that row.
 
 Example:
-<pre>
+```
 [
   {
     "row": "Application 1",
@@ -94,7 +94,7 @@ Example:
     "values": [14, 15, 16, 17, 18, 19, 20]
   }
 ]
-</pre>
+```
 
 As only rows are specified in this dataset, the option to hide/show column titles has no effect.
 
@@ -102,13 +102,13 @@ As only rows are specified in this dataset, the option to hide/show column title
 The heat map data is an array of arrays that contain all of the data. Each sub-array is displayed as a row of data in the heat map.
 
 Example:
-<pre>
+```
 [
     [0, 1, 2, 3, 4, 5, 6],
     [7, 8, 9, 10, 11, 12, 13],
     [14, 15, 16, 17, 18, 19, 20]
 ]
-</pre>
+```
 
 As no row nor column titles are specified, the options to show/hide the column and row titles have no effect.
 
@@ -116,9 +116,9 @@ As no row nor column titles are specified, the options to show/hide the column a
 The heat map data is a simple array with all of the data. The data is displayed as a single row in the heat map.
 
 Example:
-<pre>
+```
 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-</pre>
+```
 
 As no row nor column titles are specified, the options to show/hide the column and row titles have no effect.
 
