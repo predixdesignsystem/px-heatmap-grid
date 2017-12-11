@@ -73,7 +73,7 @@ suite('px-heatmap-grid with full dataset', function () {
       headers = [];
     heatmapEl.hideRowHeader = false;
     rowHeader.forEach(function (x) {
-      headers.push(x.innerText.trim());
+      headers.push(x.querySelector('span').innerText.trim());
     });
 
     data.forEach(function (item) {
@@ -88,7 +88,7 @@ suite('px-heatmap-grid with full dataset', function () {
       headers = [];
     heatmapEl.hideColHeader = false;
     colHeader.forEach(function (x) {
-      headers.push(x.innerText.trim());
+      headers.push(x.querySelector('span').innerText.trim());
     });
 
     data.forEach(function (item) {
@@ -677,7 +677,7 @@ suite('px-heatmap-grid with columns only', function() {
       headers = [];
     heatmapEl.hideColHeader = false;
     colHeader.forEach(function (x) {
-      headers.push(x.innerText.trim());
+      headers.push(x.querySelector('span').innerText.trim());
     });
 
     data.forEach(function (item) {
@@ -741,7 +741,7 @@ suite('px-heatmap-grid with rows only', function() {
       headers = [];
     heatmapEl.hideRowHeader = false;
     rowHeader.forEach(function (x) {
-      headers.push(x.innerText.trim());
+      headers.push(x.querySelector('span').innerText.trim());
     });
 
     data.forEach(function (item) {
