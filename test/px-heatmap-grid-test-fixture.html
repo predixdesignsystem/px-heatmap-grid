@@ -4,43 +4,58 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Web Component Test : Fixture for px-heatmap-grid</title>
-    <!-- Requires Webcomponents.js polyfill is provided by the page for browsers that don't support html imports -->
-    <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <!-- web-component-tester automatically provides local copy of brower.js below
-         for any URL ending with "/web-component-tester/browser.js"
-         when wct is run from the command line -->
-    <script src="../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../px-heatmap-grid.html" />
-    <!-- Retain this link for px-theme.html -->
-    <!-- px-theme is needed for WCT to run without errors -->
     <link rel="import" href="../bower_components/px-theme/px-theme-styles.html"/>
-    <!-- This script link will contain the generated script for basic wct test cases -->
-    <script src="px-heatmap-grid-base-tests.js"></script>
-    <!-- This script link will contain the generated script stub for custom, developer-added test cases -->
     <script src="px-heatmap-grid-custom-tests.js"></script>
   </head>
 
   <body>
-    <style include="px-theme-styles" is="custom-style"></style>
-    <h3>Fixture for px-heatmap-grid - Full dataset</h3>
-    <px-heatmap-grid id="ev_heatmap_1"></px-heatmap-grid>
+    <custom-style>
+      <style include="px-theme-styles" is="custom-style"></style>
+    </custom-style>
 
-    <h3>Fixture for px-heatmap-grid - Dataset with empty cells</h3>
-    <px-heatmap-grid id="ev_heatmap_2"></px-heatmap-grid>
+    <test-fixture id="ev_heatmap_1">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
 
-    <h3>Fixture for px-heatmap-grid - Dataset with invalid values</h3>
-    <px-heatmap-grid id="ev_heatmap_3"></px-heatmap-grid>
+    <test-fixture id="ev_heatmap_2">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
 
-    <h3>Fixture for px-heatmap-grid - Dataset without headers</h3>
-    <px-heatmap-grid id="ev_heatmap_4"></px-heatmap-grid>
+    <test-fixture id="ev_heatmap_3">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
 
-    <h3>Fixture for px-heatmap-grid - Single array Dataset</h3>
-    <px-heatmap-grid id="ev_heatmap_5"></px-heatmap-grid>
+    <test-fixture id="ev_heatmap_4">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
 
-    <h3>Fixture for px-heatmap-grid - Columns only Dataset</h3>
-    <px-heatmap-grid id="ev_heatmap_6"></px-heatmap-grid>
+    <test-fixture id="ev_heatmap_5">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
 
-    <h3>Fixture for px-heatmap-grid - Rows only Dataset</h3>
-    <px-heatmap-grid id="ev_heatmap_7"></px-heatmap-grid>
+    <test-fixture id="ev_heatmap_6">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="ev_heatmap_7">
+      <template>
+        <px-heatmap-grid></px-heatmap-grid>
+      </template>
+    </test-fixture>
   </body>
 </html>

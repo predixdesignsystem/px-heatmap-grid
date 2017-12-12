@@ -1,5 +1,4 @@
 #px-heatmap-grid
-[![px-heatmap-grid demo](px-heatmap-grid.png?raw=true)](https://github.build.ge.com/emerging-verticals/px-heatmap-grid)
 
 ## Overview
 
@@ -43,7 +42,7 @@ Finally, use the component in your application:
 
 ## Documentation
 
-Read the full API and view the demo [here](https://github.build.ge.com/pages/emerging-verticals/px-heatmap-grid/px-heatmap-grid/).
+Read the full API and view the demo [here](https://www.predix-ui.com/#/elements/px-heatmap-grid).
 
 The documentation in this repository is supplemental to the official Predix documentation, which is continuously updated and maintained by the Predix documentation team. Go to [http://predix.io](http://predix.io)  to see the official Predix documentation.
 
